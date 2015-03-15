@@ -1,0 +1,95 @@
+extends layouts/default
+
+block head
+	- cssPath = 'css/main.css';
+	- pageTitle = 'CSSSR START Project QSTemplate';
+	- OGmetaTitle = 'CSSSR START Project QSTemplate';
+	//- u can add all avaliable variables, available variables can be found in partials/head, partials/OGhead
+	//- if u dont set this vars, they will have default values
+	link(href='http://fonts.googleapis.com/css?family=Open+Sans:400,700&amp;subset=latin,cyrillic' rel='stylesheet' type='text/css')
+
+block content
+	include partials/header
+	section.main
+		header.players
+			h2.players_desc
+				strong.players_count 10 игроков
+				span.players_type По очереди
+			section.players_all
+				.players_overflow
+					.players_item.players_item--female
+						.players_avatar
+							img.players_avatar_img(src="img/avatar_female.png" alt="")
+						.players_name Наташа
+					.players_item.players_item--female
+						.players_avatar
+							img.players_avatar_img(src="img/avatar_female.png" alt="")
+						.players_name Лена
+					.players_item.players_item--male
+						.players_avatar
+							img.players_avatar_img(src="img/avatar-male.png" alt="")
+						.players_name Миша
+					.players_item.players_item--female
+						.players_avatar
+							img.players_avatar_img(src="img/avatar_female.png" alt="")
+						.players_name Наташа
+					.players_item.players_item--female
+						.players_avatar
+							img.players_avatar_img(src="img/avatar_female.png" alt="")
+						.players_name Лена
+					.players_item.players_item--male
+						.players_avatar
+							img.players_avatar_img(src="img/avatar-male.png" alt="")
+						.players_name Егор
+					.players_item.players_item--female
+						.players_avatar
+							img.players_avatar_img(src="img/avatar_female.png" alt="")
+						.players_name Наташа
+					.players_item.players_item--female
+						.players_avatar
+							img.players_avatar_img(src="img/avatar_female.png" alt="")
+						.players_name Вика
+					.players_item.players_item--male
+						.players_avatar
+							img.players_avatar_img(src="img/avatar-male.png" alt="")
+						.players_name Денис
+					.players_item.players_item--female
+						.players_avatar
+							img.players_avatar_img(src="img/avatar_female.png" alt="")
+						.players_name Кристина
+					.players_item.players_item--female
+						.players_avatar
+							img.players_avatar_img(src="img/avatar_female.png" alt="")
+						.players_name Таня
+					.players_item.players_item--male
+						.players_avatar
+							img.players_avatar_img(src="img/avatar-male.png" alt="")
+						.players_name Богдан
+					.players_item.players_item--female
+						.players_avatar
+							img.players_avatar_img(src="img/avatar_female.png" alt="")
+						.players_name Наташа
+					.players_item.players_item--female
+						.players_avatar
+							img.players_avatar_img(src="img/avatar_female.png" alt="")
+						.players_name Лена
+					.players_item.players_item--male
+						.players_avatar
+							img.players_avatar_img(src="img/avatar-male.png" alt="")
+						.players_name Миша
+		section.pick
+			a.pick_link.pick_link--true(href=jv0 title="" data-update-json) Правда
+			span.pick_or или
+			a.pick_link.pick_link--action(href=jv0 title="" data-update-json) Действие
+			.picked_q fasdfs
+		form(id="main-form")
+			input(type="hidden" value="Misha" id="player" name="player")
+			input(type="hidden" value="Misha,Lena,Natasha" id="players" name="players")
+			input(type="hidden" value="q" id="type" name="type")
+			input(type="hidden" value="18,21" id="rubric" name="rubric")
+
+
+
+block additionalCSS
+
+block scripts
