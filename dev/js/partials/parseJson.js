@@ -26,7 +26,7 @@ $(function () {
 	// show task
 	function showTask(data) {
 
-		$('.picked_q').text(data.value);
+		
 
 	}
 

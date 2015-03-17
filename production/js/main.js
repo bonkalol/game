@@ -58,6 +58,73 @@ $(function () {
 
 	});
 
+	// cloud update
+
+	// on item delete
+	$('body').on('mousedown', '.game-start_player', function() {
+
+		$(this).remove();
+
+	});
+
+	// add item
+	$('.game-start_input--players').on('keydown', function(event) {
+
+		if ( event.keyCode === 13 && $(this).val().length >= 2) {
+
+			addNewPlayerCloud($(this).val());
+			$(this).val('');
+
+		}
+
+	});
+
+	// UX
+	$('[name="new-player-gender"]').on('click', function() {
+
+		$('.game-start_input--players').focus();
+
+	});
+
+	// submit button
+	$('.game-start_submit-player').on('mousedown', function() {
+
+		var e = jQuery.Event('keydown');
+		e.keyCode = 13;
+		$('.game-start_input--players').trigger(e);
+
+	});
+
+	function addNewPlayerCloud(text) {
+
+		// define gender
+		var gender = '',
+			$playerCloud = $('.game-start_player-cloud');
+
+		// find checked gender
+		$.each($('[name="new-player-gender"]'), function() {
+
+			if ($(this).prop('checked') === true) {
+				gender = $(this).val();
+				return false;
+			}
+
+		});
+
+		if (gender === '') {
+			return;
+		}
+
+		if (gender === 'm') {
+			$playerCloud.append('<span class="game-start_player game-start_player--male" data-player-gender="m">' + text + '<span class="game-start_player-remove"><\/span><\/span>');
+		}
+
+		if (gender === 'f') {
+			$playerCloud.append('<span class="game-start_player game-start_player--female" data-player-gender="f">' + text + '<span class="game-start_player-remove"><\/span><\/span>');
+		}
+
+	}
+
 });
 $(function () {
 
@@ -87,7 +154,7 @@ $(function () {
 	// show task
 	function showTask(data) {
 
-		$('.picked_q').text(data.value);
+		
 
 	}
 
@@ -185,3 +252,111 @@ function modalShow(type, $sender) {
 	}
 
 }
+/* ==============================
+
+UPDATE PLAYERS INPUTS ( MALE, FEMALE, ALL )
+
+================================ */
+
+function updatePlayers(type) {
+
+	var $cloud = $('.players-cloud-main'),
+		male = [],
+		female = [],
+		all = [],
+		$inputM = $('#players-m'),
+		$inputF = $('#players-f'),
+		$inputAll = $('#players-all');
+
+	// if game only starting
+	if (type === 'game-start') {
+
+		$cloud = $('.game-start_player-cloud');
+
+	}
+
+	// find players in cloud
+	var $players = $cloud.find('.game-start_player');
+
+	// define players gender type
+	$.each($players, function() {
+
+		var val;
+			val = $(this).text().replace(/ /g,'');
+
+		if ( $(this).attr('data-player-gender') === 'm' ) {
+			male.push(val);
+		}
+
+		if ( $(this).attr('data-player-gender') === 'f' ) {
+			female.push(val);
+		}
+
+		all.push(val);
+
+	});
+
+	// update inputs values
+	$inputM.val(male.toString());
+	$inputF.val(female.toString());
+	$inputAll.val(all.toString());
+
+}
+
+/* ==============================
+
+UPDATE RUBRICS
+
+================================ */
+
+
+function updateRubrics(type) {
+
+	var $inputs = $('[name="rubric-select-main"]'),
+		rubrics = [],
+		$inputRubric = $('#game-rubric');
+
+	if (type === 'game-start') {
+
+		$inputs = $('[name="new-game-rubric"]');
+
+	}
+	// find checked rubrics
+	$.each($inputs, function() {
+
+		if ( $(this).prop('checked') === true ) {
+			rubrics.push($(this).val());
+		}
+
+	});
+	// update input
+	$inputRubric.val(rubrics.toString());
+
+}
+
+/* ==============================
+
+CLICK EVENT TO UPDATE INPUTS
+
+================================ */
+
+
+$( function() {
+
+	$('[data-update-inputs]').on('mousedown', function() {
+
+		if ( $(this).hasClass('game-start_next') ) {
+
+			updatePlayers('game-start');
+			updateRubrics('game-start');
+			return;
+
+		}
+
+		// update inputs values
+		updatePlayers();
+
+	});
+
+});
+

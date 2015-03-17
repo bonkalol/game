@@ -85,10 +85,11 @@ block content
 			span.pick_or или
 			a.pick_link.pick_link--action(href=jv0 title="" data-modalType="game" data-show-popup) Действие
 		form(id="main-form")
-			input(type="hidden" value="Miha,Timur,Vanya" id="players" name="players-m")
-			input(type="hidden" value="Nastya,Natasha,Lena" id="players" name="players-f")
+			input(type="hidden" value="" id="players-m" name="players-m")
+			input(type="hidden" value="" id="players-f" name="players-f")
+			input(type="hidden" value="" id="players-all" name="players-all")
 			//- value example ="Misha,Lena,Bogdan"
-			input(type="hidden" value="18,21" id="players" name="rubric")
+			input(type="hidden" value="" id="game-rubric" name="rubric")
 			//- value example ="18,21"
 		section.modal_window.hidden
 			h2.modal_rubric 18+
@@ -99,10 +100,12 @@ block content
 				.game-start_progress-value
 			.game-start_modal.game-start_modal--first.active
 				h2.game-start_header Добавить игроков
-				.game-start_modal-inner
+				.game-start_modal-inner.game-start_modal-inner--players
 					p.game-start_subheader Разрешен ввод только латинских букв
 					.game-start_wrap
-						input.game-start_input(type="text" id="create-player")
+						.game-start_input-wrap
+							input.game-start_input.game-start_input--players(type="text" id="create-player")
+							button.game-start_submit-player(type="button") Добавить
 						input(type="radio" data-hidden-cb value="m" id="new-player-m" name="new-player-gender")
 						label(for="new-player-m" class="game-start_gender-label")
 							svg(width="30px" height="30px")
@@ -112,11 +115,11 @@ block content
 							svg(width="30px" height="30px")
 								use(xlink:href=svg + "woman")
 					.game-start_player-cloud
-						span.game-start_player.game-start_player--male Bogdan
+						span.game-start_player.game-start_player--male(data-player-gender="m") Bogdan
 							span.game-start_player-remove
-						span.game-start_player.game-start_player--female Zhenya
+						span.game-start_player.game-start_player--female(data-player-gender="f") Zhenya
 							span.game-start_player-remove
-					button.game-start_next(type="button") Далее
+				button.game-start_next(type="button" data-update-inputs) Далее
 			.game-start_modal.game-start_modal--second
 				h2.game-start_header Выберите рубрику
 				.game-start_modal-inner.game-start_modal-inner--rubric
@@ -130,7 +133,7 @@ block content
 					label.game-start_rubric-label(for="new-game-rubric-21")
 						span.game-start_rubric-desc 21+ (Например: Французский поцелуй)
 					button.game-start_back(type="button") Назад
-					button.game-start_next.next-back(type="button") Далее
+					button.game-start_next.next-back(type="button" data-update-inputs) Далее
 			.game-start_modal.game-start_modal--third
 				h2.game-start_header Правила игры
 				.game-start_modal-inner

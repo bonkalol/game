@@ -52,6 +52,11 @@
 			@include flex(center, flex-start);
 			flex-direction: column;
 		}
+
+		&--players {
+			padding-top: 10px;
+			position: relative;
+		}
 	}
 
 	&_header {
@@ -146,6 +151,10 @@
 		margin-top: 10px;
 	}
 
+	&_input-wrap {
+		position: relative;
+	}
+
 	&_input {
 		border-radius: 3px;
 		border: 1px solid #555;
@@ -153,6 +162,24 @@
 		outline: none;
 		font-family: inherit;
 		padding: 0 5px;
+
+		&--players {
+			padding-right: 67px;
+			width: 180px;
+		}
+	}
+
+	&_submit-player {
+		@include reset-btn();
+		position: absolute;
+		right: 4px;
+		padding: 3px;
+		top: 50%;
+		transform: translateY(-50%);
+		background-color: #d7d7d7;
+		color: #222;
+		border-radius: 3px;
+		font-size: 12px;
 	}
 
 	&_gender-label {
@@ -190,6 +217,7 @@
 		background-color: #fafafa;
 		color: #fafafa;
 		margin-right: 5px;
+		margin-top: 5px;
 		position: relative;
 
 		transition: box-shadow .4s;
@@ -224,6 +252,7 @@
 	&_player-cloud {
 		background-color: #fafafa;
 		padding: 3px;
+		padding-bottom: 8px;
 		border-radius: 3px;
 		@include clearfix();
 		margin-top: 10px;

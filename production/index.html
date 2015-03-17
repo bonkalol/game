@@ -147,9 +147,10 @@
 			<h2 class="pick_player"><var class="pick_player_name">Bogdan </var><span class="pick_player_text">теперь ваш ход</span></h2><a href="javascript:void(0);" title="" data-modalType="game" data-show-popup class="pick_link pick_link--true">Правда</a><span class="pick_or">или</span><a href="javascript:void(0);" title="" data-modalType="game" data-show-popup class="pick_link pick_link--action">Действие</a>
 		</section>
 		<form id="main-form">
-			<input type="hidden" value="Miha,Timur,Vanya" id="players" name="players-m">
-			<input type="hidden" value="Nastya,Natasha,Lena" id="players" name="players-f">
-			<input type="hidden" value="18,21" id="players" name="rubric">
+			<input type="hidden" value="" id="players-m" name="players-m">
+			<input type="hidden" value="" id="players-f" name="players-f">
+			<input type="hidden" value="" id="players-all" name="players-all">
+			<input type="hidden" value="" id="game-rubric" name="rubric">
 		</form>
 		<section class="modal_window hidden">
 			<h2 class="modal_rubric">18+</h2>
@@ -162,10 +163,13 @@
 			</div>
 			<div class="game-start_modal game-start_modal--first active">
 				<h2 class="game-start_header">Добавить игроков</h2>
-				<div class="game-start_modal-inner">
+				<div class="game-start_modal-inner game-start_modal-inner--players">
 					<p class="game-start_subheader">Разрешен ввод только латинских букв</p>
 					<div class="game-start_wrap">
-						<input type="text" id="create-player" class="game-start_input">
+						<div class="game-start_input-wrap">
+							<input type="text" id="create-player" class="game-start_input game-start_input--players">
+							<button type="button" class="game-start_submit-player">Добавить</button>
+						</div>
 						<input type="radio" data-hidden-cb value="m" id="new-player-m" name="new-player-gender">
 						<label for="new-player-m" class="game-start_gender-label">
 							<svg width="30px" height="30px">
@@ -179,10 +183,10 @@
 							</svg>
 						</label>
 					</div>
-					<div class="game-start_player-cloud"><span class="game-start_player game-start_player--male">Bogdan<span class="game-start_player-remove"></span></span><span class="game-start_player game-start_player--female">Zhenya<span class="game-start_player-remove"></span></span>
+					<div class="game-start_player-cloud"><span data-player-gender="m" class="game-start_player game-start_player--male">Bogdan<span class="game-start_player-remove"></span></span><span data-player-gender="f" class="game-start_player game-start_player--female">Zhenya<span class="game-start_player-remove"></span></span>
 					</div>
-					<button type="button" class="game-start_next">Далее</button>
 				</div>
+				<button type="button" data-update-inputs class="game-start_next">Далее</button>
 			</div>
 			<div class="game-start_modal game-start_modal--second">
 				<h2 class="game-start_header">Выберите рубрику</h2>
@@ -197,7 +201,7 @@
 					<label for="new-game-rubric-21" class="game-start_rubric-label"><span class="game-start_rubric-desc">21+ (Например: Французский поцелуй)</span>
 					</label>
 					<button type="button" class="game-start_back">Назад</button>
-					<button type="button" class="game-start_next next-back">Далее</button>
+					<button type="button" data-update-inputs class="game-start_next next-back">Далее</button>
 				</div>
 			</div>
 			<div class="game-start_modal game-start_modal--third">
