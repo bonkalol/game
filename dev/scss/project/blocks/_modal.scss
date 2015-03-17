@@ -1,0 +1,71 @@
+.modal {
+
+	&_window {
+		background-color: #e74c3c;
+		border-radius: 3px;
+		box-shadow: 3px 3px 4px rgba(0, 0, 0, .3);
+		@include size(300px, 250px);
+		color: #fafafa;
+		position: fixed;
+		left: 50%;
+		top: 50%;
+		transform: translate(-50%, -30%);
+		z-index: 10;
+		opacity: 0;
+
+		will-change: transform, opacity;
+		transition: transform .6s, opacity .6s;
+
+		&.active {
+			opacity: 1;
+			transform: translate(-50%, -50%);
+		}
+
+		&.hidden {
+			visibility: hidden;
+		}
+	}
+
+	&_rubric {
+		background-color: rgba(0,0,0,0.1);
+		font-size: 24px;
+		padding: 10px 0;
+		text-align: center;
+		white-space: nowrap;
+		overflow: hidden;
+		width: 100%;
+		text-overflow: ellipsis;
+	}
+
+	&_submit {
+		@include reset-btn();
+		position: absolute;
+		bottom: 10px;
+		left: 50%;
+		transform: translateX(-50%);
+		@include size(30%, 50px);
+		border-radius: 4px;
+		text-align: center;
+		line-height: 50px;
+		font-size: 24px;
+		color: #fff;
+		background-color: rgba(0,0,0,0.1);
+	}
+
+	&_desc {
+		position: absolute;
+		top: 50%;
+		transform: translateY(-50%);
+		overflow: auto;
+		font-size: 16px;
+		padding: 0 10px;
+		line-height: 24px;
+		left: 0;
+		@include size(100%, 120px);
+		text-align: center;
+	}
+
+
+
+
+}

@@ -27,9 +27,10 @@ module.exports = {
 		srcPaths: {
 			jade: './dev/jade/*.jade',
 			scss: 'dev/scss/main.scss',
-			js: ['./dev/js/third-party/**/*', './dev/js/partials/**/*', './dev/js/main.*+(js|coffee)'],
+			js: ['./dev/js/jquery-2.1.1.min.js','./dev/js/third-party/**/*', './dev/js/partials/**/*', './dev/js/main.*+(js|coffee)'],
 			jsLibs: 'dev/js/libs/**/*.js',
 			sprite: 'dev/img/sprite/*.png',
+			spriteSvg: 'dev/img/svg/*.svg',
 			images: ['dev/img/**/*.+(png|jpg|svg)', '!dev/img/sprite/*'],
 			font: 'dev/font/**/*.+(woff|woff2|svg|otf|ttf|eot)',
 			static: 'dev/static/**/*',
@@ -52,12 +53,13 @@ module.exports = {
 
 		watchPaths: {
 			jade: 'dev/jade/*.jade',
-			jadePartials: ['dev/jade/partials/*.jade', 'dev/jade/layouts/*.jade', 'dev/jade/blocks/*.jade'],
+			jadePartials: ['dev/jade/partials/*.jade', 'dev/jade/pages/*.jade', 'dev/jade/layouts/*.jade', 'dev/jade/blocks/*.jade'],
 			scss: 'dev/scss/**/*.scss',
 			js: ['dev/js/**/*.*+(js|coffee)', '!dev/js/libs/'],
 			jsLibs: 'dev/js/libs/**/*',
 			fonts: 'dev/font/**/*.+(woff|woff2|svg|otf|ttf|eot)',
 			sprite: 'dev/img/sprite/*.png',
+			spriteSvg: 'dev/img/svg/*.svg',
 			images: 'dev/img/**/*',
 			static: 'dev/static/**/*',
 			data: 'dev/data/**/*',

@@ -2,10 +2,6 @@
 <html>
 
 <head>
-	<script async>
-		window.Modernizr=function(e,t,n){function b(e){a.cssText=e}function w(e,t){return b(prefixes.join(e+";")+(t||""))}function E(e,t){return typeof e===t}function S(e,t){return!!~(""+e).indexOf(t)}function x(e,t,r){for(var i in e){var s=t[e[i]];if(s!==n){if(r===false)return e[i];if(E(s,"function")){return s.bind(r||t)}return s}}return false}var r="2.8.3",i={},s=t.documentElement,o="modernizr",u=t.createElement(o),a=u.style,f,l={}.toString,c={},h={},p={},d=[],v=d.slice,m,g={}.hasOwnProperty,y;if(!E(g,"undefined")&&!E(g.call,"undefined")){y=function(e,t){return g.call(e,t)}}else{y=function(e,t){return t in e&&E(e.constructor.prototype[t],"undefined")}}if(!Function.prototype.bind){Function.prototype.bind=function(t){var n=this;if(typeof n!="function"){throw new TypeError}var r=v.call(arguments,1),i=function(){if(this instanceof i){var e=function(){};e.prototype=n.prototype;var s=new e;var o=n.apply(s,r.concat(v.call(arguments)));if(Object(o)===o){return o}return s}else{return n.apply(t,r.concat(v.call(arguments)))}};return i}}c["canvas"]=function(){var e=t.createElement("canvas");return!!(e.getContext&&e.getContext("2d"))};c["canvastext"]=function(){return!!(i["canvas"]&&E(t.createElement("canvas").getContext("2d").fillText,"function"))};for(var T in c){if(y(c,T)){m=T.toLowerCase();i[m]=c[T]();d.push((i[m]?"":"no-")+m)}}i.addTest=function(e,t){if(typeof e=="object"){for(var r in e){if(y(e,r)){i.addTest(r,e[r])}}}else{e=e.toLowerCase();if(i[e]!==n){return i}t=typeof t=="function"?t():t;if(typeof enableClasses!=="undefined"&&enableClasses){s.className+=" "+(t?"":"no-")+e}i[e]=t}return i};b("");u=f=null;i._version=r;return i}(this,this.document);(function(){var e=new Image;e.onerror=function(){Modernizr.addTest("webp",false)};e.onload=function(){Modernizr.addTest("webp",function(){return e.width==1})};e.src="data:image/webp;base64,UklGRiwAAABXRUJQVlA4ICAAAAAUAgCdASoBAAEAL/3+/3+CAB/AAAFzrNsAAP5QAAAAAA=="})();
-		document.addEventListener("DOMContentLoaded", function(event) { if (Modernizr.webp) { document.querySelector('body').classList.add('webp'); } else { document.querySelector('body').classList.add('nowebp'); } });
-	</script>
 	<link href="http://fonts.googleapis.com/css?family=Open+Sans:400,700&amp;amp;subset=latin,cyrillic" rel="stylesheet" type="text/css">
 	<meta charset="utf-8">
 	<title>CSSSR START Project QSTemplate</title>
@@ -60,108 +56,170 @@
 			<h2 class="players_desc"><strong class="players_count">10 игроков</strong><span class="players_type">По очереди</span></h2>
 			<section class="players_all">
 				<div class="players_overflow">
-					<div class="players_item players_item--female">
+					<div data-player-type="f" class="players_item players_item--female">
 						<div class="players_avatar">
 							<img src="img/avatar_female.png" alt="" class="players_avatar_img">
 						</div>
-						<div class="players_name">Наташа</div>
+						<div class="player_delete"></div>
+						<div class="players_name">Natasha</div>
 					</div>
-					<div class="players_item players_item--female">
+					<div data-player-type="f" class="players_item players_item--female">
 						<div class="players_avatar">
 							<img src="img/avatar_female.png" alt="" class="players_avatar_img">
 						</div>
-						<div class="players_name">Лена</div>
+						<div class="player_delete"></div>
+						<div class="players_name">Lena</div>
 					</div>
-					<div class="players_item players_item--male">
+					<div data-player-type="m" class="players_item players_item--male">
 						<div class="players_avatar">
 							<img src="img/avatar-male.png" alt="" class="players_avatar_img">
 						</div>
-						<div class="players_name">Миша</div>
+						<div class="player_delete"></div>
+						<div class="players_name">Misha</div>
 					</div>
-					<div class="players_item players_item--female">
+					<div data-player-type="f" class="players_item players_item--female">
 						<div class="players_avatar">
 							<img src="img/avatar_female.png" alt="" class="players_avatar_img">
 						</div>
-						<div class="players_name">Наташа</div>
+						<div class="player_delete"></div>
+						<div class="players_name">Kristina</div>
 					</div>
-					<div class="players_item players_item--female">
+					<div data-player-type="f" class="players_item players_item--female">
 						<div class="players_avatar">
 							<img src="img/avatar_female.png" alt="" class="players_avatar_img">
 						</div>
-						<div class="players_name">Лена</div>
+						<div class="player_delete"></div>
+						<div class="players_name">Lera</div>
 					</div>
-					<div class="players_item players_item--male">
+					<div data-player-type="m" class="players_item players_item--male">
 						<div class="players_avatar">
 							<img src="img/avatar-male.png" alt="" class="players_avatar_img">
 						</div>
-						<div class="players_name">Егор</div>
+						<div class="player_delete"></div>
+						<div class="players_name">Egor</div>
 					</div>
-					<div class="players_item players_item--female">
+					<div data-player-type="f" class="players_item players_item--female">
 						<div class="players_avatar">
 							<img src="img/avatar_female.png" alt="" class="players_avatar_img">
 						</div>
-						<div class="players_name">Наташа</div>
+						<div class="player_delete"></div>
+						<div class="players_name">Vika</div>
 					</div>
-					<div class="players_item players_item--female">
+					<div data-player-type="f" class="players_item players_item--female">
 						<div class="players_avatar">
 							<img src="img/avatar_female.png" alt="" class="players_avatar_img">
 						</div>
-						<div class="players_name">Вика</div>
+						<div class="player_delete"></div>
+						<div class="players_name">Olya</div>
 					</div>
-					<div class="players_item players_item--male">
+					<div data-player-type="m" class="players_item players_item--male">
 						<div class="players_avatar">
 							<img src="img/avatar-male.png" alt="" class="players_avatar_img">
 						</div>
-						<div class="players_name">Денис</div>
+						<div class="player_delete"></div>
+						<div class="players_name">Denis</div>
 					</div>
-					<div class="players_item players_item--female">
+					<div data-player-type="f" class="players_item players_item--female">
 						<div class="players_avatar">
 							<img src="img/avatar_female.png" alt="" class="players_avatar_img">
 						</div>
-						<div class="players_name">Кристина</div>
+						<div class="player_delete"></div>
+						<div class="players_name">Nadya</div>
 					</div>
-					<div class="players_item players_item--female">
+					<div data-player-type="f" class="players_item players_item--female">
 						<div class="players_avatar">
 							<img src="img/avatar_female.png" alt="" class="players_avatar_img">
 						</div>
-						<div class="players_name">Таня</div>
+						<div class="player_delete"></div>
+						<div class="players_name">Tanya</div>
 					</div>
-					<div class="players_item players_item--male">
+					<div data-player-type="m" class="players_item players_item--male player--active">
 						<div class="players_avatar">
 							<img src="img/avatar-male.png" alt="" class="players_avatar_img">
 						</div>
-						<div class="players_name">Богдан</div>
-					</div>
-					<div class="players_item players_item--female">
-						<div class="players_avatar">
-							<img src="img/avatar_female.png" alt="" class="players_avatar_img">
-						</div>
-						<div class="players_name">Наташа</div>
-					</div>
-					<div class="players_item players_item--female">
-						<div class="players_avatar">
-							<img src="img/avatar_female.png" alt="" class="players_avatar_img">
-						</div>
-						<div class="players_name">Лена</div>
-					</div>
-					<div class="players_item players_item--male">
-						<div class="players_avatar">
-							<img src="img/avatar-male.png" alt="" class="players_avatar_img">
-						</div>
-						<div class="players_name">Миша</div>
+						<div class="player_delete"></div>
+						<div class="players_name">Bogdan</div>
 					</div>
 				</div>
 			</section>
 		</header>
-		<section class="pick"><a href="javascript:void(0);" title="" data-update-json class="pick_link pick_link--true">Правда</a><span class="pick_or">или</span><a href="javascript:void(0);" title="" data-update-json class="pick_link pick_link--action">Действие</a>
-			<div class="picked_q">fasdfs</div>
+		<section class="pick">
+			<h2 class="pick_player"><var class="pick_player_name">Bogdan </var><span class="pick_player_text">теперь ваш ход</span></h2><a href="javascript:void(0);" title="" data-modalType="game" data-show-popup class="pick_link pick_link--true">Правда</a><span class="pick_or">или</span><a href="javascript:void(0);" title="" data-modalType="game" data-show-popup class="pick_link pick_link--action">Действие</a>
 		</section>
 		<form id="main-form">
-			<input type="hidden" value="Misha" id="player" name="player">
-			<input type="hidden" value="Misha,Lena,Natasha" id="players" name="players">
-			<input type="hidden" value="q" id="type" name="type">
-			<input type="hidden" value="18,21" id="rubric" name="rubric">
+			<input type="hidden" value="Miha,Timur,Vanya" id="players" name="players-m">
+			<input type="hidden" value="Nastya,Natasha,Lena" id="players" name="players-f">
+			<input type="hidden" value="18,21" id="players" name="rubric">
 		</form>
+		<section class="modal_window hidden">
+			<h2 class="modal_rubric">18+</h2>
+			<p class="modal_desc">Поцелуйте в шею первого игрока противоположного пола слева от вас</p>
+			<button type="button" data-close-popup class="modal_submit">Ок</button>
+		</section>
+		<section class="game-start">
+			<div class="game-start_progress">
+				<div class="game-start_progress-value"></div>
+			</div>
+			<div class="game-start_modal game-start_modal--first active">
+				<h2 class="game-start_header">Добавить игроков</h2>
+				<div class="game-start_modal-inner">
+					<p class="game-start_subheader">Разрешен ввод только латинских букв</p>
+					<div class="game-start_wrap">
+						<input type="text" id="create-player" class="game-start_input">
+						<input type="radio" data-hidden-cb value="m" id="new-player-m" name="new-player-gender">
+						<label for="new-player-m" class="game-start_gender-label">
+							<svg width="30px" height="30px">
+								<use xlink:href="img/symbol/svg/sprite.symbol.svg#business"></use>
+							</svg>
+						</label>
+						<input type="radio" data-hidden-cb value="f" id="new-player-f" name="new-player-gender">
+						<label for="new-player-f" class="game-start_gender-label">
+							<svg width="30px" height="30px">
+								<use xlink:href="img/symbol/svg/sprite.symbol.svg#woman"></use>
+							</svg>
+						</label>
+					</div>
+					<div class="game-start_player-cloud"><span class="game-start_player game-start_player--male">Bogdan<span class="game-start_player-remove"></span></span><span class="game-start_player game-start_player--female">Zhenya<span class="game-start_player-remove"></span></span>
+					</div>
+					<button type="button" class="game-start_next">Далее</button>
+				</div>
+			</div>
+			<div class="game-start_modal game-start_modal--second">
+				<h2 class="game-start_header">Выберите рубрику</h2>
+				<div class="game-start_modal-inner game-start_modal-inner--rubric">
+					<input type="checkbox" data-hidden-cb id="new-game-rubric-16" value="16" name="new-game-rubric">
+					<label for="new-game-rubric-16" class="game-start_rubric-label"><span class="game-start_rubric-desc">16+ (Например: Спой песню)</span>
+					</label>
+					<input type="checkbox" data-hidden-cb id="new-game-rubric-18" value="18" name="new-game-rubric">
+					<label for="new-game-rubric-18" class="game-start_rubric-label"><span class="game-start_rubric-desc">18+ (Например: Поцелуй в шею)</span>
+					</label>
+					<input type="checkbox" data-hidden-cb id="new-game-rubric-21" value="21" name="new-game-rubric">
+					<label for="new-game-rubric-21" class="game-start_rubric-label"><span class="game-start_rubric-desc">21+ (Например: Французский поцелуй)</span>
+					</label>
+					<button type="button" class="game-start_back">Назад</button>
+					<button type="button" class="game-start_next next-back">Далее</button>
+				</div>
+			</div>
+			<div class="game-start_modal game-start_modal--third">
+				<h2 class="game-start_header">Правила игры</h2>
+				<div class="game-start_modal-inner">
+					<p class="game-start_rules">
+						Носки, бижутерия не являются вещью. Старайтесь выполнять задачи, иначе игра будет не интересна.</p>
+					<button type="button" class="game-start_back">Назад</button>
+					<button type="button" class="game-start_next next-back">Далее</button>
+				</div>
+			</div>
+			<div class="game-start_modal game-start_modal--fourth">
+				<h2 class="game-start_header">Уже почти</h2>
+				<div class="game-start_modal-inner">
+					<p class="game-start_rules">Если хотите что-нибудь изменить перед началом, нажимайте кнопку назад. Если вы готову начать игру полную разврата, то смело нажимайте "Начать игру".</p>
+					<button type="button" class="game-start_back">Назад</button>
+					<button type="button" data-update-json class="game-start_next next-back">Начать игру</button>
+				</div>
+			</div>
+			<div class="game-start_overlay"></div>
+		</section>
+		<div data-close-popup class="overlay hidden"></div>
 	</section>
 	<footer class="page-footer"></footer>
 	<script src="js/main.js" async></script>

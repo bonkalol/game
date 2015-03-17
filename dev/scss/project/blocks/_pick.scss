@@ -33,4 +33,14 @@
 		background-color: #f44336;
 		color: #fafafa;
 	}
+
+	&_player {
+		font-size: 24px;
+		padding: 10px 0;
+		text-align: center;
+	}
+
+	&_player_name {
+		font-weight: 700;
+	}
 }

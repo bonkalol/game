@@ -1,0 +1,258 @@
+.game-start {
+	position: fixed;
+	top: 0;
+	left: 0;
+	@include size(100%);
+	z-index: 11;
+	will-change: opacity;
+	transition: opacity .6s;
+	transform: translate3d(0, 0, 0);
+
+
+	&.hidden {
+		opacity: 0;
+	}
+
+	&.visibility {
+		visibility: hidden;
+	}
+
+	&_modal {
+		@include size(300px, auto);
+		min-height: 250px;
+		background-color: #e74c3c;
+		position: absolute;
+		right: -100%;
+		top: 50%;
+		transform: translate3d(50%, -50%, 0);
+		transition: right ease-in-out 1s;
+		will-change: right;
+		color: #fff;
+		border-radius: 3px;
+		box-shadow: 3px 3px 4px rgba(0, 0, 0, .3);
+		z-index: 1;
+
+		&.active {
+			right: 50%;
+		}
+
+		&.hidden {
+			right: 120%;
+		}
+	}
+
+	&_modal-inner {
+		position: absolute;
+		top: 0;
+		left: 0;
+		@include size(100%);
+		padding: 54px 10px 60px;
+
+		&--rubric {
+			@include flex(center, flex-start);
+			flex-direction: column;
+		}
+	}
+
+	&_header {
+		background-color: rgba(0,0,0,0.1);
+		font-size: 24px;
+		padding: 10px 0;
+		text-align: center;
+		white-space: nowrap;
+		overflow: hidden;
+		width: 100%;
+		text-overflow: ellipsis;
+	}
+
+	&_subheader {
+
+	}
+
+	&_overlay {
+		position: absolute;
+		top: 0;
+		left: 0;
+		@include size(100%);
+		background-color: #e74c3c;
+
+		&:after {
+			content: '';
+			position: absolute;
+			left: 0;
+			top: 0;
+			@include size(100%);
+			background-color: rgba(0, 0, 0, .6);
+		}
+	}
+
+	&_progress {
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 10px;
+		background-color: rgba(255, 255, 255, .9);
+	}
+
+	&_progress-value {
+		position: absolute;
+		left: 0;
+		top: 0;
+		@include size(0, 100%);
+		background-color: #e74c3c;
+		transition: width .4s;
+		will-change: width;
+		transform: translate3d(0, 0, 0);
+	}
+
+	&_next {
+		@include reset-btn();
+		position: absolute;
+		bottom: 0;
+		left: 0;
+		@include size(100%, 50px);
+		border-radius: 4px;
+		text-align: center;
+		line-height: 50px;
+		font-size: 24px;
+		color: #fff;
+		background-color: rgba(0,0,0,0.1);
+
+		&.next-back {
+			width: 50%;
+			right: 0;
+			left: auto;
+		}
+	}
+
+	&_back {
+		@include reset-btn();
+		position: absolute;
+		bottom: 0;
+		left: 0;
+		@include size(50%, 50px);
+		border-radius: 4px;
+		text-align: center;
+		line-height: 50px;
+		font-size: 24px;
+		color: #fff;
+		background-color: rgba(0,0,0,0.1);
+		border-right: 2px solid rgba(0,0,0,.2);
+	}
+
+	&_wrap {
+		@include flex(flex-start, center);
+		margin-top: 10px;
+	}
+
+	&_input {
+		border-radius: 3px;
+		border: 1px solid #555;
+		height: 25px;
+		outline: none;
+		font-family: inherit;
+		padding: 0 5px;
+	}
+
+	&_gender-label {
+		@include size(32px);
+		border-radius: 50%;
+		margin-left: 10px;
+		background-color: #fff;
+		overflow: hidden;
+		@include flex(center, center);
+		transition: background-color .4s;
+
+		&:hover,
+		&:focus {
+			cursor: pointer;
+		}
+
+		svg {
+			transition: fill .4s;
+		}
+	}
+
+	input:checked + &_gender-label {
+		background-color: #666;
+
+		svg {
+			fill: #fff;
+		}
+	}
+
+	&_player {
+		padding: 3px;
+		padding-right: 20px;
+		float: left;
+		border-radius: 2px;
+		background-color: #fafafa;
+		color: #fafafa;
+		margin-right: 5px;
+		position: relative;
+
+		transition: box-shadow .4s;
+		will-change: box-shadow;
+
+		&:hover,
+		&:focus,
+		&:active {
+			box-shadow: 2px 2px 3px rgba(0, 0, 0, .3);
+			cursor: pointer;
+		}
+	}
+
+	&_player-remove {
+		position: absolute;
+		top: 50%;
+		right: 5px;
+		transform: translate3d(0, -50%, 0);
+		@include size(8px);
+		background: url(../img/cross.svg) no-repeat;
+		background-size: cover;
+	}
+
+	&_player--female {
+		background-color: #e91e63;
+	}
+
+	&_player--male {
+		background-color: #2196f3;
+	}
+
+	&_player-cloud {
+		background-color: #fafafa;
+		padding: 3px;
+		border-radius: 3px;
+		@include clearfix();
+		margin-top: 10px;
+	}
+
+	input:checked + &_rubric-label {
+		background-color: #eee;
+		color: #222;
+	}
+
+	&_rubric-label {
+		font-size: 14px;
+		padding: 6px 3px;
+		margin-top: 4px;
+		border-radius: 3px;
+		transition: color .4s, background-color .4s;
+		will-change: color, background-color;
+		transform: translate3d(0, 0, 0);
+
+		&:first-of-type {
+			margin-top: 0;
+		}
+
+		&:hover {
+			cursor: pointer;
+		}
+	}
+
+	&_rules {
+		line-height: 22px;
+	}
+}

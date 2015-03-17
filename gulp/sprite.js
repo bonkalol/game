@@ -3,7 +3,8 @@ var gulp = require('gulp'),
 	spritesmith = require('gulp.spritesmith'),
 	configs = require('./configs'),
 	paths = configs.paths,
-	plumber = require('gulp-plumber');
+	plumber = require('gulp-plumber'),
+	svgSprite = require('gulp-svg-sprite');
 
 // Sprite Smith
 gulp.task('sprite', function () {
@@ -16,4 +17,16 @@ gulp.task('sprite', function () {
 	}))
 	.pipe(plumber({errorHandler: log}))
 	.pipe(gulp.dest(paths.destPaths.images));
+});
+
+config = {
+	mode: {
+		symbol: true
+	}
+};
+
+gulp.task('sprite:svg', function () {
+	return gulp.src(paths.srcPaths.spriteSvg)
+		.pipe(svgSprite(config))
+		.pipe(gulp.dest(paths.destPaths.images));
 });

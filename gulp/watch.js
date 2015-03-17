@@ -25,6 +25,10 @@ gulp.task('watch', function () {
 	watch(watchPath.sprite, function () {
 		gulp.start('build-sprite');
 	});
+	// sprite watcher
+	watch(watchPath.spriteSvg, function () {
+		gulp.start('sprite:svg');
+	});
 	// minimage watcher
 	watch(watchPath.images, function() {
 		gulp.start('imagemin');

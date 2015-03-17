@@ -9,7 +9,7 @@ $(function () {
 
 		event.preventDefault();
 
-		$.get('assets/response.json', function(data) {
+		$.get('data.json?' + $form.serialize(), function(data) {
 
 			// json get
 			json = data;
