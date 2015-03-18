@@ -24,3 +24,10 @@
 	position: absolute;
 	left: -9999px;
 }
+
+[data-disabled] {
+	pointer-events: none;
+	opacity: .6;
+	transition: opacity .4s;
+	will-change: opacity;
+}

@@ -56,13 +56,14 @@ $(function () {
 	// cloud update
 
 	// on item delete
-	$('body').on('mousedown', '.game-start_player', function() {
+	$('body').on('click', '.game-start_player', function() {
 
 		$(this).remove();
+		checkPlayersValue();
 
 	});
 
-	// add item
+	// add player item
 	$('.game-start_input--players').on('keydown', function(event) {
 
 		if ( event.keyCode === 13 && $(this).val().length >= 2) {
@@ -89,12 +90,21 @@ $(function () {
 		$('.game-start_input--players').trigger(e);
 
 	});
-
+	// create new player
 	function addNewPlayerCloud(text) {
 
 		// define gender
 		var gender = '',
-			$playerCloud = $('.game-start_player-cloud');
+			$playerCloud = $('.game-start_player-cloud'),
+			status = true;
+
+		$.each($('.game-start_player'), function() {
+
+			if ( text.replace(/ /g,'') === $(this).text().replace(/ /g,'') ) {
+				status = false;
+			}
+
+		});
 
 		// find checked gender
 		$.each($('[name="new-player-gender"]'), function() {
@@ -106,7 +116,7 @@ $(function () {
 
 		});
 
-		if (gender === '') {
+		if (gender === '' || status === false) {
 			return;
 		}
 
@@ -118,6 +128,47 @@ $(function () {
 			$playerCloud.append('<span class="game-start_player game-start_player--female" data-player-gender="f">' + text + '<span class="game-start_player-remove"><\/span><\/span>');
 		}
 
+		checkPlayersValue();
+
 	}
+
+	// button disable/enable
+	function checkPlayersValue() {
+		if ( $('.game-start_player').length >= 2 ) {
+			$('.game-start_next--players').removeAttr('data-disabled');
+			return true;
+		} else {
+			$('.game-start_next--players').attr('data-disabled', '');
+			return false;
+		}
+	}
+
+	// check rubrics
+	function checkRubrics() {
+		var status = false;
+
+		$.each($('[name="new-game-rubric"]'), function() {
+
+			if ( $(this).prop('checked') === true ) {
+				status = true;
+				return false;
+			}
+
+		});
+
+		if ( status === true ) {
+			$('.game-start_next--rubrics').removeAttr('data-disabled');
+			return true;
+		} else {
+			$('.game-start_next--rubrics').attr('data-disabled', '');
+			return false;
+		}
+	}
+
+	$('[name="new-game-rubric"]').on('change', function() {
+
+		checkRubrics();
+
+	});
 
 });

@@ -164,10 +164,10 @@
 			<div class="game-start_modal game-start_modal--first active">
 				<h2 class="game-start_header">Добавить игроков</h2>
 				<div class="game-start_modal-inner game-start_modal-inner--players">
-					<p class="game-start_subheader">Разрешен ввод только латинских букв</p>
+					<p class="game-start_subheader">Разрешен ввод только латинских букв, минимум 2 игрока.</p>
 					<div class="game-start_wrap">
 						<div class="game-start_input-wrap">
-							<input type="text" id="create-player" class="game-start_input game-start_input--players">
+							<input type="text" id="create-player" data-latin-only class="game-start_input game-start_input--players">
 							<button type="button" class="game-start_submit-player">Добавить</button>
 						</div>
 						<input type="radio" data-hidden-cb value="m" id="new-player-m" name="new-player-gender">
@@ -183,10 +183,9 @@
 							</svg>
 						</label>
 					</div>
-					<div class="game-start_player-cloud"><span data-player-gender="m" class="game-start_player game-start_player--male">Bogdan<span class="game-start_player-remove"></span></span><span data-player-gender="f" class="game-start_player game-start_player--female">Zhenya<span class="game-start_player-remove"></span></span>
-					</div>
+					<div class="game-start_player-cloud"></div>
 				</div>
-				<button type="button" data-update-inputs class="game-start_next">Далее</button>
+				<button type="button" data-update-inputs data-disabled class="game-start_next game-start_next--players">Далее</button>
 			</div>
 			<div class="game-start_modal game-start_modal--second">
 				<h2 class="game-start_header">Выберите рубрику</h2>
@@ -201,14 +200,14 @@
 					<label for="new-game-rubric-21" class="game-start_rubric-label"><span class="game-start_rubric-desc">21+ (Например: Французский поцелуй)</span>
 					</label>
 					<button type="button" class="game-start_back">Назад</button>
-					<button type="button" data-update-inputs class="game-start_next next-back">Далее</button>
+					<button type="button" data-update-inputs data-disabled class="game-start_next next-back game-start_next--rubrics">Далее</button>
 				</div>
 			</div>
 			<div class="game-start_modal game-start_modal--third">
 				<h2 class="game-start_header">Правила игры</h2>
 				<div class="game-start_modal-inner">
 					<p class="game-start_rules">
-						Носки, бижутерия не являются вещью. Старайтесь выполнять задачи, иначе игра будет не интересна.</p>
+						Носки, бижутерия не являются вещью. Старайтесь выполнять все задачи, иначе игра будет не интересна.</p>
 					<button type="button" class="game-start_back">Назад</button>
 					<button type="button" class="game-start_next next-back">Далее</button>
 				</div>

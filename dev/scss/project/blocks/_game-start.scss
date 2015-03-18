@@ -216,8 +216,7 @@
 		border-radius: 2px;
 		background-color: #fafafa;
 		color: #fafafa;
-		margin-right: 5px;
-		margin-top: 5px;
+		margin: 5px;
 		position: relative;
 
 		transition: box-shadow .4s;
@@ -251,11 +250,11 @@
 
 	&_player-cloud {
 		background-color: #fafafa;
-		padding: 3px;
-		padding-bottom: 8px;
 		border-radius: 3px;
 		@include clearfix();
 		margin-top: 10px;
+		max-height: 260px;
+		overflow: auto;
 	}
 
 	input:checked + &_rubric-label {
