@@ -164,7 +164,44 @@ function getQuestionOrAction(gender, type) {
 
 	if (type === 'a') {
 
+		max = ENV.a.length - 1;
 
+		if (!random()) {
+			random();
+		} else {
+			text = ENV.a[value];
+			// add to ENV.answered
+			parseQorAValue(text);
+
+			if (playerQorA(text)) {
+
+				console.log(ENV.currentPlayerGender);
+
+				switch(ENV.currentPlayerGender) {
+					case 'm': {
+						randomPlayer('m');
+						writeText(text.slice(0, text.length - 1) + ' ' + ENV.playerTarget);
+
+					}
+					break;
+
+					case 'f': {
+						randomPlayer('f');
+						writeText(text.slice(0, text.length - 1) + ' ' + ENV.playerTarget);
+
+					}
+					break;
+				}
+				// switch end
+
+			} else {
+
+				writeText(text);
+
+			}
+			// if end
+
+		}
 
 	}
 
