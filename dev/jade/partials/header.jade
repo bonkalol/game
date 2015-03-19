@@ -1,13 +1,27 @@
 header.header
-	nav.header_nav
-		ul.header_list
-			li.header_list_item
-				a.header_item_link(href=jv0 title="") Поддержать разработчика
-			li.header_list_item
-				a.header_item_link(href=jv0 title="") Предложить действие/вопрос
-			li.header_list_item
-				a.header_item_link(href=jv0 title="") Правила игры
-			li.header_list_item
-				a.header_item_link(href=jv0 title="") Рубрики
-			li.header_list_item
-				a.header_item_link(href=jv0 title="") Новый игрок
+	a.header_change-rubric(href=jv0 title="Изменить рубрику" data-toogle-rubric) Изменить рубрику
+	.players-cloud-main_overflow
+		.players-cloud-main
+			.player_item
+				.player_item_avatar.player_item_avatar--male
+					svg(width="22px" height="22px")
+						use(xlink:href=svg + "business")
+				.player_item_name Miha
+			.player_item
+				.player_item_avatar.player_item_avatar--male
+					svg(width="22px" height="22px")
+						use(xlink:href=svg + "business")
+				.player_item_name Denis
+			.player_item
+				.player_item_avatar.player_item_avatar--male
+					svg(width="22px" height="22px")
+						use(xlink:href=svg + "business")
+				.player_item_name Egor
+			.player_item
+				.player_item_avatar.player_item_avatar--female
+					svg(width="22px" height="22px")
+						use(xlink:href=svg + "woman")
+				.player_item_name Lena
+			.player_item.player_item--new
+				.player_item_avatar +
+				.player_item_name Новый игрок

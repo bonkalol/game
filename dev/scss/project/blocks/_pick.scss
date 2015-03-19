@@ -1,6 +1,7 @@
 .pick {
 
 	@include alignCenter();
+	color: #fafafa;
 
 	&_link {
 		@include size(140px, 100px);
@@ -25,12 +26,12 @@
 	}
 
 	&_link--true {
-		background-color: #2196f3;
+		background-color: #43a047;
 		color: #fafafa;
 	}
 
 	&_link--action {
-		background-color: #f44336;
+		background-color: #5e35b1;
 		color: #fafafa;
 	}
 

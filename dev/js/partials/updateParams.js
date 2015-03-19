@@ -10,6 +10,7 @@ function updatePlayers(type) {
 		male = [],
 		female = [],
 		all = [],
+		allGender = [],
 		$inputM = $('#players-m'),
 		$inputF = $('#players-f'),
 		$inputAll = $('#players-all');
@@ -18,11 +19,15 @@ function updatePlayers(type) {
 	if (type === 'game-start') {
 
 		$cloud = $('.game-start_player-cloud');
+		var $players = $cloud.find('.game-start_player');
+
+	} else {
+		// find in main cloud
+		var $players = $cloud.find('.player_item').not('.player_item--new');
 
 	}
 
 	// find players in cloud
-	var $players = $cloud.find('.game-start_player');
 
 	// define players gender type
 	$.each($players, function() {
@@ -32,15 +37,26 @@ function updatePlayers(type) {
 
 		if ( $(this).attr('data-player-gender') === 'm' ) {
 			male.push(val);
+			allGender.push(val + '.M');
+
 		}
 
 		if ( $(this).attr('data-player-gender') === 'f' ) {
 			female.push(val);
+			allGender.push(val + '.F');
+
 		}
 
 		all.push(val);
 
 	});
+
+	// update global
+	ENV.playersM = male;
+	ENV.playersF = female;
+	ENV.players = all;
+	ENV.playersGender = allGender;
+	ENV.playersCount = all.length;
 
 	// update inputs values
 	$inputM.val(male.toString());
@@ -77,6 +93,7 @@ function updateRubrics(type) {
 	});
 	// update input
 	$inputRubric.val(rubrics.toString());
+	ENV.rubrics = rubrics;
 
 }
 

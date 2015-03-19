@@ -5,29 +5,20 @@ $(function () {
 		json,
 		$form = $('#main-form');
 
+	// get json
 	$triggers.on('click', function(event) {
 
 		event.preventDefault();
 
-		$.get('data.json?' + $form.serialize(), function(data) {
+		$.get('assets/response.json', function(data) {
 
 			// json get
 			json = data;
-			showTask(data);
+			// get first q
+			game(data);
 
 		});
 
 	});
-
-	// update q, update persons
-	// send to server picked task, currentPlayer, nextPlayer, playerGender
-
-
-	// show task
-	function showTask(data) {
-
-		
-
-	}
 
 });

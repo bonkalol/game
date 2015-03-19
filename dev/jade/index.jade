@@ -9,81 +9,14 @@ block head
 	link(href='http://fonts.googleapis.com/css?family=Open+Sans:400,700&amp;subset=latin,cyrillic' rel='stylesheet' type='text/css')
 
 block content
-	include partials/header
 	section.main
-		header.players
-			h2.players_desc
-				strong.players_count 10 игроков
-				span.players_type По очереди
-			section.players_all
-				.players_overflow
-					.players_item.players_item--female(data-player-type="f")
-						.players_avatar
-							img.players_avatar_img(src="img/avatar_female.png" alt="")
-						.player_delete
-						.players_name Natasha
-					.players_item.players_item--female(data-player-type="f")
-						.players_avatar
-							img.players_avatar_img(src="img/avatar_female.png" alt="")
-						.player_delete
-						.players_name Lena
-					.players_item.players_item--male(data-player-type="m")
-						.players_avatar
-							img.players_avatar_img(src="img/avatar-male.png" alt="")
-						.player_delete
-						.players_name Misha
-					.players_item.players_item--female(data-player-type="f")
-						.players_avatar
-							img.players_avatar_img(src="img/avatar_female.png" alt="")
-						.player_delete
-						.players_name Kristina
-					.players_item.players_item--female(data-player-type="f")
-						.players_avatar
-							img.players_avatar_img(src="img/avatar_female.png" alt="")
-						.player_delete
-						.players_name Lera
-					.players_item.players_item--male(data-player-type="m")
-						.players_avatar
-							img.players_avatar_img(src="img/avatar-male.png" alt="")
-						.player_delete
-						.players_name Egor
-					.players_item.players_item--female(data-player-type="f")
-						.players_avatar
-							img.players_avatar_img(src="img/avatar_female.png" alt="")
-						.player_delete
-						.players_name Vika
-					.players_item.players_item--female(data-player-type="f")
-						.players_avatar
-							img.players_avatar_img(src="img/avatar_female.png" alt="")
-						.player_delete
-						.players_name Olya
-					.players_item.players_item--male(data-player-type="m")
-						.players_avatar
-							img.players_avatar_img(src="img/avatar-male.png" alt="")
-						.player_delete
-						.players_name Denis
-					.players_item.players_item--female(data-player-type="f")
-						.players_avatar
-							img.players_avatar_img(src="img/avatar_female.png" alt="")
-						.player_delete
-						.players_name Nadya
-					.players_item.players_item--female(data-player-type="f")
-						.players_avatar
-							img.players_avatar_img(src="img/avatar_female.png" alt="")
-						.player_delete
-						.players_name Tanya
-					.players_item.players_item--male.player--active(data-player-type="m")
-						.players_avatar
-							img.players_avatar_img(src="img/avatar-male.png" alt="")
-						.player_delete
-						.players_name Bogdan
 		section.pick
 			h2.pick_player
 				var.pick_player_name Bogdan 
 				span.pick_player_text теперь ваш ход
-			a.pick_link.pick_link--true(href=jv0 title="" data-modalType="game" data-show-popup) Правда
+			a.pick_link.pick_link--true(href=jv0 title="" data-modalType="game" data-show-popup data-true) Правда
 			span.pick_or или
-			a.pick_link.pick_link--action(href=jv0 title="" data-modalType="game" data-show-popup) Действие
+			a.pick_link.pick_link--action(href=jv0 title="" data-modalType="game" data-show-popup data-action) Действие
 		form(id="main-form")
 			input(type="hidden" value="" id="players-m" name="players-m")
 			input(type="hidden" value="" id="players-f" name="players-f")
@@ -92,60 +25,10 @@ block content
 			input(type="hidden" value="" id="game-rubric" name="rubric")
 			//- value example ="18,21"
 		section.modal_window.hidden
-			h2.modal_rubric 18+
 			p.modal_desc Поцелуйте в шею первого игрока противоположного пола слева от вас
-			button.modal_submit(type="button" data-close-popup) Ок
-		section.game-start
-			.game-start_progress
-				.game-start_progress-value
-			.game-start_modal.game-start_modal--first.active
-				h2.game-start_header Добавить игроков
-				.game-start_modal-inner.game-start_modal-inner--players
-					p.game-start_subheader Разрешен ввод только латинских букв, минимум 2 игрока.
-					.game-start_wrap
-						.game-start_input-wrap
-							input.game-start_input.game-start_input--players(type="text" id="create-player" data-latin-only)
-							button.game-start_submit-player(type="button") Добавить
-						input(type="radio" data-hidden-cb value="m" id="new-player-m" name="new-player-gender")
-						label(for="new-player-m" class="game-start_gender-label")
-							svg(width="30px" height="30px")
-								use(xlink:href=svg + "business")
-						input(type="radio" data-hidden-cb value="f" id="new-player-f" name="new-player-gender")
-						label(for="new-player-f" class="game-start_gender-label")
-							svg(width="30px" height="30px")
-								use(xlink:href=svg + "woman")
-					.game-start_player-cloud
-				button.game-start_next.game-start_next--players(type="button" data-update-inputs data-disabled) Далее
-			.game-start_modal.game-start_modal--second
-				h2.game-start_header Выберите рубрику
-				.game-start_modal-inner.game-start_modal-inner--rubric
-					input(type="checkbox" data-hidden-cb id="new-game-rubric-16" value="16" name="new-game-rubric")
-					label.game-start_rubric-label(for="new-game-rubric-16")
-						span.game-start_rubric-desc 16+ (Например: Спой песню)
-					input(type="checkbox" data-hidden-cb id="new-game-rubric-18" value="18" name="new-game-rubric")
-					label.game-start_rubric-label(for="new-game-rubric-18")
-						span.game-start_rubric-desc 18+ (Например: Поцелуй в шею)
-					input(type="checkbox" data-hidden-cb id="new-game-rubric-21" value="21" name="new-game-rubric")
-					label.game-start_rubric-label(for="new-game-rubric-21")
-						span.game-start_rubric-desc 21+ (Например: Французский поцелуй)
-					button.game-start_back(type="button") Назад
-					button.game-start_next.next-back.game-start_next--rubrics(type="button" data-update-inputs data-disabled) Далее
-			.game-start_modal.game-start_modal--third
-				h2.game-start_header Правила игры
-				.game-start_modal-inner
-					p.game-start_rules 
-						| Носки, бижутерия не являются вещью. Старайтесь выполнять все задачи, иначе игра будет не интересна.
-					button.game-start_back(type="button") Назад
-					button.game-start_next.next-back(type="button") Далее
-			.game-start_modal.game-start_modal--fourth
-				h2.game-start_header Уже почти
-				.game-start_modal-inner
-					p.game-start_rules
-						| Если хотите что-нибудь изменить перед началом, нажимайте кнопку назад. Если вы готову начать игру полную разврата, то смело нажимайте "Начать игру".
-					button.game-start_back(type="button") Назад
-					button.game-start_next.next-back(type="button" data-update-json) Начать игру
-			.game-start_overlay
-		.overlay.hidden(data-close-popup)
+			button.modal_submit(type="button" data-close-popup data-next-player) Ок
+		include blocks/game_start
+		.overlay.hidden
 
 
 

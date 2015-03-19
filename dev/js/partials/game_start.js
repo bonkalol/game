@@ -34,6 +34,16 @@ $(function () {
 
 			}, 600);
 
+			// update players in header
+			ENV.gameStarted = true;
+			// save state in localstorage
+			saveDataStorage();
+			// add players in main cloud
+			updateMainPlayersCloud();
+			// update current player
+			$('.player_item').eq(0).addClass('active');
+			// write current player
+			// currentPlayer();
 		}
 
 	});
@@ -72,13 +82,6 @@ $(function () {
 			$(this).val('');
 
 		}
-
-	});
-
-	// UX
-	$('[name="new-player-gender"]').on('click', function() {
-
-		$('.game-start_input--players').focus();
 
 	});
 
