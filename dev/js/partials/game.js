@@ -43,16 +43,21 @@ function game(data) {
 
 	}
 
-	saveDataStorage();
 	next();
+	saveDataStorage();
 
 }
 
 
 function next() {
 
-	var $currentPlayer = $('.player_item.active'),
-		$players = $('.player_item');
+	var $currentPlayer = $('.player_item.active');
+
+	if ($currentPlayer.length === 0) {
+		$currentPlayer = $('.player_item').eq(0);
+	}
+
+	var $players = $('.player_item');
 		currentPlayerName = $currentPlayer.find('.player_item_name').text(),
 		$pickedPlayer = $('.pick_player_name'),
 		$nextPlayer = null,
@@ -301,3 +306,32 @@ function getQuestionOrAction(gender, type) {
 
 
 }
+
+
+$(function () {
+
+	// delete player
+	$('body').on('mousedown', '.player_item_delete', function() {
+
+		var $parrent = $(this).closest('.player_item'),
+			$prev;
+
+		if ( $parrent.hasClass('active') ) {
+			
+			if ( !$parrent.next().hasClass('.player_item--new') ) {
+				$('.player_item').eq(0).addClass('active');
+			} else {
+				$('.player_item').next().addClass('active');
+			}
+
+		}
+
+		// $parrent
+
+		$parrent.remove();
+		next();
+		updatePlayers('game');
+
+	});
+
+});

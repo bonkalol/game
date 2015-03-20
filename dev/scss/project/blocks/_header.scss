@@ -100,23 +100,21 @@ $headerHeight: 50px;
 			top: 50%;
 			transform: translate(-50%, -50%);
 		}
-
-
-		&:after {
-			content: '';
-			position: absolute;
-			right: -2px;
-			top: -2px;
-			@include size(10px);
-			background: url(../img/cross.svg) 50% 50% no-repeat;
-			background-size: 8px;
-			background-color: #222;
-			border-radius: 50%;
-		}
 	}
 
 	&_name {
 		color: #fff;
 		padding-top: 2px;
+	}
+
+	&_delete {
+		position: absolute;
+		right: -2px;
+		top: -2px;
+		@include size(10px);
+		background: url(../img/cross.svg) 50% 50% no-repeat;
+		background-size: 8px;
+		background-color: #222;
+		border-radius: 50%;
 	}
 }
