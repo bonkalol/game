@@ -111,7 +111,7 @@ $headerHeight: 60px;
 		position: absolute;
 		right: -2px;
 		top: -2px;
-		@include size(12px);
+		@include size(32px);
 		background: url(../img/cross.svg) 50% 50% no-repeat;
 		background-size: 10px;
 		background-color: #222;
