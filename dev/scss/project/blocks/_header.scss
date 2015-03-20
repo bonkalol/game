@@ -1,4 +1,4 @@
-$headerHeight: 50px;
+$headerHeight: 60px;
 
 .header {
 	@include size(100%, $headerHeight);
@@ -44,7 +44,7 @@ $headerHeight: 50px;
 
 .players-cloud-main {
 	white-space: nowrap;
-	padding-top: 3px;
+	padding-top: 6px;
 }
 
 .player_item {
@@ -111,9 +111,9 @@ $headerHeight: 50px;
 		position: absolute;
 		right: -2px;
 		top: -2px;
-		@include size(10px);
+		@include size(12px);
 		background: url(../img/cross.svg) 50% 50% no-repeat;
-		background-size: 8px;
+		background-size: 10px;
 		background-color: #222;
 		border-radius: 50%;
 	}
