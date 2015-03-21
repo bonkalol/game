@@ -95,20 +95,28 @@ function updateRubricsChecked() {
 
 	});
 
-	// $.each(data, function(i, v) {
+}
 
-	// 	// find rubrics rubrics
-	// 	ENV.rubrics.some(function(element, index, arrya) {
+function updateQandAENV() {
 
-	// 			if (i === element) {
-	// 				addQA(i, v);
-	// 			}
+	var json = JSON.parse(ENV.json);
 
-	// 	});
+	ENV.q = [];
+	ENV.a = [];
+
+	$.each(json, function(i, v) {
+
+		// find rubrics rubrics
+		ENV.rubrics.some(function(element, index, arrya) {
+
+				if (i === element) {
+					addQA(i, v);
+				}
+
+		});
 
 
-	// });
-
+	});
 }
 
 $(function () {
@@ -130,6 +138,7 @@ $(function () {
 			});
 
 			$rubric.removeClass('active');
+			updateQandAENV();
 			saveDataStorage();
 
 		} else {

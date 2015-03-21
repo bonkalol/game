@@ -19,27 +19,6 @@ function game(data) {
 
 	});
 
-	function addQA(i, v, rubric) {
-
-		$.each(v, function(i, v) {
-
-			if (i === 'true') {
-				$.each(v, function(i, v) {
-					// push to global bar question
-					ENV.q.push(i + ':' + v);
-				});
-			}
-
-			if (i === 'action') {
-				$.each(v, function(i, v) {
-					// push to global var action
-					ENV.a.push(i + ':' + v);
-				});
-			}
-
-		});
-
-	}
 
 	next();
 	saveDataStorage();
@@ -302,6 +281,30 @@ function getQuestionOrAction(gender, type) {
 
 	}
 
+
+}
+
+
+
+function addQA(i, v, rubric) {
+
+	$.each(v, function(i, v) {
+
+		if (i === 'true') {
+			$.each(v, function(i, v) {
+				// push to global bar question
+				ENV.q.push(i + ':' + v);
+			});
+		}
+
+		if (i === 'action') {
+			$.each(v, function(i, v) {
+				// push to global var action
+				ENV.a.push(i + ':' + v);
+			});
+		}
+
+	});
 
 }
 
