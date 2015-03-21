@@ -270,6 +270,7 @@
 		transition: color .4s, background-color .4s;
 		will-change: color, background-color;
 		transform: translate3d(0, 0, 0);
+		display: block;
 
 		&:first-of-type {
 			margin-top: 0;

@@ -42,8 +42,6 @@ $(function () {
 			updateMainPlayersCloud();
 			// update current player
 			$('.player_item').eq(0).addClass('active');
-			// write current player
-			// currentPlayer();
 		}
 
 	});

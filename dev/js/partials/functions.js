@@ -75,3 +75,70 @@ function getRandomInt(min, max) {
 
 }
 
+
+
+
+function updateRubricsChecked() {
+
+	$.each($('[name="new-game-rubric"]'), function() {
+
+		var value = $(this).val(),
+			$this = $(this);
+
+		ENV.rubrics.forEach(function(element, index, array) {
+
+			if (value === element) {
+				$this.prop('checked', true);
+			}
+
+		});
+
+	});
+
+	// $.each(data, function(i, v) {
+
+	// 	// find rubrics rubrics
+	// 	ENV.rubrics.some(function(element, index, arrya) {
+
+	// 			if (i === element) {
+	// 				addQA(i, v);
+	// 			}
+
+	// 	});
+
+
+	// });
+
+}
+
+$(function () {
+
+	var $rubric = $('.game-rubric');
+
+	$('[data-toogle-rubric]').on('click', function(event) {
+
+		event.preventDefault();
+
+		if ($rubric.hasClass('active')) {
+			ENV.rubrics = [];
+			$.each($rubric.find('input'), function() {
+
+				if ($(this).prop('checked') === true) {
+					ENV.rubrics.push($(this).val());
+				}
+
+			});
+
+			$rubric.removeClass('active');
+			saveDataStorage();
+
+		} else {
+			$rubric.addClass('active');
+			updateRubricsChecked();
+		}
+
+
+	});
+
+});
+

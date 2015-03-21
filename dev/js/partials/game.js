@@ -4,8 +4,6 @@
 
 function game(data) {
 
-	console.log(data);
-
 	$.each(data, function(i, v) {
 
 		// find rubrics rubrics

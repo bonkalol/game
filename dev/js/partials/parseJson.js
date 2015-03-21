@@ -14,6 +14,7 @@ $(function () {
 
 			// json get
 			json = data;
+			ENV.json = JSON.stringify(json);
 			// get first q
 			game(data);
 
