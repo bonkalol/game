@@ -38,6 +38,10 @@
 
 		&.hidden {
 			right: 120%;
+
+			@include media ('<desktop') {
+				right: 150%;
+			}
 		}
 	}
 
