@@ -99,7 +99,7 @@ function updateRubricsChecked() {
 
 function updateQandAENV() {
 
-	var json = JSON.parse(ENV.json);
+	var json = JSON.parse(localStorage.getItem('json'));
 
 	ENV.q = [];
 	ENV.a = [];

@@ -10,15 +10,25 @@ $(function () {
 
 		event.preventDefault();
 
-		$.get('assets/response.json', function(data) {
+		if ( localStorage.getItem('json') !== null ) {
 
-			// json get
-			json = data;
-			ENV.json = JSON.stringify(json);
 			// get first q
-			game(data);
+			game(JSON.parse(localStorage.getItem('json')));
 
-		});
+		} else {
+
+			$.get('assets/response.json', function(data) {
+
+				// json get
+				json = data;
+				localStorage.setItem('json', JSON.stringify(json));
+				// get first q
+				game(data);
+
+
+			});
+
+		}
 
 	});
 
