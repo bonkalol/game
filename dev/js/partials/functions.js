@@ -28,8 +28,8 @@ $(function() {
 
 function saveDataStorage() {
 
-	if(typeof(Storage) !== "undefined") {
-		localStorage.setItem("info", JSON.stringify(ENV));
+	if(typeof(Storage) !== 'undefined') {
+		localStorage.setItem('info', JSON.stringify(ENV));
 	} else {
 		return;
 	}

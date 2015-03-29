@@ -13,6 +13,16 @@ $(function () {
 	// click on next modal
 	$gameStartNextModal.on('mousedown', function (event) {
 
+		// if new player create, check new_player.js
+		if ( $(this).closest('.game-start_modal').hasClass('new-player-create') ) {
+			saveDataStorage();
+			updatePlayers('game-start');
+			// add players in main cloud
+			updateMainPlayersCloud();
+			$(this).closest('.game-start').addClass('hidden visibility');
+			return;
+		}
+
 		// find next game-start_modal
 		var $closestModal = $(this).closest('.game-start_modal').next();
 
@@ -98,7 +108,6 @@ $(function () {
 		var gender = '',
 			$playerCloud = $('.game-start_player-cloud'),
 			status = true;
-
 		$.each($('.game-start_player'), function() {
 
 			if ( text.replace(/ /g,'') === $(this).text().replace(/ /g,'') ) {

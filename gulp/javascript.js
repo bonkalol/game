@@ -15,8 +15,7 @@ var gulp = require('gulp'),
 	coffee = require('gulp-coffee'),
 	coffeelint = require('gulp-coffeelint'),
 	gulpif = require('gulp-if'),
-	plumber = require('gulp-plumber'),
-	cache = require('gulp-cached');
+	plumber = require('gulp-plumber');
 
 
 // Concat all JS files into production/js/main.js

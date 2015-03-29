@@ -75,7 +75,7 @@
 	}
 
 	&_subheader {
-
+		line-height: 18px;
 	}
 
 	&_overlay {
@@ -268,13 +268,14 @@
 
 	&_rubric-label {
 		font-size: 14px;
-		padding: 6px 3px;
+		padding: 6px 5px;
 		margin-top: 4px;
 		border-radius: 3px;
 		transition: color .4s, background-color .4s;
 		will-change: color, background-color;
 		transform: translate3d(0, 0, 0);
 		display: block;
+		border: 1px solid;
 
 		&:first-of-type {
 			margin-top: 0;

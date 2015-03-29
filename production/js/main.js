@@ -49,8 +49,8 @@ $(function() {
 
 function saveDataStorage() {
 
-	if(typeof(Storage) !== "undefined") {
-		localStorage.setItem("info", JSON.stringify(ENV));
+	if(typeof(Storage) !== 'undefined') {
+		localStorage.setItem('info', JSON.stringify(ENV));
 	} else {
 		return;
 	}
@@ -425,7 +425,7 @@ function getQuestionOrAction(gender, type) {
 				maxPlayers = ENV.playersF.length - 1;
 
 			var getRandomPlayer = getRandomInt(minPlayers, maxPlayers);
-				console.log(getRandomPlayer);
+				// console.log(getRandomPlayer);
 
 			ENV.playerTarget = ENV.playersF[getRandomPlayer];
 
@@ -433,12 +433,12 @@ function getQuestionOrAction(gender, type) {
 
 		if (gender === 'f') {
 			var minPlayers = 0,
-				maxPlayers = ENV.playersM.length - 1;
+				maxPlayers = ENV.players.length - 1;
 
 			var getRandomPlayer = getRandomInt(minPlayers, maxPlayers);
-				console.log(getRandomPlayer);
+				// console.log(getRandomPlayer);
 
-			ENV.playerTarget = ENV.playersM[getRandomPlayer];
+			ENV.playerTarget = ENV.players[getRandomPlayer];
 
 		}
 
@@ -526,6 +526,16 @@ $(function () {
 	// click on next modal
 	$gameStartNextModal.on('mousedown', function (event) {
 
+		// if new player create, check new_player.js
+		if ( $(this).closest('.game-start_modal').hasClass('new-player-create') ) {
+			saveDataStorage();
+			updatePlayers('game-start');
+			// add players in main cloud
+			updateMainPlayersCloud();
+			$(this).closest('.game-start').addClass('hidden visibility');
+			return;
+		}
+
 		// find next game-start_modal
 		var $closestModal = $(this).closest('.game-start_modal').next();
 
@@ -611,7 +621,6 @@ $(function () {
 		var gender = '',
 			$playerCloud = $('.game-start_player-cloud'),
 			status = true;
-
 		$.each($('.game-start_player'), function() {
 
 			if ( text.replace(/ /g,'') === $(this).text().replace(/ /g,'') ) {
@@ -724,6 +733,41 @@ $(function() {
 	}
 
 });
+
+
+$(function () {
+
+	var $trigger = $('.player_item--new'),
+		$gameStart = $('.game-start'),
+		$modal = $('.game-start_modal--first');
+
+	$trigger.on('click', function(event) {
+
+		$('.game-start_modal--fourth').css({
+			'visibility': 'hidden'
+		});
+
+
+		// update html
+		$modal.addClass('new-player-create');
+		$modal.find('.game-start_next--players').text('Ок');
+		$modal.find('.game-start_header').text('Новый игрок');
+
+		// update visibility
+		$modal.removeClass('hidden');
+		$gameStart.removeClass('visibility hidden');
+
+	});
+
+});
+
+
+
+function newPlayer(name, gender) {
+
+
+
+}
 $(function () {
 
 
