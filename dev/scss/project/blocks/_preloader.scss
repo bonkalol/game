@@ -1,0 +1,54 @@
+.preloader {
+	@include size(100%);
+	position: fixed;
+	top: 0;
+	left: 0;
+	background-color: #5c1e17;
+	z-index: map-get($z-indexes, preloader);
+	will-change: opacity;
+	transition: opacity .6s;
+
+	&_spinner {
+		@include size(140px);
+		@include alignCenter();
+		border-radius: 50%;
+		border-left: 4px solid #ffffff;
+		border-top: 4px solid rgba(255, 255, 255, 0.2);
+		border-right: 4px solid rgba(255, 255, 255, 0.2);
+		border-bottom: 4px solid rgba(255, 255, 255, 0.2);
+		animation-name: spinner;
+		animation-iteration-count: infinite;
+		animation-timing-function: linear;
+		animation-duration: 1s;
+		transform-origin: left top;
+		will-change: transform;
+	}
+
+	&_text {
+		@include alignCenter();
+		margin-top: 90px;
+		font-size: 18px;
+		color: #fff;
+		white-space: nowrap;
+	}
+
+	&.opacity {
+		opacity: 0;
+	}
+
+	&.visibility {
+		visibility: hidden;
+	}
+}
+
+@keyframes spinner {
+
+	0% {
+		transform: rotate(0deg) translate(-50%, -50%);
+	}
+
+	100% {
+		transform: rotate(360deg) translate(-50%, -50%);
+	}
+
+}

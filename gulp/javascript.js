@@ -34,6 +34,19 @@ gulp.task('concat', function() {
 });
 
 
+gulp.task('concat:all', function() {
+
+	return gulp.src(paths.srcPaths.js)
+		.pipe(plumber({errorHandler: log}))
+		.pipe(concat('main.js'))
+		.pipe(duration('Finished Concat task in'))
+		.pipe(isProduction ? uglify() : gutil.noop())
+		.pipe(isProduction ? duration('Finished Uglify task in') : gutil.noop())
+		.pipe(gulp.dest(paths.destPaths.js));
+
+});
+
+
 gulp.task('jshint', function() {
 
 	if ( configs.jshint ) {

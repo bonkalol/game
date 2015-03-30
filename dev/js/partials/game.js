@@ -147,7 +147,7 @@ function getQuestionOrAction(gender, type) {
 	if (type === 'a') {
 
 		max = ENV.a.length - 1;
-
+		// #bug
 		if (!random()) {
 			random();
 		} else {

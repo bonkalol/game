@@ -12,7 +12,10 @@ gulp.task('build', function(callback) {
 	runSequence(
 		'clean',
 		'sprite',
-		['jade', 'sass', 'concat', 'copyStuff'],
+		'jade',
+		'sass',
+		'concat:all',
+		'copyStuff',
 		'imagemin:all',
 		callback
 		);

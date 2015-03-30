@@ -21,6 +21,8 @@ gulp.task('sprite', function () {
 
 config = {
 	mode: {
+		xmlDeclaration: false,
+		doctypeDeclaration: false,
 		symbol: true
 	}
 };

@@ -4,7 +4,10 @@ include ../meta/mixins
 
 meta(charset="utf-8")
 title= pageTitle || headConfigs.title
+include fonts
+include preloader_css
 link(rel="stylesheet" href=cssPath || configs.css)
+include svg_cache
 
 if layoutSetters.headTags
 	meta(name='description' content=pageDescription || headConfigs.description)
@@ -15,6 +18,6 @@ if layoutSetters.OGTags
 	meta(property="og:url" content=OGmetaUrl || OGmeta.url)
 	meta(property="og:image" content=OGmetaImage || OGmeta.image)
 	meta(property="og:locale" content=OGmetaLocal || OGmeta.locale)
-	meta(property="og:locale:alternate" content=OGmetaLocalAlt || OGmeta.localeAlt)
+	//- meta(property="og:locale:alternate" content=OGmetaLocalAlt || OGmeta.localeAlt)
 	meta(property="og:description" content=OGmetaDescription || OGmeta.description)
 	meta(property="og:site_name" content=OGmetaSiteName || OGmeta.siteName)

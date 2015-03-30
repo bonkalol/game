@@ -11,6 +11,5 @@ var ENV = {
 	gameStarted: false,
 	answered: [],
 	q: [],
-	a: [],
-	json: {}
+	a: []
 }

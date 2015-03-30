@@ -2,13 +2,21 @@ extends layouts/default
 
 block head
 	- cssPath = 'css/main.css';
-	- pageTitle = 'CSSSR START Project QSTemplate';
-	- OGmetaTitle = 'CSSSR START Project QSTemplate';
-	//- u can add all avaliable variables, available variables can be found in partials/head, partials/OGhead
-	//- if u dont set this vars, they will have default values
-	//- link(href='http://fonts.googleapis.com/css?family=Open+Sans:400,700&amp;subset=latin,cyrillic' rel='stylesheet' type='text/css')
+	- pageTitle = 'Правда или Действие';
+	- OGmetaTitle = 'Правда или Действие';
+	link(rel="shortcut icon" type="image/png" href="img/favicon.png")
+	- pageDescription = 'Правда или Действия игра для компании друзей, она не даст вам заскучать, а разнообразие вопросов и действий будет увлекать, удивлять и давать шанс узнать друг друга поближе.';
+	- pageKeywords = 'игра, компания, игра для компании друзей, правда, действие, фанты, правда или действие, поиграть с друзьями';
+	- OGmetaUrl = 'http://truthoraction.com';
+	- OGmetaImage = 'img/avatar.png';
+	- OGmetaLocal = 'RU_ru';
+	- OGmetaDescription = 'Правда или Действия игра для компании друзей, она не даст вам заскучать, а разнообразие вопросов и действий будет увлекать, удивлять и давать шанс узнать друг друга поближе.';
+	- OGmetaSiteName = 'truthoraction.com';
 
 block content
+	.preloader
+		.preloader_spinner
+		.preloader_text Правда или действия. Загрузка...
 	section.main
 		section.pick
 			h2.pick_player

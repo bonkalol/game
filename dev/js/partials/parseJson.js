@@ -17,6 +17,8 @@ $(function () {
 
 		} else {
 
+			preloaderShow();
+
 			$.get('assets/response.json', function(data) {
 
 				// json get
@@ -25,6 +27,10 @@ $(function () {
 				// get first q
 				game(data);
 
+
+			}).done(function() {
+
+				preloaderHide();
 
 			});
 
