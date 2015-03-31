@@ -10,31 +10,26 @@ $(function () {
 
 		event.preventDefault();
 
-		if ( localStorage.getItem('json') !== null ) {
+		preloaderShow();
 
+		$.get('assets/response.json', function(data) {
+
+			// json get
+			json = data;
+			localStorage.setItem('json', JSON.stringify(json));
 			// get first q
-			game(JSON.parse(localStorage.getItem('json')));
-
-		} else {
-
-			preloaderShow();
-
-			$.get('assets/response.json', function(data) {
-
-				// json get
-				json = data;
-				localStorage.setItem('json', JSON.stringify(json));
-				// get first q
-				game(data);
+			game(data);
 
 
-			}).done(function() {
+		}).done(function() {
 
-				preloaderHide();
+			preloaderHide();
 
-			});
+		}).fail(function() {
 
-		}
+			console.log('fail');
+
+		});
 
 	});
 
