@@ -123,7 +123,7 @@ $(function () {
 
 	var $rubric = $('.game-rubric');
 
-	$('[data-toogle-rubric]').on('click', function(event) {
+	$('[data-toggle-rubric]').on('click', function(event) {
 
 		event.preventDefault();
 
@@ -160,14 +160,11 @@ $(function () {
 		$content = $('.main'),
 		$header = $('.header');
 
-	$('[data-toggle-menu]').on('mousedown', function(event) {
-
-		console.log(event);
+	$('[data-toggle-menu], .sidebar_link').on('click', function(event) {
 
 		$header.toggleClass('active');
 		$menu.toggleClass('active');
 		$content.toggleClass('active');
-
 
 	});
 

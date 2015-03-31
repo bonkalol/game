@@ -20,13 +20,13 @@ block content
 	.sidebar
 		ul.sidebar_list
 			li.sidebar_item
-				a.sidebar_link(href="#" title="Изменить рубрику" data-toggle-rubric) Поменять рубрику
+				span.sidebar_link(title="Изменить рубрику" data-toggle-rubric) Поменять рубрику
 			li.sidebar_item
-				a.sidebar_link(href="#" title="Начать новую игру" data-game-restart) Начать новую игру
+				span.sidebar_link(title="Начать новую игру" data-game-restart) Начать новую игру
 			li.sidebar_item
 				a.sidebar_link(href="http://vk.com/topic-90928991_31602234" target="_blank" title="Нашли ошибку? Напишите нам об этом в вк") Сообщить о ошибке
 			li.sidebar_item
-				a.sidebar_link(href="#" title="Поддержи нас, это дает стимул :)") Поддержкать разработчиков
+				a.sidebar_link(href="http://vk.com/topic-90928991_31607962" target="_blank" title="Поддержи нас, это дает стимул :)") Поддержкать разработчиков
 		footer.sidebar_footer
 			p.sidebar_footer_share Расскажите о нас своим друзьям
 				a.sidebar_footer_link(href="http://vk.com/share.php?url=http://truthoraction.com" target="_blank" title="Расскажите про игру в вконтакте") Поделиться ВКонтакте
@@ -53,7 +53,7 @@ block content
 		.game-restart_modal
 			.game-restart_inner
 				p.game-restart_text Похоже вы вернулись, хотите продолжить игру или начать новую?
-				button.game-restart_btn.game-restart-false(type="button") Новая игра
+				button.game-restart_btn.game-restart-false(type="button" data-game-restart) Новая игра
 				button.game-restart_btn.game-restart-true(type="button") Продолжить
 	.game-rubric
 		.game-rubric_inner
@@ -66,7 +66,7 @@ block content
 			input(type="checkbox" data-hidden-cb id="new-game-rubric-21-main" value="21" name="new-game-rubric")
 			label.game-start_rubric-label(for="new-game-rubric-21-main")
 				span.game-start_rubric-desc 21+ (Например: Французский поцелуй)
-			button.game-rubric_ok(type="button" data-toogle-rubric) Ок
+			button.game-rubric_ok(type="button" data-toggle-rubric) Ок
 	.overlay.hidden
 
 
