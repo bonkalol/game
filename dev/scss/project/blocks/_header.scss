@@ -18,12 +18,10 @@ $headerHeight: 70px;
 		transform: translate3d(-260px, 0, 0);
 
 		.header_hamburger {
-			transform: scale(0) translate(-50%, -50%);
 			opacity: 0;
 		}
 
 		.header_crosshair {
-			transform: scale(1);
 			opacity: 1;
 		}
 	}
@@ -88,7 +86,6 @@ $headerHeight: 70px;
 	&_crosshair {
 		will-change: transform, opacity;
 		transition: transform .6s, opacity .6s;
-		transform: translate3d(0, 0, 0) scale(0);
 		opacity: 0;
 	}
 
