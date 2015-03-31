@@ -17,6 +17,19 @@ block content
 	.preloader
 		.preloader_spinner
 		.preloader_text Правда или действия. Загрузка...
+	.sidebar
+		ul.sidebar_list
+			li.sidebar_item
+				a.sidebar_link(href="#" title="Изменить рубрику" data-toggle-rubric) Поменять рубрику
+			li.sidebar_item
+				a.sidebar_link(href="#" title="Начать новую игру" data-game-restart) Начать новую игру
+			li.sidebar_item
+				a.sidebar_link(href="http://vk.com/topic-90928991_31602234" target="_blank" title="Нашли ошибку? Напишите нам об этом в вк") Сообщить о ошибке
+			li.sidebar_item
+				a.sidebar_link(href="#" title="Поддержи нас, это дает стимул :)") Поддержкать разработчиков
+		footer.sidebar_footer
+			p.sidebar_footer_share Расскажите о нас своим друзьям
+				a.sidebar_footer_link(href="http://vk.com/share.php?url=http://truthoraction.com" target="_blank" title="Расскажите про игру в вконтакте") Поделиться ВКонтакте
 	section.main
 		section.pick
 			h2.pick_player
@@ -35,26 +48,26 @@ block content
 		section.modal_window.hidden
 			p.modal_desc Поцелуйте в шею первого игрока противоположного пола слева от вас
 			button.modal_submit(type="button" data-close-popup data-next-player) Ок
-		include blocks/game_start
-		.game-restart
-			.game-restart_modal
-				.game-restart_inner
-					p.game-restart_text Похоже вы вернулись, хотите продолжить игру или начать новую?
-					button.game-restart_btn.game-restart-false(type="button") Новая игра
-					button.game-restart_btn.game-restart-true(type="button") Продолжить
-		.game-rubric
-			.game-rubric_inner
-				input(type="checkbox" data-hidden-cb id="new-game-rubric-16-main" value="16" name="new-game-rubric")
-				label.game-start_rubric-label(for="new-game-rubric-16-main")
-					span.game-start_rubric-desc 16+ (Например: Спой песню)
-				input(type="checkbox" data-hidden-cb id="new-game-rubric-18-main" value="18" name="new-game-rubric")
-				label.game-start_rubric-label(for="new-game-rubric-18-main")
-					span.game-start_rubric-desc 18+ (Например: Поцелуй в шею)
-				input(type="checkbox" data-hidden-cb id="new-game-rubric-21-main" value="21" name="new-game-rubric")
-				label.game-start_rubric-label(for="new-game-rubric-21-main")
-					span.game-start_rubric-desc 21+ (Например: Французский поцелуй)
-				button.game-rubric_ok(type="button" data-toogle-rubric) Ок
-		.overlay.hidden
+	include blocks/game_start
+	.game-restart
+		.game-restart_modal
+			.game-restart_inner
+				p.game-restart_text Похоже вы вернулись, хотите продолжить игру или начать новую?
+				button.game-restart_btn.game-restart-false(type="button") Новая игра
+				button.game-restart_btn.game-restart-true(type="button") Продолжить
+	.game-rubric
+		.game-rubric_inner
+			input(type="checkbox" data-hidden-cb id="new-game-rubric-16-main" value="16" name="new-game-rubric")
+			label.game-start_rubric-label(for="new-game-rubric-16-main")
+				span.game-start_rubric-desc 16+ (Например: Спой песню)
+			input(type="checkbox" data-hidden-cb id="new-game-rubric-18-main" value="18" name="new-game-rubric")
+			label.game-start_rubric-label(for="new-game-rubric-18-main")
+				span.game-start_rubric-desc 18+ (Например: Поцелуй в шею)
+			input(type="checkbox" data-hidden-cb id="new-game-rubric-21-main" value="21" name="new-game-rubric")
+			label.game-start_rubric-label(for="new-game-rubric-21-main")
+				span.game-start_rubric-desc 21+ (Например: Французский поцелуй)
+			button.game-rubric_ok(type="button" data-toogle-rubric) Ок
+	.overlay.hidden
 
 
 

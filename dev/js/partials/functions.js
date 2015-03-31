@@ -151,3 +151,25 @@ $(function () {
 
 });
 
+
+
+
+$(function () {
+
+	var $menu = $('.sidebar'),
+		$content = $('.main'),
+		$header = $('.header');
+
+	$('[data-toggle-menu]').on('mousedown', function(event) {
+
+		console.log(event);
+
+		$header.toggleClass('active');
+		$menu.toggleClass('active');
+		$content.toggleClass('active');
+
+
+	});
+
+});
+
