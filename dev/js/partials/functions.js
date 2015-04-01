@@ -49,11 +49,11 @@ function updateMainPlayersCloud() {
 			gender = element.slice(element.length - 1, element.length).toLowerCase();
 
 		if (gender === 'm') {
-			$cloud.prepend('<div class="player_item player_item--male"><div class="player_item_avatar player_item_avatar--male"><svg width="22px" height="22px"><use xlink:href="#business"><\/use><\/svg><div class="player_item_delete"><\/div><\/div><div class="player_item_name">' + value + '<\/div><\/div>');
+			$cloud.prepend('<div class="player_item player_item--male"><div class="player_item_avatar player_item_avatar--male"><svg width="22px" height="22px"><use xlink:href="#business"><\/use><\/svg><\/div><div class="player_item_name">' + value + '<\/div><\/div>');
 		}
 
 		if (gender === 'f') {
-			$cloud.prepend('<div class="player_item player_item--female"><div class="player_item_avatar player_item_avatar--female"><svg width="22px" height="22px"><use xlink:href="#woman"><\/use><\/svg><div class="player_item_delete"><\/div><\/div><div class="player_item_name">' + value + '<\/div><\/div>');
+			$cloud.prepend('<div class="player_item player_item--female"><div class="player_item_avatar player_item_avatar--female"><svg width="22px" height="22px"><use xlink:href="#woman"><\/use><\/svg><\/div><div class="player_item_name">' + value + '<\/div><\/div>');
 		}
 
 

@@ -13,17 +13,18 @@ function updatePlayers(type) {
 		allGender = [],
 		$inputM = $('#players-m'),
 		$inputF = $('#players-f'),
-		$inputAll = $('#players-all');
+		$inputAll = $('#players-all'),
+		$players = null;
 
 	// if game only starting
 	if (type === 'game-start') {
 
 		$cloud = $('.game-start_player-cloud');
-		var $players = $cloud.find('.game-start_player');
+		$players = $cloud.find('.game-start_player');
 
 	} else {
 		// find in main cloud
-		var $players = $cloud.find('.player_item').not('.player_item--new');
+		$players = $cloud.find('.player_item').not('.player_item--new');
 
 	}
 
@@ -62,6 +63,7 @@ function updatePlayers(type) {
 	$inputM.val(male.toString());
 	$inputF.val(female.toString());
 	$inputAll.val(all.toString());
+	saveDataStorage();
 
 }
 

@@ -13,9 +13,13 @@ $headerHeight: 70px;
 	transform: translate3d(0, 0, 0);
 	transition: transform linear .3s;
 
+	@include media ('<desktop') {
+		padding-right: 80px;
+	}
+
 
 	&.active {
-		transform: translate3d(-260px, 0, 0);
+		transform: translate3d(-240px, 0, 0);
 
 		.header_hamburger {
 			opacity: 0;
@@ -97,6 +101,10 @@ $headerHeight: 70px;
 	float: left;
 	overflow: auto;
 	padding: 0 80px;
+
+	@include media ('<desktop') {
+		padding: 0;
+	}
 
 }
 

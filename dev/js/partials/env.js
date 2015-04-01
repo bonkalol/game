@@ -3,7 +3,7 @@ var ENV = {
 	playersGender: [],
 	playersM: [],
 	playersF: [],
-	playerCurrent: '',
+	currentPlayer: '',
 	playerTarget: '',
 	playerCurrentGender: '',
 	playersCount: 0,
