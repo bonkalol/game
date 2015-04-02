@@ -7,7 +7,7 @@ section.game-start
 			p.game-start_subheader Напишите имя игрока, выберите пол справа. Разрешен ввод только латинских букв, минимум 2 игрока.
 			.game-start_wrap
 				.game-start_input-wrap
-					input.game-start_input.game-start_input--players(type="text" id="create-player" placeholder="Имя игрока" data-latin-only)
+					input.game-start_input.game-start_input--players(type="text" id="create-player" placeholder="Имя игрока" data-letters-only)
 					button.game-start_submit-player(type="button") Добавить
 				input(type="radio" data-hidden-cb value="m" id="new-player-m" name="new-player-gender")
 				label(for="new-player-m" class="game-start_gender-label")

@@ -259,7 +259,7 @@ function getQuestionOrAction(gender, type) {
 		if (gender === 'f') {
 
 			var minPlayers = 0,
-				maxPlayers = ENV.players.length - 1;
+				maxPlayers = ENV.playersM.length - 1;
 
 			var getRandomPlayer = getRandomInt(minPlayers, maxPlayers);
 				// console.log(getRandomPlayer);
