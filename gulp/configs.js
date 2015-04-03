@@ -14,7 +14,7 @@ module.exports = {
 		ie: 10,
 		ios: 6,
 		opera: 15,
-		safari: 7
+		safari: 5
 	},
 
 	sass: {
