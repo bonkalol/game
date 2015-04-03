@@ -4,19 +4,21 @@ section.game-start
 	.game-start_modal.game-start_modal--first.active
 		h2.game-start_header Добавить игроков
 		.game-start_modal-inner.game-start_modal-inner--players
-			p.game-start_subheader Напишите имя игрока, выберите пол справа. Минимум 2 игрока.
+			p.game-start_subheader Минимум 2 игрока.
 			.game-start_wrap
 				.game-start_input-wrap
 					input.game-start_input.game-start_input--players(type="text" id="create-player" placeholder="Имя игрока" data-letters-only)
 					button.game-start_submit-player(type="button") Добавить
 				input(type="radio" data-hidden-cb value="m" id="new-player-m" name="new-player-gender")
-				label(for="new-player-m" class="game-start_gender-label")
-					svg(width="30px" height="30px")
+				label(for="new-player-m" class="game-start_gender-label game-start_gender-label--male")
+					svg(width="26px" height="26px")
 						use(xlink:href=svg + "business")
+					span.game-start_gender-label_text Парень
 				input(type="radio" data-hidden-cb value="f" id="new-player-f" name="new-player-gender")
-				label(for="new-player-f" class="game-start_gender-label")
-					svg(width="30px" height="30px")
+				label(for="new-player-f" class="game-start_gender-label game-start_gender-label--female")
+					svg(width="26px" height="26px")
 						use(xlink:href=svg + "woman")
+					span.game-start_gender-label_text Девушка
 			.game-start_player-cloud
 		button.game-start_next.game-start_next--players(type="button" data-update-inputs data-disabled) Далее
 	.game-start_modal.game-start_modal--second

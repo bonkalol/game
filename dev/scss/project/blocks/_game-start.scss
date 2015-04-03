@@ -152,7 +152,6 @@
 	}
 
 	&_wrap {
-		@include flex(flex-start, center);
 		margin-top: 10px;
 	}
 
@@ -170,7 +169,7 @@
 
 		&--players {
 			padding-right: 67px;
-			width: 180px;
+			width: 100%;
 		}
 	}
 
@@ -188,30 +187,46 @@
 	}
 
 	&_gender-label {
-		@include size(32px);
-		border-radius: 50%;
-		margin-left: 10px;
-		background-color: #fff;
 		overflow: hidden;
-		@include flex(center, center);
+		height: 32px;
+		line-height: 32px;
+		@include flex(flex-start, flex-start);
 		transition: background-color .4s;
+		border: 1px solid #fff;
+		border-radius: 4px;
 
 		&:hover,
 		&:focus {
 			cursor: pointer;
 		}
 
+		&:first-of-type {
+			margin: 10px 0;
+		}
+
 		svg {
 			transition: fill .4s;
+			margin-top: 2px;
+			fill: #222;
 		}
 	}
 
-	input:checked + &_gender-label {
-		background-color: #666;
+	&_gender-label_text {
+		padding-left: 10px;
+	}
 
+	input:checked + &_gender-label {
 		svg {
 			fill: #fff;
 		}
+	}
+
+	input:checked + &_gender-label--male {
+		background-color: #2196f3;
+	}
+
+	input:checked + &_gender-label--female {
+		background-color: #e91e63;
 	}
 
 	&_player {
@@ -260,6 +275,10 @@
 		margin-top: 10px;
 		max-height: 260px;
 		overflow: auto;
+
+		@media only screen and (max-height: 540px) {
+			max-height: 90px;
+		}
 	}
 
 	input:checked + &_rubric-label {
