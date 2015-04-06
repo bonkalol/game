@@ -192,7 +192,7 @@ function getQuestionOrAction(gender, type) {
 
 			if (playerQorA(text) === '#') {
 				$('[data-game-modal]').addClass('gray');
-				writeText(text.slice(0, text.length - 1) + ' (Не читай в слух и выполняй)');
+				writeText(text.slice(0, text.length - 1) + ' (Не читай в слух и помните что вы не должны выдавать содержимое карточки)');
 				return;
 			}
 
