@@ -1,5 +1,6 @@
 // TODO
 // 1. СДЕЛАТЬ ПРОВЕРКУ НА ТО, БЫЛ ЛИ ЗАДАН ВОПРОС
+// 2. РЕФАКТОР КОДА
 
 
 function game(data) {
@@ -88,7 +89,7 @@ $(function() {
 
 });
 
-
+// 2.
 // getQuestion
 function getQuestionOrAction(gender, type) {
 
@@ -112,7 +113,7 @@ function getQuestionOrAction(gender, type) {
 			// add to ENV.answered
 			parseQorAValue(text);
 
-			if (playerQorA(text)) {
+			if (playerQorA(text) === '+') {
 
 				console.log(ENV.currentPlayerGender);
 
@@ -132,10 +133,20 @@ function getQuestionOrAction(gender, type) {
 					break;
 				}
 				// switch end
+				return;
 
-			} else {
+			} 
+
+			if (playerQorA(text) === '#') {
+				$('[data-game-modal]').addClass('gray');
+				writeText(text.slice(0, text.length - 1) + ' (Не читай в слух и выполняй)');
+				return;
+			}
+
+			else {
 
 				writeText(text);
+				return;
 
 			}
 			// if end
@@ -155,7 +166,7 @@ function getQuestionOrAction(gender, type) {
 			// add to ENV.answered
 			parseQorAValue(text);
 
-			if (playerQorA(text)) {
+			if (playerQorA(text) === '+') {
 
 				console.log(ENV.currentPlayerGender);
 
@@ -175,10 +186,20 @@ function getQuestionOrAction(gender, type) {
 					break;
 				}
 				// switch end
+				return;
 
-			} else {
+			}
+
+			if (playerQorA(text) === '#') {
+				$('[data-game-modal]').addClass('gray');
+				writeText(text.slice(0, text.length - 1) + ' (Не читай в слух и выполняй)');
+				return;
+			}
+
+			else {
 
 				writeText(text);
+				return;
 
 			}
 			// if end
@@ -234,8 +255,14 @@ function getQuestionOrAction(gender, type) {
 		console.log(lastSymbol);
 
 		if (lastSymbol === '+') {
-			return true;
-		} else {
+			return '+';
+		}
+
+		if (lastSymbol === '#') {
+			return '#';
+		}
+
+		else {
 			return false;
 		}
 

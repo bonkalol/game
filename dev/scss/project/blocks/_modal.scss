@@ -24,7 +24,13 @@
 		&.hidden {
 			visibility: hidden;
 		}
+
+		&.gray {
+			background-color: #666;
+		}
 	}
+
+
 
 	&_rubric {
 		background-color: rgba(0,0,0,0.1);

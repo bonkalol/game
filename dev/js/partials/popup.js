@@ -57,6 +57,7 @@ function modalEvent(Event) {
 		var timeOut = setTimeout(function () {
 
 			$modal.addClass('hidden');
+			$modal.removeClass('gray');
 			$overlay.addClass('hidden');
 
 		}, modalTransition);

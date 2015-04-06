@@ -308,5 +308,10 @@
 
 	&_rules {
 		line-height: 22px;
+
+		strong {
+			font-weight: 700;
+			text-decoration: underline;
+		}
 	}
 }

@@ -45,7 +45,7 @@ block content
 			//- value example ="Misha,Lena,Bogdan"
 			input(type="hidden" value="" id="game-rubric" name="rubric")
 			//- value example ="18,21"
-	section.modal_window.hidden
+	section.modal_window.hidden(data-game-modal)
 		p.modal_desc Поцелуйте в шею первого игрока противоположного пола слева от вас
 		button.modal_submit(type="button" data-close-popup data-next-player) Ок
 	include blocks/game_start
