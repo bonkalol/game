@@ -78,12 +78,14 @@ $(function() {
 	$('[data-true]').on('mousedown', function() {
 
 		getQuestionOrAction(ENV.playerCurrentGender, 'q');
+		addStreak('q');
 
 	});
 
 	$('[data-action]').on('mousedown', function() {
 
 		getQuestionOrAction(ENV.playerCurrentGender, 'a');
+		addStreak('a');
 
 	});
 
@@ -366,3 +368,67 @@ $(function () {
 	});
 
 });
+
+
+
+function checkAvailable() {
+
+	var player = ENV.currentPlayer,
+		qCount = 0,
+		aCount = 0,
+		maxCount = 2;
+
+
+
+	ENV.playersObjects.some(function (element, index, array) {
+
+		if (player === element.name) {
+
+			qCount = element.truthStreak;
+			aCount = element.actionStreak;
+
+			return false;
+
+		}
+
+	});
+
+	if (qCount === maxCount) {
+		return 'qFalse';
+	}
+
+	if (aCount === maxCount) {
+		return 'aFalse';
+	}
+
+}
+
+
+function addStreak(type) {
+
+	var player = ENV.currentPlayer;
+
+
+	ENV.playersObjects.some(function (element, index, array) {
+
+		if (player === element.name) {
+
+			if (type === 'q') {
+				element.truthStreak += 1;
+				element.actionStreak = 0;
+			}
+
+
+			if (type === 'a') {
+				element.actionStreak += 1;
+				element.truthStreak = 0;
+			}
+
+			return false;
+
+		}
+
+	});
+
+
+}

@@ -60,6 +60,18 @@ function modalEvent(Event) {
 			$modal.removeClass('gray');
 			$overlay.addClass('hidden');
 
+			if (checkAvailable() === 'qFalse') {
+				$('[data-true]').addClass('disabled').attr('data-disabled', '');
+			} else {
+				$('[data-true]').removeClass('disabled').removeAttr('data-disabled');
+			}
+
+			if (checkAvailable() === 'aFalse') {
+				$('[data-action]').addClass('disabled').attr('data-disabled', '');
+			} else {
+				$('[data-action]').removeClass('disabled').removeAttr('data-disabled');
+			}
+
 		}, modalTransition);
 
 	}

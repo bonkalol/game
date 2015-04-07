@@ -308,6 +308,8 @@
 
 	&_rules {
 		line-height: 22px;
+		max-height: 170px;
+		overflow: auto;
 
 		strong {
 			font-weight: 700;

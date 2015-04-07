@@ -1,5 +1,6 @@
 var ENV = {
 	players: [],
+	playersObjects: [],
 	playersGender: [],
 	playersM: [],
 	playersF: [],

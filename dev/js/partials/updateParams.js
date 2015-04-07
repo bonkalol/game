@@ -14,7 +14,8 @@ function updatePlayers(type) {
 		$inputM = $('#players-m'),
 		$inputF = $('#players-f'),
 		$inputAll = $('#players-all'),
-		$players = null;
+		$players = null,
+		playersObjects = [];
 
 	// if game only starting
 	if (type === 'game-start') {
@@ -29,7 +30,6 @@ function updatePlayers(type) {
 	}
 
 	// find players in cloud
-
 	// define players gender type
 	$.each($players, function() {
 
@@ -49,6 +49,7 @@ function updatePlayers(type) {
 		}
 
 		all.push(val);
+		playersObjects.push({name: val, gender: $(this).attr('data-player-gender'), truthStreak: 0, actionStreak: 0});
 
 	});
 
@@ -58,6 +59,7 @@ function updatePlayers(type) {
 	ENV.players = all;
 	ENV.playersGender = allGender;
 	ENV.playersCount = all.length;
+	ENV.playersObjects = playersObjects;
 
 	// update inputs values
 	$inputM.val(male.toString());
