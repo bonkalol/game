@@ -2,7 +2,6 @@ $(function () {
 
 
 	var $triggers = $('[data-update-json]'),
-		json,
 		$form = $('#main-form');
 
 	// get json
@@ -14,9 +13,7 @@ $(function () {
 
 		$.get('assets/response.json', function(data) {
 
-			// json get
-			json = data;
-			localStorage.setItem('json', JSON.stringify(json));
+			localStorage.setItem('json', JSON.stringify(data));
 			// get first q
 			game(data);
 

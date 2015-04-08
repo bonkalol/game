@@ -108,105 +108,108 @@ function getQuestionOrAction(gender, type) {
 
 		max = ENV.q.length - 1;
 
-		if (!random()) {
-			random();
-		} else {
-			text = ENV.q[value];
-			// add to ENV.answered
-			parseQorAValue(text);
+		value = getRandomInt(min, max);
 
-			if (playerQorA(text) === '+') {
+		if (ENV.q.length === 0) {
+			updateQandAENV();
+		}
 
-				console.log(ENV.currentPlayerGender);
+		text = ENV.q[value];
+		ENV.q.splice(value, 1);
+		// add to ENV.answered
+		parseQorAValue(text);
 
-				switch(ENV.currentPlayerGender) {
-					case 'm': {
-						randomPlayer('m');
-						writeText(text.slice(0, text.length - 1) + ' ' + ENV.playerTarget);
+		if (playerQorA(text) === '+') {
 
-					}
-					break;
+			console.log(ENV.currentPlayerGender);
 
-					case 'f': {
-						randomPlayer('f');
-						writeText(text.slice(0, text.length - 1) + ' ' + ENV.playerTarget);
+			switch(ENV.currentPlayerGender) {
+				case 'm': {
+					randomPlayer('m');
+					writeText(text.slice(0, text.length - 1) + ' ' + ENV.playerTarget);
 
-					}
-					break;
 				}
-				// switch end
-				return;
+				break;
 
-			} 
+				case 'f': {
+					randomPlayer('f');
+					writeText(text.slice(0, text.length - 1) + ' ' + ENV.playerTarget);
 
-			if (playerQorA(text) === '#') {
-				$('[data-game-modal]').addClass('gray');
-				writeText(text.slice(0, text.length - 1) + ' (Не читай в слух и выполняй)');
-				return;
+				}
+				break;
 			}
+			// switch end
+			return;
 
-			else {
+		} 
 
-				writeText(text);
-				return;
+		if (playerQorA(text) === '#') {
+			$('[data-game-modal]').addClass('gray');
+			writeText(text.slice(0, text.length - 1) + ' (Не читай в слух и выполняй)');
+			return;
+		}
 
-			}
-			// if end
+		else {
+
+			writeText(text);
+			return;
 
 		}
+		// if end
 
 	}
 
 	if (type === 'a') {
 
 		max = ENV.a.length - 1;
+		value = getRandomInt(min, max);
 		// #bug
-		if (!random()) {
-			random();
-		} else {
-			text = ENV.a[value];
-			// add to ENV.answered
-			parseQorAValue(text);
+		if (ENV.q.length === 0) {
+			updateQandAENV();
+		}
 
-			if (playerQorA(text) === '+') {
+		text = ENV.a[value];
+		ENV.a.splice(value, 1);
+		// add to ENV.answered
+		parseQorAValue(text);
 
-				console.log(ENV.currentPlayerGender);
+		if (playerQorA(text) === '+') {
 
-				switch(ENV.currentPlayerGender) {
-					case 'm': {
-						randomPlayer('m');
-						writeText(text.slice(0, text.length - 1) + ' ' + ENV.playerTarget);
+			console.log(ENV.currentPlayerGender);
 
-					}
-					break;
+			switch(ENV.currentPlayerGender) {
+				case 'm': {
+					randomPlayer('m');
+					writeText(text.slice(0, text.length - 1) + ' ' + ENV.playerTarget);
 
-					case 'f': {
-						randomPlayer('f');
-						writeText(text.slice(0, text.length - 1) + ' ' + ENV.playerTarget);
-
-					}
-					break;
 				}
-				// switch end
-				return;
+				break;
 
+				case 'f': {
+					randomPlayer('f');
+					writeText(text.slice(0, text.length - 1) + ' ' + ENV.playerTarget);
+
+				}
+				break;
 			}
-
-			if (playerQorA(text) === '#') {
-				$('[data-game-modal]').addClass('gray');
-				writeText(text.slice(0, text.length - 1) + ' (Не читайте вслух и помните что вы не должны выдавать содержимое карточки)');
-				return;
-			}
-
-			else {
-
-				writeText(text);
-				return;
-
-			}
-			// if end
+			// switch end
+			return;
 
 		}
+
+		if (playerQorA(text) === '#') {
+			$('[data-game-modal]').addClass('gray');
+			writeText(text.slice(0, text.length - 1) + ' (Не читайте вслух и помните что вы не должны выдавать содержимое карточки)');
+			return;
+		}
+
+		else {
+
+			writeText(text);
+			return;
+
+		}
+		// if end
 
 	}
 
@@ -219,29 +222,6 @@ function getQuestionOrAction(gender, type) {
 
 		if (playerQorA(text)) {
 			$textHolder.text(getText[1].slice(0, getText[1].length - 1));
-		}
-	}
-
-
-	// get random Q or A
-	function random() {
-		value = getRandomInt(min, max);
-		var status = true;
-
-		ENV.answered.some(function(element, index, array) {
-
-			if (parseInt(element) === parseInt(value)) {
-				return false;
-				status = false;
-				console.log('fail: ' + element + ' ' + value);
-			}
-
-		});
-
-		if (status === false) {
-			return false;
-		} else {
-			return true;
 		}
 	}
 
