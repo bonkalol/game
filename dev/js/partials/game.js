@@ -164,7 +164,7 @@ function getQuestionOrAction(gender, type) {
 		max = ENV.a.length - 1;
 		value = getRandomInt(min, max);
 		// #bug
-		if (ENV.q.length === 0) {
+		if (ENV.a.length === 0) {
 			updateQandAENV();
 		}
 

@@ -1,7 +1,6 @@
 extends layouts/default
 
 block head
-	- cssPath = 'css/main.css';
 	- pageTitle = 'Правда или Действие';
 	- OGmetaTitle = 'Правда или Действие';
 	link(rel="shortcut icon" type="image/png" href="img/favicon.png")
@@ -12,6 +11,7 @@ block head
 	- OGmetaLocal = 'RU_ru';
 	- OGmetaDescription = 'Правда или Действия игра для компании друзей, она не даст вам заскучать, а разнообразие вопросов и действий будет увлекать, удивлять и давать шанс узнать друг друга поближе.';
 	- OGmetaSiteName = 'truthoraction.com';
+	include partials/preloader_css
 
 block content
 	.preloader
@@ -70,6 +70,10 @@ block content
 	.overlay.hidden
 
 block additionalCSS
+	link(rel="stylesheet" property="stylesheet" href="css/main.css")
+	include partials/fonts
+	include partials/svg_cache
+
 
 block scripts
 	include partials/metrica
