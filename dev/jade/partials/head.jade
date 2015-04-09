@@ -4,6 +4,8 @@ include ../meta/mixins
 
 meta(charset="utf-8")
 title= pageTitle || headConfigs.title
+include preloader_css
+link(rel="stylesheet" href=cssPath || configs.css)
 
 if layoutSetters.headTags
 	meta(name='description' content=pageDescription || headConfigs.description)

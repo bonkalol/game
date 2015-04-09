@@ -1,6 +1,7 @@
 extends layouts/default
 
 block head
+	- cssPath = 'css/main.css'
 	- pageTitle = 'Правда или Действие';
 	- OGmetaTitle = 'Правда или Действие';
 	link(rel="shortcut icon" type="image/png" href="img/favicon.png")
@@ -70,7 +71,6 @@ block content
 	.overlay.hidden
 
 block additionalCSS
-	link(rel="stylesheet" property="stylesheet" href="css/main.css")
 	include partials/fonts
 	include partials/svg_cache
 
