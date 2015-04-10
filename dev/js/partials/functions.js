@@ -1,3 +1,12 @@
+$(function () {
+
+	// console.log(storage);
+	// console.log(Window.online);
+	console.log(window.applicationCache);
+
+});
+
+
 $(function() {
 
 	// latin letter in input
@@ -20,12 +29,6 @@ $(function() {
 		return false;
 
 	});
-
-	// $('[data-letters-only]').on('keydown', function(event) {
-
-		
-
-	// });
 
 
 });
