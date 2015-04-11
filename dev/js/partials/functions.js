@@ -15,11 +15,9 @@ functions.js - включает в себя различные вспомога�
 	// disable all elements
 	var disabledItems = document.querySelectorAll('[data-disabled]');
 
-	for (i = 0; i < disabledItems.length; i++) {
-		disabledItems[i].addEventListener('mousedown', function(event) {
-			event.preventDefault();
-		});
-	};
+	bindListeners(disabledItems, 'mousedown', function(event) {
+		event.preventDefault();
+	});
 
 })();
 
