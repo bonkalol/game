@@ -1,44 +1,52 @@
-$(function () {
+/* =========================================
 
-	// console.log(storage);
-	// console.log(Window.online);
-	console.log(window.applicationCache);
-
-});
+functions.js - включает в себя различные вспомогательные функции
 
 
-$(function() {
+1. disableElements(); - Выключает все неактивные елементы
+2. saveGameState(); - Сохранение текущего состояния игры
 
-	// latin letter in input
-	$('[data-latin-only]').on('keyup', function(event) {
-
-		$(this).val($(this).val().replace(/[^a-z ]/i, ""));
-
-	});
-	// latin letter in input
-	$('[data-latin-only]').on('paste', function(event) {
-		event.preventDefault();
-		// prevent paste
-		return false;
-	});
-
-	// disabled button
-	$('[data-disabled]').on('mousedown', function(event) {
-
-		event.preventDefault();
-		return false;
-
-	});
+=========================================== */
 
 
-});
+// 1
+;(function disableElements() {
+
+	// disable all elements
+	var disabledItems = document.querySelectorAll('[data-disabled]');
+
+	for (i = 0; i < disabledItems.length; i++) {
+		disabledItems[i].addEventListener('mousedown', function(event) {
+			event.preventDefault();
+		});
+	};
+
+})();
 
 
 
-function saveDataStorage() {
 
-	if(typeof(Storage) !== 'undefined') {
-		localStorage.setItem('info', JSON.stringify(ENV));
+// 2
+function saveGameState() {
+
+
+	function localStorageTest() {
+
+		var test = 'test';
+
+		try {
+			localStorage.setItem(test, test);
+			localStorage.removeItem(test);
+			return true;
+		} catch(e) {
+			return false;
+		}
+
+	}
+
+
+	if (localStorageTest()) {
+		localStorage.setItem('info', JSON.stringify(GAME));
 	} else {
 		return;
 	}
