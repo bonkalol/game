@@ -3,30 +3,7 @@ header.header
 		b.header_hamburger
 		img.header_crosshair(src="img/cross.svg" alt="Крестик" height="20px")
 	.players-cloud-main_overflow
-		.players-cloud-main
-			.player_item
-				.player_item_avatar.player_item_avatar--male
-					svg(width="22px" height="22px")
-						use(xlink:href=svg + "business")
-				.player_item_name Miha
-			.player_item
-				.player_item_avatar.player_item_avatar--male
-					svg(width="22px" height="22px")
-						use(xlink:href=svg + "business")
-					.player_item_delete
-				.player_item_name Denis
-			.player_item
-				.player_item_avatar.player_item_avatar--male
-					svg(width="22px" height="22px")
-						use(xlink:href=svg + "business")
-					.player_item_delete
-				.player_item_name Egor
-			.player_item
-				.player_item_avatar.player_item_avatar--female
-					svg(width="22px" height="22px")
-						use(xlink:href=svg + "woman")
-					.player_item_delete
-				.player_item_name Lena
-			.player_item.player_item--new
+		.players-cloud-main(data-game-players-container)
+			.player_item.player_item--new(data-game-newplayer)
 				.player_item_avatar +
 				.player_item_name Новый игрок

@@ -51,31 +51,6 @@ function saveGameState() {
 
 };
 
-
-function updateMainPlayersCloud() {
-
-	var $cloud = $('.players-cloud-main');
-
-	$cloud.find('.player_item').not('.player_item--new').remove();
-
-	ENV.playersGender.forEach(function(element, index, arr) {
-
-		var value = element.slice(0, element.length - 2);
-			gender = element.slice(element.length - 1, element.length).toLowerCase();
-
-		if (gender === 'm') {
-			$('.player_item--new').before('<div class="player_item player_item--male"><div class="player_item_avatar player_item_avatar--male"><svg width="22px" height="22px"><use xlink:href="#business"><\/use><\/svg><\/div><div class="player_item_name">' + value + '<\/div><\/div>');
-		}
-
-		if (gender === 'f') {
-			$('.player_item--new').before('<div class="player_item player_item--female"><div class="player_item_avatar player_item_avatar--female"><svg width="22px" height="22px"><use xlink:href="#woman"><\/use><\/svg><\/div><div class="player_item_name">' + value + '<\/div><\/div>');
-		}
-
-
-	});
-
-}
-
 $(function() {
 
 	$('[data-next-player]').on('mousedown', function() {
@@ -83,12 +58,6 @@ $(function() {
 	});
 
 });
-
-function getRandomInt(min, max) {
-
-	return Math.floor(Math.random()*(max + 1 - min)) + min;
-
-}
 
 
 

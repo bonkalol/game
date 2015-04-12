@@ -8,6 +8,8 @@
 
 2. Element.closest полифил
 
+3. Random функция
+
 ============================================ */
 
 
@@ -45,3 +47,11 @@ function bindListeners(elements, listener, callback) {
 	Element.prototype,
 	(this.getComputedStyle && [].join.call(getComputedStyle(document.documentElement, '')).match(/-(moz|ms|webkit)-/) || [])[1]
 );
+
+
+// 3.
+function getRandomInt(min, max) {
+
+	return Math.floor(Math.random()*(max + 1 - min)) + min;
+
+}

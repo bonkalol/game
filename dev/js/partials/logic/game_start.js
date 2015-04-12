@@ -6,10 +6,12 @@
 1. gameStartLogic(); - функция обрабатывающая начало игры.
 1.1. Выбор половой принаджлености и запись в переменную выбраного пола
 1.2. Нажатие на кнопку добавить, добавление игрока в облако игроков, вызов рендер функции playerAdd(...);
-1.3. Удаление игрока, вызов playerDelete(sender);
 
 2. gameStartSavePlayers(); - сохранение игроков в переменную GAME.players
 
+3. Проверка, был ли добавлен такой игрок
+
+4. Закрываем game_start, качаем json, инициализируем игру
 
 =============================================== */
 
@@ -34,38 +36,27 @@
 
 			if ( gameStartPlayerInput.value.length >= 2 && gameStartPlayerGender !== null ) {
 
-				playerAdd(gameStartPlayerInput.value, gameStartPlayerGender);
+				gameStartPlayerAdd(gameStartPlayerInput.value, gameStartPlayerGender, gameStartPlayerInput);
 				gameStartPlayerInput.value = '';
 
 			}
+
+			gameStartSavePlayers();
 
 		});
 
 
 })();
 
-
-;function gameStartPlayerDeleteBind() {
-
-	var gameStartPlayerButtonDelete = document.querySelectorAll('[data-gamestart-player-remove]');
-	// 1.3.
-	bindListeners(gameStartPlayerButtonDelete, 'click', function(event, element) {
-
-		playerDelete(element.closest('[data-gamestart-player]'));
-
-	});
-};
-
-
+// 2.
 ;function gameStartSavePlayers() {
 
 	var gameStartPlayers = document.querySelectorAll('[data-gamestart-player]'),
 		playerName = '',
 		playerGender = '';
+
 	// reset GAME.player for rewrite
-	if (GAME.players.length >= 1) {
-		GAME.players = [];
-	}
+	GAME.players = [];
 
 	// update GAME.players
 	[].forEach.call(gameStartPlayers, function (element, index, array) {
@@ -83,5 +74,46 @@
 		GAME.players.push(player);
 
 	});
+
+};
+
+// 3.
+;function gameStartCheckPlayerExist(input) {
+
+	var isExist = false;
+
+	GAME.players.some( function (element, index, array) {
+
+		if (element.name === input.value) {
+			isExist = true;
+			return false;
+		}
+
+	});
+
+	if (isExist === true) {
+		return true;
+	} else {
+		return false;
+	}
+
+};
+
+
+// 4.
+;function gameStartClose() {
+
+	var gameStartWrap = document.querySelector('[data-gamestart]'),
+		timeout = null;
+
+	gameStartWrap.classList.add('hidden');
+
+	timeout = setTimeout(function() {
+
+		gameStartWrap.classList.add('visibility');
+
+	}, 600);
+
+	getJson();
 
 };

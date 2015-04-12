@@ -2,16 +2,18 @@
 
 Файл отвечает за рендер и работу модальных окон при начале игры
 Логика начала игры расположена в ../logic/game_start.js
+Рендер шаблоны TEMPLATES расположен в TEMPLATES.js
 
 1. gameStartView(); - функция которая отвечает за переключение (вперед/назад) модальных окон
 1.1. Кнопка "Далее", если нет больше модальных окон, то закрыть "Начало игры"
 1.2. Кнопка "Назад", пролистывает окна назад
-1.3. Вызов колбека сохранения игроков в переменную GAME
+1.3. Клик по кнопке начало игры, инициализация игры
 
 2. playerAdd(); - Добавление игрока в облако игроков, отвечает только за рендер html
 
 3. Удаление игрока
 
+4. Выбор рубрики
 
 ========================================== */
 
@@ -24,41 +26,28 @@
 		gameStartNextButtons = document.querySelectorAll('[data-gamestart-nextmodal]'),
 		gameStartWrap = document.querySelectorAll('[data-gamestart]'),
 		gameStartBackButtons = document.querySelectorAll('[data-gamestart-prevmodal]'),
+		gameStartStartGame = document.querySelector('[data-gamestart-start]'),
 		gameStartNextModal = null,
 		gameStartPrevModal = null,
 		currentModal = null;
 
 	// Next button
 	// 1.1.
-	bindListeners(gameStartNextButtons, 'mousedown', function(event, element) {
+	bindListeners(gameStartNextButtons, 'mousedown', function (event, element) {
 
 		currentModal = element.closest('[data-gamestart-modal]');
 		gameStartNextModal = currentModal.nextSibling;
 
-		// if it's a last modal
-		if ( gameStartNextModal.length === 0 ) {
-			// start game
-			gameStartWrap.addClass('visibility');
-		}
-
-		else {
-			// hide current modal
-			currentModal.classList.add('hidden');
-			// show next modal
-			gameStartNextModal.classList.add('active');
-		}
-
-		// 1.3.
-		if ( element.getAttribute('data-gamestart-nextmodal-player') !== null && element.getAttribute('data-gamestart-nextmodal-player') !== 'undefined' ) {
-			// callback update players
-			gameStartSavePlayers();
-		}
+		// hide current modal
+		currentModal.classList.add('hidden');
+		// show next modal
+		gameStartNextModal.classList.add('active');
 
 	});
 
 	// Prev button
 	// 1.2.
-	bindListeners(gameStartBackButtons, 'mousedown', function(event, element) {
+	bindListeners(gameStartBackButtons, 'mousedown', function (event, element) {
 
 		currentModal = element.closest('[data-gamestart-modal]');
 		gameStartPrevModal = currentModal.previousSibling;
@@ -70,20 +59,29 @@
 
 	});
 
+	// 1.3.
+	gameStartStartGame.addEventListener('mousedown', function(event) {
+
+		gameStartClose();
+
+	});
+
 
 })();
 
 
 // 2.
-;function playerAdd(name, gender) {
+;function gameStartPlayerAdd(name, gender, input) {
 
 	var gameStartPlayersContainer = document.querySelector('[data-gamestart-playerContainer]');
 
-	if (gender === 'm')
-		gameStartPlayersContainer.insertAdjacentHTML('beforeend', '<span class="game-start_player game-start_player--male" data-gameStart-player-gender="m" data-gamestart-player>' + name + '<span class="game-start_player-remove" data-gamestart-player-remove><\/span><\/span>');
+	if (gameStartCheckPlayerExist(input)) {
+		// player exist
+		// throw error here
+		return;
+	}
 
-	if (gender === 'f')
-		gameStartPlayersContainer.insertAdjacentHTML('beforeend', '<span class="game-start_player game-start_player--female" data-gameStart-player-gender="f" data-gamestart-player>' + name + '<span class="game-start_player-remove" data-gamestart-player-remove><\/span><\/span>');
+	gameStartPlayersContainer.insertAdjacentHTML('beforeend', TEMPLATES.gameStartCreatePlayer(gender, name));
 
 	// update delete binds
 	gameStartPlayerDeleteBind();
@@ -103,8 +101,68 @@
 
 
 // 3.
-;function playerDelete(sender) {
+;function gameStartPlayerDelete(sender) {
 
 	sender.remove();
 
 };
+
+
+
+;function gameStartPlayerDeleteBind() {
+
+	var gameStartPlayerButtonDelete = document.querySelectorAll('[data-gamestart-player]');
+	// 3.
+	bindListeners(gameStartPlayerButtonDelete, 'click', function (event, element) {
+
+		gameStartPlayerDelete(element.closest('[data-gamestart-player]'));
+
+	});
+};
+
+
+// 4.
+;(function gameStartRubricSelect() {
+
+	var checkboxes = document.querySelectorAll('[data-gamestart-rubric]');
+
+	bindListeners(checkboxes, 'change', function (event, element) {
+		// reset Rubrics
+		GAME.rubrics = [];
+
+		if (isChecked(checkboxes))
+			element.closest('[data-gamestart-modal]').querySelector('[data-gamestart-nextmodal]').removeAttribute('data-disabled');
+		else
+			element.closest('[data-gamestart-modal]').querySelector('[data-gamestart-nextmodal]').setAttribute('data-disabled', '');
+
+		// update picked rubrics
+		[].forEach.call(checkboxes, function (element, index, array) {
+
+			if (element.checked)
+				GAME.rubrics.push(element.value);
+
+		});
+
+	});
+
+	function isChecked(elements) {
+
+		var isCheckboxCheked = false;
+
+		[].some.call(elements, function (element, index, array) {
+
+			if (element.checked) {
+				isCheckboxCheked = true;
+				return false;
+			}
+
+		});
+
+		if (isCheckboxCheked)
+			return true;
+		else
+			return false;
+
+	};
+
+})();
