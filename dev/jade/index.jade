@@ -34,11 +34,11 @@ block content
 	section.main
 		section.pick
 			h2.pick_player
-				var.pick_player_name Bogdan 
+				var.pick_player_name(data-picked-player) Bogdan 
 				span.pick_player_text теперь ваш ход
-			a.pick_link.pick_link--true(href=jv0 title="" data-modalType="game" data-show-popup data-true) Правда
+			a.pick_link.pick_link--true(href=jv0 title="" data-modalType="game" data-show-popup data-truth-button) Правда
 			span.pick_or или
-			a.pick_link.pick_link--action(href=jv0 title="" data-modalType="game" data-show-popup data-action) Действие
+			a.pick_link.pick_link--action(href=jv0 title="" data-modalType="game" data-show-popup data-action-button) Действие
 		form(id="main-form")
 			input(type="hidden" value="" id="players-m" name="players-m")
 			input(type="hidden" value="" id="players-f" name="players-f")
@@ -47,8 +47,8 @@ block content
 			input(type="hidden" value="" id="game-rubric" name="rubric")
 			//- value example ="18,21"
 	section.modal_window.hidden(data-game-modal)
-		p.modal_desc Поцелуйте в шею первого игрока противоположного пола слева от вас
-		button.modal_submit(type="button" data-close-popup data-next-player) Ок
+		p.modal_desc(data-game-modal-content) Поцелуйте в шею первого игрока противоположного пола слева от вас
+		button.modal_submit(type="button" data-game-modalclose-button) Ок
 	include blocks/game_start
 	.game-restart
 		.game-restart_modal
@@ -68,7 +68,7 @@ block content
 			label.game-start_rubric-label(for="new-game-rubric-21-main")
 				span.game-start_rubric-desc 21+ (Например: Французский поцелуй)
 			button.game-rubric_ok(type="button" data-toggle-rubric) Ок
-	.overlay.hidden
+	.overlay.hidden(data-game-overlay)
 
 block additionalCSS
 	include partials/fonts

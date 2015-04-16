@@ -10,6 +10,8 @@
 
 3. Random функция
 
+4. Поддерживает ли браузер localStorage
+
 ============================================ */
 
 
@@ -55,3 +57,20 @@ function getRandomInt(min, max) {
 	return Math.floor(Math.random()*(max + 1 - min)) + min;
 
 }
+
+
+// 4.
+function localStorageTest() {
+
+	var test = 'test';
+
+	try {
+		localStorage.setItem(test, test);
+		localStorage.removeItem(test);
+		return true;
+	} catch(e) {
+		return false;
+	}
+
+}
+

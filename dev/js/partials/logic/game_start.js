@@ -67,11 +67,18 @@
 		var player = {
 			name: playerName,
 			gender: playerGender,
-			actionStreak: 0,
-			truthStreak: 0
+			actionsStreak: 0,
+			truthStreak: 0,
+			isCurrentPlayer: false
 		}
 
 		GAME.players.push(player);
+
+		if (player.gender === 'f')
+			GAME.playersF.push(player);
+
+		if (player.gender === 'm')
+			GAME.playersM.push(player);
 
 	});
 

@@ -8,7 +8,6 @@
 function updateMainPlayersCloud() {
 
 	var container = document.querySelector('[data-game-players-container]'),
-		containerNewPlayer = container.querySelector('[data-game-newplayer]'),
 		htmlString = '';
 
 		GAME.players.forEach( function (element, index, array) {
@@ -17,6 +16,6 @@ function updateMainPlayersCloud() {
 
 		});
 
-		containerNewPlayer.insertAdjacentHTML('beforeend', htmlString);
+		container.insertAdjacentHTML('afterbegin', htmlString);
 
 }

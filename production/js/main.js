@@ -58,10 +58,250 @@ var GAME = {
 
 Здесь происходит инициализация игры
 
+1. Инциализация игры, вызов рендера игрока, инициализация функции выдачи вопросов,
+запись вопросов/действий в GAME.truth/GAME.actions
+
+1.1. Рендер игроков в облако игроков
+1.2. Запись вопрос и действий в GAME.truth/GAME.actions по выбраным рубрикам
+1.3. Выбор игрока, который ходит
+
 ======================================= */
 
 
+// 1.
 ;function gameInit() {
+
+	// 1.1. 
+	updateMainPlayersCloud();
+
+	// 1.2.
+	updateAllTruthActions();
+
+	// 1.3.
+	nextPlayer();
+
+
+};
+/* =============================
+
+Отвечает за показ модального окна и выдачей в него html вопроса/действия
+
+1. Вешаем эвент листенеры на кнопки выбора правды или действия
+2. Выбираем правду или действие, выбранный вопрос удаляем из массива, если
+вопросы или действие кончились, обновляем
+3. Определяем тип карточки
+3.1. Знак +, надо выбрать игрока противоположного пола и подставить как цель
+3.2. Знак #, серая карточка, не читать задание в слух и выполнять действие чтобы игроки не догадывались
+3.3. Знак ;, серая карточка, коллективное задание - выполняют все
+4. Показываем модальное окно с выбранным вопросом, действием
+5. Добавление вопроса, действия в стрик
+6. Проверка доступности вопросов/действий
+
+============================= */
+
+// 1.
+;(function buttonEvents() {
+
+	var truthButton = document.querySelector('[data-truth-button]'),
+		actionButton = document.querySelector('[data-action-button]'),
+		closePopupButton = document.querySelector('[data-game-modalclose-button]');
+
+
+		truthButton.addEventListener('mousedown', function(event) {
+
+			getTruthOrAction('truth');
+
+		});
+
+		actionButton.addEventListener('mousedown', function(event) {
+
+			getTruthOrAction('actions');
+
+		});
+
+		closePopupButton.addEventListener('mousedown', function(event) {
+
+			closeModal();
+
+		});
+
+
+
+
+})();
+
+// 2.
+;function getTruthOrAction(type) {
+
+	var content = '',
+		min = 0,
+		random = null;
+		// get random question
+		random = getRandomInt(min, GAME[type].length - 1);
+		content = GAME[type][random];
+		GAME[type].splice(random, 1);
+
+		if ( type === 'truth' ) {
+
+			addStreak(type);
+			console.log(GAME.currentPlayer, 'picked ' + type);
+
+			if ( GAME.truth.length === 0 )
+				updateTruth();
+		}
+
+		if ( type === 'actions' ) {
+
+			addStreak(type);
+			console.log(GAME.currentPlayer, 'picked ' + type);
+
+			if ( GAME.actions.length === 0 )
+				updateAction();
+		}
+
+		showModal(content, type);
+
+};
+
+// 3.
+;function cardType(text) {
+
+	var symbol = text.slice(text.length, 1);
+
+	switch(symbol) {
+
+		case '+': {
+
+		}
+		break;
+
+		case '#': {
+
+		}
+		break;
+
+		case ';': {
+
+		}
+		break;
+	}
+
+}
+
+
+// 5.
+;function addStreak(type) {
+
+	[].every.call(GAME.players, function (element, index, array) {
+
+		if (element.isCurrentPlayer) {
+
+			if ( type === 'truth' ) {
+				element.truthStreak += 1;
+				element.actionsStreak = 0;
+			}
+
+			else if ( type === 'actions' ) {
+				element.actionsStreak += 1;
+				element.truthStreak = 0;
+			}
+
+			return false;
+		}
+
+		return true;
+
+	});
+
+};
+
+// 6.
+;function getCheckedStreak() {
+
+	var status = {},
+		max = 2,
+		truthCount = 0,
+		actionsCount = 0;
+
+	GAME.players.every(function (element, index, array) {
+
+		if (element.isCurrentPlayer) {
+
+			truthCount = element.truthStreak;
+			actionsCount = element.actionsStreak;
+
+			return false;
+		}
+
+		return true;
+
+	});
+
+	if (truthCount === max)
+		status = {truth: false, actions: true};
+
+	if (actionsCount === max)
+		status = {truth: true, actions: false};
+
+	else if (truthCount !== max && actionsCount !== max)
+		status = {truth: true, actions: true};
+
+	// console.log(status);
+	return status;
+
+};
+/* ===================================
+
+1. Выбор игрока, который выполняет ход
+
+===================================== */
+
+
+;function nextPlayer() {
+
+	var isNoOneActive = true,
+		playerName = '',
+		playerOutput = document.querySelector('[data-picked-player]');
+
+	GAME.players.every( function (element, index, array) {
+
+		if (element.isCurrentPlayer === true) {
+			// set isCurrentPlayer to false
+			// set to next element isCurrentPlayer true
+			GAME.players[index].isCurrentPlayer = false;
+			isNoOneActive = false;
+
+			if ( GAME.players[index + 1] ) {
+				// set to next isCurrentPlayer Active
+				GAME.players[index + 1].isCurrentPlayer = true;
+				GAME.currentPlayer = GAME.players[index + 1];
+				playerName = GAME.currentPlayer.name;
+			}
+
+			else {
+				// set to first isCurrentPlayer Active
+				GAME.players[0].isCurrentPlayer = true;
+				GAME.currentPlayer = GAME.players[0];
+				playerName = GAME.currentPlayer.name;
+			}
+
+			return false;
+
+		}
+
+		return true;
+
+	});
+
+	if (isNoOneActive) {
+		// set isCurrentPlayer to true first player
+		GAME.players[0].isCurrentPlayer = true;
+		playerName = GAME.players[0].name;
+	}
+
+	// write in html player name
+	playerOutput.innerHTML = playerName + ' ';
+
 
 };
 /* =============================================
@@ -133,11 +373,18 @@ var GAME = {
 		var player = {
 			name: playerName,
 			gender: playerGender,
-			actionStreak: 0,
-			truthStreak: 0
+			actionsStreak: 0,
+			truthStreak: 0,
+			isCurrentPlayer: false
 		}
 
 		GAME.players.push(player);
+
+		if (player.gender === 'f')
+			GAME.playersF.push(player);
+
+		if (player.gender === 'm')
+			GAME.playersM.push(player);
 
 	});
 
@@ -185,6 +432,67 @@ var GAME = {
 };
 /* ======================================
 
+В этом файле происходит запись действий/вопросов в GAME.truth/GAME.actions
+
+1. Добавление правды
+2. Добавление действий
+3. Добавление и действий и вопросов
+
+PS Разделено на несколько функций для удобства обновлений вопрос или действий
+
+======================================= */
+
+// 1.
+;function updateTruth() {
+
+	GAME.rubrics.forEach(function (element, index, array) {
+
+		for (var item in GAME.json) {
+
+			if (item === element) {
+
+				for (var truth in GAME.json[item].action) {
+					GAME.truth.push(GAME.json[item].action[truth]);
+				}
+
+			}
+
+		}
+
+	});
+
+};
+
+// 2.
+;function updateAction() {
+
+
+	GAME.rubrics.forEach(function (element, index, array) {
+
+		for (var item in GAME.json) {
+
+			if (item === element) {
+
+				for (var actions in GAME.json[item].action) {
+					GAME.actions.push(GAME.json[item].action[actions]);
+				}
+
+			}
+
+		}
+
+	});
+};
+
+
+;function updateAllTruthActions() {
+
+	updateTruth();
+	updateAction();
+
+};
+/* ======================================
+
 Получение json'а с вопросами
 
 ====================================== */
@@ -200,6 +508,9 @@ var GAME = {
 		if (request.status >= 200 && request.status < 400) {
 			var data = JSON.parse(request.responseText);
 			GAME.json = data;
+
+			if (localStorageTest())
+				localStorage.setItem('json', JSON.stringify(data));
 			// init game
 			gameInit();
 			// hide preloader
@@ -246,8 +557,84 @@ var TEMPLATES = {
 			return template;
 	}
 
+
 }
 
+/* =====================================
+
+Показ модального окна
+1. Открытие модального окна, данные content @ type берутся из функции getTruthOrAction(type);
+2. Закрытие модального окна, проверка стриков
+
+====================================== */
+
+// 1.
+;function showModal(content, type) {
+
+	var overlay = document.querySelector('[data-game-overlay]'),
+		modal = document.querySelector('[data-game-modal]');
+
+	var modalText = modal.querySelector('[data-game-modal-content]');
+	modalText.innerHTML = content;
+
+	overlay.classList.remove('hidden');
+	overlay.classList.add('active');
+
+	var timeout = setTimeout(function () {
+
+		modal.classList.remove('hidden');
+		modal.classList.add('active');
+
+	}, 600);
+
+
+};
+
+// 2.
+;function closeModal() {
+
+	var overlay = document.querySelector('[data-game-overlay]'),
+		modal = document.querySelector('[data-game-modal]'),
+		truthButton = document.querySelector('[data-truth-button'),
+		actionsButton = document.querySelector('[data-action-button]');
+
+	modal.classList.remove('active');
+	overlay.classList.remove('active');
+
+	// next player
+	nextPlayer();
+	var status = getCheckedStreak();
+
+	// disable/enable buttons
+	if (status.truth === false) {
+		truthButton.classList.add('disabled');
+		truthButton.setAttribute('data-disabled', 'true');
+	} else {
+		truthButton.classList.remove('disabled');
+		truthButton.removeAttribute('data-disabled');
+	}
+
+
+	// disable/enable buttons
+	if (status.actions === false) {
+		actionsButton.classList.add('disabled');
+		actionsButton.setAttribute('data-disabled', 'true');
+	} else {
+		actionsButton.classList.remove('disabled');
+		actionsButton.removeAttribute('data-disabled');
+	}
+
+	var timeOut = setTimeout(function () {
+
+		modal.classList.add('hidden');
+		modal.classList.remove('gray', 'mass');
+		overlay.classList.add('hidden');
+
+
+	}, 600);
+
+
+};
 /* =======================================
 
 Рендер новых игроков в облако игроков
@@ -258,7 +645,6 @@ var TEMPLATES = {
 function updateMainPlayersCloud() {
 
 	var container = document.querySelector('[data-game-players-container]'),
-		containerNewPlayer = container.querySelector('[data-game-newplayer]'),
 		htmlString = '';
 
 		GAME.players.forEach( function (element, index, array) {
@@ -267,7 +653,7 @@ function updateMainPlayersCloud() {
 
 		});
 
-		containerNewPlayer.insertAdjacentHTML('beforeend', htmlString);
+		container.insertAdjacentHTML('afterbegin', htmlString);
 
 }
 /* ========================================
@@ -439,6 +825,11 @@ function updateMainPlayersCloud() {
 
 })();
 
+window.onload = function(event) {
+
+	preloader('hide');
+
+};
 
 
 ;function preloader(method) {
@@ -505,22 +896,6 @@ functions.js - включает в себя различные вспомога�
 // 2
 function saveGameState() {
 
-
-	function localStorageTest() {
-
-		var test = 'test';
-
-		try {
-			localStorage.setItem(test, test);
-			localStorage.removeItem(test);
-			return true;
-		} catch(e) {
-			return false;
-		}
-
-	}
-
-
 	if (localStorageTest()) {
 		localStorage.setItem('info', JSON.stringify(GAME));
 	} else {
@@ -528,585 +903,6 @@ function saveGameState() {
 	}
 
 };
-
-$(function() {
-
-	$('[data-next-player]').on('mousedown', function() {
-		next();
-	});
-
-});
-
-
-
-
-function updateRubricsChecked() {
-
-	$.each($('[name="new-game-rubric"]'), function() {
-
-		var value = $(this).val(),
-			$this = $(this);
-
-		ENV.rubrics.forEach(function(element, index, array) {
-
-			if (value === element) {
-				$this.prop('checked', true);
-			}
-
-		});
-
-	});
-
-}
-
-function updateQandAENV() {
-
-	var json = JSON.parse(localStorage.getItem('json'));
-
-	ENV.q = [];
-	ENV.a = [];
-
-	$.each(json, function(i, v) {
-
-		// find rubrics rubrics
-		ENV.rubrics.some(function(element, index, arrya) {
-
-				if (i === element) {
-					addQA(i, v);
-				}
-
-		});
-
-
-	});
-}
-
-$(function () {
-
-	var $rubric = $('.game-rubric');
-
-	$('[data-toggle-rubric]').on('click', function(event) {
-
-		event.preventDefault();
-
-		if ($rubric.hasClass('active')) {
-			ENV.rubrics = [];
-			$.each($rubric.find('input'), function() {
-
-				if ($(this).prop('checked') === true) {
-					ENV.rubrics.push($(this).val());
-				}
-
-			});
-
-			$rubric.removeClass('active');
-			updateQandAENV();
-			saveDataStorage();
-
-		} else {
-			$rubric.addClass('active');
-			updateRubricsChecked();
-		}
-
-
-	});
-
-});
-
-
-
-
-$(function () {
-
-	var $menu = $('.sidebar'),
-		$content = $('.main'),
-		$header = $('.header');
-
-	$('[data-toggle-menu], .sidebar_link').on('click', function(event) {
-
-		$header.toggleClass('active');
-		$menu.toggleClass('active');
-		$content.toggleClass('active');
-
-	});
-
-});
-
-
-// TODO
-// 1. СДЕЛАТЬ ПРОВЕРКУ НА ТО, БЫЛ ЛИ ЗАДАН ВОПРОС
-// 2. РЕФАКТОР КОДА
-
-
-function game(data) {
-
-	$.each(data, function(i, v) {
-
-		// find rubrics rubrics
-		ENV.rubrics.some(function(element, index, arrya) {
-
-				if (i === element) {
-					addQA(i, v);
-				}
-
-		});
-
-
-
-	});
-
-
-	next();
-	saveDataStorage();
-
-}
-
-
-function next() {
-
-	var $currentPlayer = $('.player_item.active');
-
-	if ($currentPlayer.length === 0) {
-		$currentPlayer = $('.player_item').eq(0);
-	}
-
-	var $players = $('.player_item');
-		currentPlayerName = $currentPlayer.find('.player_item_name').text(),
-		$pickedPlayer = $('.pick_player_name'),
-		$nextPlayer = null,
-		currentPlayerGender = '';
-
-		// find genderType
-		if ( $currentPlayer.hasClass('player_item--male') ) {
-			currentPlayerGender = 'm';
-		}
-
-		if ( $currentPlayer.hasClass('player_item--female') ) {
-			currentPlayerGender = 'f';
-		}
-
-		// update globs
-		ENV.currentPlayer = currentPlayerName;
-		ENV.currentPlayerGender = currentPlayerGender;
-
-
-	// show current player
-	$pickedPlayer.text(currentPlayerName + ' ');
-
-	// find next player
-	$nextPlayer = $currentPlayer.next();
-
-	if ( $currentPlayer.next().length === 1 && $currentPlayer.next().hasClass('player_item--new') ) {
-
-		$nextPlayer = $('.player_item').eq(0);
-
-	}
-
-	$currentPlayer.removeClass('active');
-	$nextPlayer.addClass('active');
-
-}
-
-
-$(function() {
-
-	$('[data-true]').on('mousedown', function() {
-
-		getQuestionOrAction(ENV.playerCurrentGender, 'q');
-		addStreak('q');
-
-	});
-
-	$('[data-action]').on('mousedown', function() {
-
-		getQuestionOrAction(ENV.playerCurrentGender, 'a');
-		addStreak('a');
-
-	});
-
-});
-
-// 2.
-// getQuestion
-function getQuestionOrAction(gender, type) {
-
-
-	var min = 0, max = 0,
-		$textHolder = $('.modal_desc'),
-		value = null,
-		text = '';
-
-	// parse var
-	var number = null;
-
-	if (type === 'q') {
-
-		max = ENV.q.length - 1;
-
-		value = getRandomInt(min, max);
-
-		if (ENV.q.length === 0) {
-			updateQandAENV();
-		}
-
-		text = ENV.q[value];
-		ENV.q.splice(value, 1);
-		// add to ENV.answered
-		parseQorAValue(text);
-
-		if (playerQorA(text) === '+') {
-
-			console.log(ENV.currentPlayerGender);
-
-			switch(ENV.currentPlayerGender) {
-				case 'm': {
-					randomPlayer('m');
-					writeText(text.slice(0, text.length - 1) + ' ' + ENV.playerTarget);
-
-				}
-				break;
-
-				case 'f': {
-					randomPlayer('f');
-					writeText(text.slice(0, text.length - 1) + ' ' + ENV.playerTarget);
-
-				}
-				break;
-			}
-			// switch end
-			return;
-
-		} 
-
-		if (playerQorA(text) === '#') {
-			$('[data-game-modal]').addClass('gray');
-			writeText(text.slice(0, text.length - 1) + ' (Не читай в слух и выполняй)');
-			return;
-		}
-
-		else {
-
-			writeText(text);
-			return;
-
-		}
-		// if end
-
-	}
-
-	if (type === 'a') {
-
-		max = ENV.a.length - 1;
-		value = getRandomInt(min, max);
-		// #bug
-		if (ENV.a.length === 0) {
-			updateQandAENV();
-		}
-
-		text = ENV.a[value];
-		ENV.a.splice(value, 1);
-		// add to ENV.answered
-		parseQorAValue(text);
-
-		if (playerQorA(text) === '+') {
-
-			console.log(ENV.currentPlayerGender);
-
-			switch(ENV.currentPlayerGender) {
-				case 'm': {
-					randomPlayer('m');
-					writeText(text.slice(0, text.length - 1) + ' ' + ENV.playerTarget);
-
-				}
-				break;
-
-				case 'f': {
-					randomPlayer('f');
-					writeText(text.slice(0, text.length - 1) + ' ' + ENV.playerTarget);
-
-				}
-				break;
-			}
-			// switch end
-			return;
-
-		}
-
-		if (playerQorA(text) === '#') {
-			$('[data-game-modal]').addClass('gray');
-			writeText(text.slice(0, text.length - 1) + ' (Не читайте вслух и помните что вы не должны выдавать содержимое карточки)');
-			return;
-		}
-
-		else {
-
-			writeText(text);
-			return;
-
-		}
-		// if end
-
-	}
-
-
-	function writeText(text) {
-
-		var getText = text.split(':');
-
-		$textHolder.text(getText[1]);
-
-		if (playerQorA(text)) {
-			$textHolder.text(getText[1].slice(0, getText[1].length - 1));
-		}
-	}
-
-
-	// determines whether it is necessary to connect the player
-	function playerQorA(value) {
-
-		var lastSymbol = '';
-
-		lastSymbol = value.split('');
-		lastSymbol = lastSymbol[lastSymbol.length - 1];
-
-		console.log(lastSymbol);
-
-		if (lastSymbol === '+') {
-			return '+';
-		}
-
-		if (lastSymbol === '#') {
-			return '#';
-		}
-
-		else {
-			return false;
-		}
-
-	}
-
-
-	// get random player
-	function randomPlayer(gender) {
-
-		if (gender === 'm') {
-			var minPlayers = 0,
-				maxPlayers = ENV.playersF.length - 1;
-
-			var getRandomPlayer = getRandomInt(minPlayers, maxPlayers);
-				// console.log(getRandomPlayer);
-
-			ENV.playerTarget = ENV.playersF[getRandomPlayer];
-
-		}
-
-		if (gender === 'f') {
-
-			var minPlayers = 0,
-				maxPlayers = ENV.playersM.length - 1;
-
-			var getRandomPlayer = getRandomInt(minPlayers, maxPlayers);
-				// console.log(getRandomPlayer);
-
-			ENV.playerTarget = ENV.playersM[getRandomPlayer];
-
-
-		}
-
-
-		return ENV.playerTarget;
-
-	}
-
-	// parse QorA value
-	function parseQorAValue(text) {
-
-		var value = text.split(':');
-		value = parseInt(value[0]);
-
-		ENV.answered.push(value);
-
-	}
-
-
-}
-
-
-
-function addQA(i, v, rubric) {
-
-	$.each(v, function(i, v) {
-
-		if (i === 'true') {
-			$.each(v, function(i, v) {
-				// push to global bar question
-				ENV.q.push(i + ':' + v);
-			});
-		}
-
-		if (i === 'action') {
-			$.each(v, function(i, v) {
-				// push to global var action
-				ENV.a.push(i + ':' + v);
-			});
-		}
-
-	});
-
-}
-
-
-$(function () {
-
-	// delete player
-	$('body').on('mousedown', '.player_item_delete', function() {
-
-		var $parrent = $(this).closest('.player_item'),
-			$prev;
-
-		if ( $parrent.hasClass('active') ) {
-			
-			if ( !$parrent.next().hasClass('.player_item--new') ) {
-				$('.player_item').eq(0).addClass('active');
-			} else {
-				$('.player_item').next().addClass('active');
-			}
-
-		}
-
-		// $parrent
-
-		$parrent.remove();
-		next();
-		updatePlayers('game');
-
-	});
-
-});
-
-
-
-function checkAvailable() {
-
-	var player = ENV.currentPlayer,
-		qCount = 0,
-		aCount = 0,
-		maxCount = 2;
-
-
-
-	ENV.playersObjects.some(function (element, index, array) {
-
-		if (player === element.name) {
-
-			qCount = element.truthStreak;
-			aCount = element.actionStreak;
-
-			return false;
-
-		}
-
-	});
-
-	if (qCount === maxCount) {
-		return 'qFalse';
-	}
-
-	if (aCount === maxCount) {
-		return 'aFalse';
-	}
-
-}
-
-
-function addStreak(type) {
-
-	var player = ENV.currentPlayer;
-
-
-	ENV.playersObjects.some(function (element, index, array) {
-
-		if (player === element.name) {
-
-			if (type === 'q') {
-				element.truthStreak += 1;
-				element.actionStreak = 0;
-			}
-
-
-			if (type === 'a') {
-				element.actionStreak += 1;
-				element.truthStreak = 0;
-			}
-
-			return false;
-
-		}
-
-	});
-
-
-}
-
-$(function() {
-
-	if (localStorage.getItem('info') !== null) {
-		// hide game start
-		$('.game-start').addClass('visibility');
-		// show game restart
-		$('.game-restart').addClass('active');
-
-		// add event
-		$('.game-restart-true').on('click', function(event) {
-
-			event.preventDefault();
-
-
-			ENV = JSON.parse(localStorage.getItem('info'));
-			$('.game-restart').removeClass('active');
-			// init
-			updateRubricsChecked();
-			updateMainPlayersCloud();
-			next();
-
-		});
-
-		$('[data-game-restart]').on('click', function(event) {
-
-			// new game
-			// remove key
-			localStorage.removeItem('info');
-			// remove classes
-			$('.game-restart').removeClass('active');
-			$('.game-start').removeClass('visibility hidden');
-
-			// if game was started
-			resetGameStartDOM();
-
-
-		});
-
-
-	} else {
-		$('.game-restart').removeClass('active');
-	}
-
-});
-
-
-function resetGameStartDOM() {
-
-	$('.game-start_modal--first').removeClass('new-player-create');
-	$('.game-start_modal').not('.game-start_modal--first').removeClass('active hidden');
-	$('.game-start_modal--first').removeClass('hidden');
-	$('.game-start_modal--first').find('.game-start_next--players').text('Далее');
-	$('.game-start_modal--first').find('.game-start_next--players').attr('data-disabled', '');
-	$('.game-start_modal--first').find('.game-start_header').text('Добавить игроков');
-	$('.game-start_modal--fourth').css({'visibility': 'visible'});
-	$('.game-start_player-cloud').empty();
-	$('[name="new-game-rubric"]').prop('checked', false);
-
-}
 /* ============================================
 
 Всякий usefull стаф, вспомогательные функции которые
@@ -1118,6 +914,8 @@ function resetGameStartDOM() {
 2. Element.closest полифил
 
 3. Random функция
+
+4. Поддерживает ли браузер localStorage
 
 ============================================ */
 
@@ -1166,290 +964,18 @@ function getRandomInt(min, max) {
 }
 
 
+// 4.
+function localStorageTest() {
 
-$(function () {
+	var test = 'test';
 
-	var $trigger = $('.player_item--new'),
-		$gameStart = $('.game-start'),
-		$modal = $('.game-start_modal--first');
-
-	$trigger.on('click', function(event) {
-
-		$('.game-start_modal--fourth').css({
-			'visibility': 'hidden'
-		});
-
-		if ( $('.game-start_player-cloud').children().length === 0 ) {
-
-			// update game start cloud
-			$.each($('.players-cloud-main .player_item'), function() {
-
-				var name = $(this).text();
-
-				if ( $(this).hasClass('player_item--male') ) {
-					$('.game-start_player-cloud').append('<span class="game-start_player game-start_player--male" data-player-gender="m">' + name + '<span class="game-start_player-remove"><\/span><\/span>');
-				}
-
-				if ( $(this).hasClass('player_item--female') ) {
-					$('.game-start_player-cloud').append('<span class="game-start_player game-start_player--female" data-player-gender="f">' + name + '<span class="game-start_player-remove"><\/span><\/span>')
-				}
-
-			});
-
-			$('.game-start_next--players').removeAttr('data-disabled');
-
-
-		}
-
-		// update html
-		$modal.addClass('new-player-create');
-		$modal.find('.game-start_next--players').text('Ок');
-		$modal.find('.game-start_header').text('Новый игрок');
-
-		// update visibility
-		$modal.removeClass('hidden');
-		$gameStart.removeClass('visibility hidden');
-
-	});
-
-});
-$(window).on('load', function() {
-
-	preloader('hide');
-
-});
-$(function () {
-
-
-	var $triggers = $('[data-show-popup]'),
-		$popupClose = $('[data-close-popup]');
-
-	$triggers.on('mousedown', function(event) {
-
-		var type = $(this).attr('data-modalType')
-		modalShow(type, $(this));
-
-	});
-
-	$popupClose.on('mousedown', function() {
-		modalEvent('close');
-	});
-
-
-});
-
-// show modal
-// responsible for showing / close modal
-function modalEvent(Event) {
-
-	var overlayTransition = 600,
-		modalTransition = 600,
-		$overlay = $('.overlay'),
-		$modal = $('.modal_window');
-
-	if (Event === 'open') {
-		openModal();
-	}
-
-	if (Event === 'close') {
-		closeModal();
-	}
-
-	// open modal
-	function openModal() {
-
-
-		$overlay.removeClass('hidden').addClass('active');
-
-		var timeOut = setTimeout(function() {
-
-			$modal.removeClass('hidden').addClass('active');
-
-		}, overlayTransition);
-	}
-
-	// close modal
-	function closeModal() {
-
-		$modal.removeClass('active');
-		$overlay.removeClass('active');
-
-		var timeOut = setTimeout(function () {
-
-			$modal.addClass('hidden');
-			$modal.removeClass('gray');
-			$overlay.addClass('hidden');
-
-			if (checkAvailable() === 'qFalse') {
-				$('[data-true]').addClass('disabled').attr('data-disabled', '');
-			} else {
-				$('[data-true]').removeClass('disabled').removeAttr('data-disabled');
-			}
-
-			if (checkAvailable() === 'aFalse') {
-				$('[data-action]').addClass('disabled').attr('data-disabled', '');
-			} else {
-				$('[data-action]').removeClass('disabled').removeAttr('data-disabled');
-			}
-
-		}, modalTransition);
-
+	try {
+		localStorage.setItem(test, test);
+		localStorage.removeItem(test);
+		return true;
+	} catch(e) {
+		return false;
 	}
 
 }
-
-
-// show modal with text
-function modalShow(type, $sender) {
-
-	var $modal = $('.modal_window'),
-		$overlay = $('.overlay'),
-		modalHeader = '',
-		modalDesc = '';
-
-
-
-	if (type === 'game') {
-		modalEvent('open')
-		// showpopup , get question form json
-		return;
-	}
-
-	else {
-		// get text from attr
-		modalHeader = $sender.attr('data-modalHeader');
-		modalDesc = $sender.attr('data-modalDesc');
-		modalEvent('open');
-
-	}
-
-}
-/* ==============================
-
-UPDATE PLAYERS INPUTS ( MALE, FEMALE, ALL )
-
-================================ */
-
-function updatePlayers(type) {
-
-	var $cloud = $('.players-cloud-main'),
-		male = [],
-		female = [],
-		all = [],
-		allGender = [],
-		$inputM = $('#players-m'),
-		$inputF = $('#players-f'),
-		$inputAll = $('#players-all'),
-		$players = null,
-		playersObjects = [];
-
-	// if game only starting
-	if (type === 'game-start') {
-
-		$cloud = $('.game-start_player-cloud');
-		$players = $cloud.find('.game-start_player');
-
-	} else {
-		// find in main cloud
-		$players = $cloud.find('.player_item').not('.player_item--new');
-
-	}
-
-	// find players in cloud
-	// define players gender type
-	$.each($players, function() {
-
-		var val;
-			val = $(this).text().replace(/ /g,'');
-
-		if ( $(this).attr('data-player-gender') === 'm' ) {
-			male.push(val);
-			allGender.push(val + '.M');
-
-		}
-
-		if ( $(this).attr('data-player-gender') === 'f' ) {
-			female.push(val);
-			allGender.push(val + '.F');
-
-		}
-
-		all.push(val);
-		playersObjects.push({name: val, gender: $(this).attr('data-player-gender'), truthStreak: 0, actionStreak: 0});
-
-	});
-
-	// update global
-	ENV.playersM = male;
-	ENV.playersF = female;
-	ENV.players = all;
-	ENV.playersGender = allGender;
-	ENV.playersCount = all.length;
-	ENV.playersObjects = playersObjects;
-
-	// update inputs values
-	$inputM.val(male.toString());
-	$inputF.val(female.toString());
-	$inputAll.val(all.toString());
-	saveDataStorage();
-
-}
-
-/* ==============================
-
-UPDATE RUBRICS
-
-================================ */
-
-
-function updateRubrics(type) {
-
-	var $inputs = $('[name="rubric-select-main"]'),
-		rubrics = [],
-		$inputRubric = $('#game-rubric');
-
-	if (type === 'game-start') {
-
-		$inputs = $('[name="new-game-rubric"]');
-
-	}
-	// find checked rubrics
-	$.each($inputs, function() {
-
-		if ( $(this).prop('checked') === true ) {
-			rubrics.push($(this).val());
-		}
-
-	});
-	// update input
-	$inputRubric.val(rubrics.toString());
-	ENV.rubrics = rubrics;
-
-}
-
-/* ==============================
-
-CLICK EVENT TO UPDATE INPUTS
-
-================================ */
-
-
-$( function() {
-
-	$('[data-update-inputs]').on('mousedown', function() {
-
-		if ( $(this).hasClass('game-start_next') ) {
-
-			updatePlayers('game-start');
-			updateRubrics('game-start');
-			return;
-
-		}
-
-		// update inputs values
-		updatePlayers();
-
-	});
-
-});
 

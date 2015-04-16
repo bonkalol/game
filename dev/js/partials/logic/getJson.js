@@ -15,6 +15,9 @@
 		if (request.status >= 200 && request.status < 400) {
 			var data = JSON.parse(request.responseText);
 			GAME.json = data;
+
+			if (localStorageTest())
+				localStorage.setItem('json', JSON.stringify(data));
 			// init game
 			gameInit();
 			// hide preloader
