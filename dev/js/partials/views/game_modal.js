@@ -7,16 +7,20 @@
 ====================================== */
 
 // 1.
-;function showModal(content, type) {
+;function showModal(content) {
 
 	var overlay = document.querySelector('[data-game-overlay]'),
 		modal = document.querySelector('[data-game-modal]');
 
 	var modalText = modal.querySelector('[data-game-modal-content]');
-	modalText.innerHTML = content;
+	modalText.innerHTML = content.text;
 
 	overlay.classList.remove('hidden');
 	overlay.classList.add('active');
+
+	if (content.class.length >= 1) {
+		modal.classList.add(content.class);
+	}
 
 	var timeout = setTimeout(function () {
 

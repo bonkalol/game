@@ -49,12 +49,12 @@
 // 2.
 ;function getTruthOrAction(type) {
 
-	var content = '',
+	var text = '',
 		min = 0,
 		random = null;
 		// get random question
 		random = getRandomInt(min, GAME[type].length - 1);
-		content = GAME[type][random];
+		text = GAME[type][random];
 		GAME[type].splice(random, 1);
 
 		if ( type === 'truth' ) {
@@ -75,35 +75,15 @@
 				updateAction();
 		}
 
-		showModal(content, type);
+		var content = cardType(text); 
+		console.log(content);
+
+		showModal(content);
 
 };
 
 // 3.
-;function cardType(text) {
-
-	var symbol = text.slice(text.length, 1);
-
-	switch(symbol) {
-
-		case '+': {
-
-		}
-		break;
-
-		case '#': {
-
-		}
-		break;
-
-		case ';': {
-
-		}
-		break;
-	}
-
-}
-
+// Replaced into game_card-type.js
 
 // 5.
 ;function addStreak(type) {

@@ -19,8 +19,8 @@ PS Разделено на несколько функций для удобст
 
 			if (item === element) {
 
-				for (var truth in GAME.json[item].action) {
-					GAME.truth.push(GAME.json[item].action[truth]);
+				for (var truth in GAME.json[item].true) {
+					GAME.truth.push(GAME.json[item].true[truth]);
 				}
 
 			}

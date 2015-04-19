@@ -44,6 +44,7 @@
 	if (isNoOneActive) {
 		// set isCurrentPlayer to true first player
 		GAME.players[0].isCurrentPlayer = true;
+		GAME.currentPlayer = GAME.players[0];
 		playerName = GAME.players[0].name;
 	}
 

@@ -31,6 +31,15 @@
 		&.gray {
 			background-color: #666;
 		}
+
+		&.mass {
+			background-color: #f7fa8a;
+			color: #222;
+
+			.modal_submit {
+				color: #222;
+			}
+		}
 	}
 
 

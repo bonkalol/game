@@ -162,6 +162,85 @@ var GAME = {
 	// 7
 	json: {}
 }
+/* =================================================
+
+Парсит тип карточки
+
+================================================== */
+
+
+// 3.
+;function cardType(text) {
+
+	var symbol = text.slice(text.length - 1, text.length),
+		cardText = text,
+		content = { text: '', class: '' };
+
+	if (symbol === '+' ||
+		symbol === '#' ||
+		symbol === ';') {
+		cardText = cardText.slice(0, text.length - 1);
+	}
+
+	switch(symbol) {
+
+		// Добавить игрока
+		case '+': {
+
+			var currentPlayerGender = GAME.currentPlayer.gender,
+				random = 0;
+
+
+			if ( currentPlayerGender === 'f' )
+				currentPlayerGender = 'M';
+			else if ( currentPlayerGender === 'm' )
+				currentPlayerGender = 'F';
+
+			random = getRandomInt(0, GAME['players' + currentPlayerGender].length - 1);
+			GAME.targetPlayer = GAME['players' + currentPlayerGender][random];
+
+			cardText += ' ' + GAME.targetPlayer.name;
+
+			content.text = cardText;
+			content.class = '';
+
+		}
+		break;
+
+		// Серая карточка
+		case '#': {
+
+			content.text = cardText + ' (Не читайте вслух и помните что вы не должны выдавать содержимое карточки)';
+			content.class = 'gray';
+
+		}
+		break;
+
+		// Коллективное действие
+		case ';': {
+
+			content.text = cardText + ' (Коллективное действие)';
+			content.class = 'mass';
+
+		}
+		break;
+
+		// Простая карточка
+		default: {
+
+			content.text = cardText;
+			content.class = '';
+
+		}
+		break;
+	}
+
+	console.log(content);
+	// return parsed values
+	return content;
+
+}
+
 /* ======================================
 
 Здесь происходит инициализация игры
@@ -241,12 +320,12 @@ var GAME = {
 // 2.
 ;function getTruthOrAction(type) {
 
-	var content = '',
+	var text = '',
 		min = 0,
 		random = null;
 		// get random question
 		random = getRandomInt(min, GAME[type].length - 1);
-		content = GAME[type][random];
+		text = GAME[type][random];
 		GAME[type].splice(random, 1);
 
 		if ( type === 'truth' ) {
@@ -267,35 +346,15 @@ var GAME = {
 				updateAction();
 		}
 
-		showModal(content, type);
+		var content = cardType(text); 
+		console.log(content);
+
+		showModal(content);
 
 };
 
 // 3.
-;function cardType(text) {
-
-	var symbol = text.slice(text.length, 1);
-
-	switch(symbol) {
-
-		case '+': {
-
-		}
-		break;
-
-		case '#': {
-
-		}
-		break;
-
-		case ';': {
-
-		}
-		break;
-	}
-
-}
-
+// Replaced into game_card-type.js
 
 // 5.
 ;function addStreak(type) {
@@ -404,6 +463,7 @@ var GAME = {
 	if (isNoOneActive) {
 		// set isCurrentPlayer to true first player
 		GAME.players[0].isCurrentPlayer = true;
+		GAME.currentPlayer = GAME.players[0];
 		playerName = GAME.players[0].name;
 	}
 
@@ -559,8 +619,8 @@ PS Разделено на несколько функций для удобст
 
 			if (item === element) {
 
-				for (var truth in GAME.json[item].action) {
-					GAME.truth.push(GAME.json[item].action[truth]);
+				for (var truth in GAME.json[item].true) {
+					GAME.truth.push(GAME.json[item].true[truth]);
 				}
 
 			}
@@ -677,16 +737,20 @@ var TEMPLATES = {
 ====================================== */
 
 // 1.
-;function showModal(content, type) {
+;function showModal(content) {
 
 	var overlay = document.querySelector('[data-game-overlay]'),
 		modal = document.querySelector('[data-game-modal]');
 
 	var modalText = modal.querySelector('[data-game-modal-content]');
-	modalText.innerHTML = content;
+	modalText.innerHTML = content.text;
 
 	overlay.classList.remove('hidden');
 	overlay.classList.add('active');
+
+	if (content.class.length >= 1) {
+		modal.classList.add(content.class);
+	}
 
 	var timeout = setTimeout(function () {
 
