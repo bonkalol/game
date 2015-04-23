@@ -1,6 +1,6 @@
 module.exports = {
 
-	isProduction: false,
+	isProduction: true,
 	jshint: true,
 	// set this var to true if u wanna validate your html
 	// but be carefull, it takes a lot of compilation tome
@@ -61,7 +61,7 @@ module.exports = {
 			sprite: 'dev/img/sprite/*.png',
 			spriteSvg: 'dev/img/svg/*.svg',
 			images: 'dev/img/**/*',
-			static: 'dev/static/**/*',
+			static: 'dev/static/*',
 			data: 'dev/data/**/*',
 			assets: 'dev/assets/**/*'
 		}

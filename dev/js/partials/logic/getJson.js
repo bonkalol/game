@@ -7,6 +7,13 @@
 
 ;function getJson() {
 
+	// если офлайн режим
+	if ( !navigator.onLine ) {
+		GAME.json = JSON.parse(localStorage.getItem('json'));
+		gameInit();
+		return;
+	}
+
 	preloader('show');
 	var request = new XMLHttpRequest();
 	request.open('GET', 'assets/response.json', true);

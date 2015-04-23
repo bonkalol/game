@@ -38,7 +38,8 @@
 
 	var restartButtons = document.querySelectorAll('[data-game-restart]'),
 		gameStartWrap = document.querySelector('[data-gamestart]'),
-		gameStartModals = document.querySelectorAll('[data-gamestart-modal]');
+		gameStartModals = document.querySelectorAll('[data-gamestart-modal]'),
+		gameRestartWrap = document.querySelector('[data-game-restart-wrap]');
 
 	bindListeners(restartButtons, 'mousedown', function (event, element) {
 
@@ -50,6 +51,7 @@
 
 		resetGAME();
 		gameStartWrap.classList.remove('visibility', 'hidden');
+		gameRestartWrap.classList.remove('active');
 
 
 		[].forEach.call(gameStartModals, function (element, index, array) {

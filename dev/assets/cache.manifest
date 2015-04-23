@@ -1,4 +1,13 @@
 CACHE MANIFEST
-/index.html
-/css/main.css
-/js/main.js
+# Версия 1.5.3
+
+
+CACHE:
+../index.html
+../css/main.css
+../js/main.js
+../img/cross.svg
+../img/symbol/svg/sprite.symbol.svg
+
+NETWORK:
+*
