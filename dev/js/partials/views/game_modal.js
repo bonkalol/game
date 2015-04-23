@@ -37,8 +37,8 @@
 
 	var overlay = document.querySelector('[data-game-overlay]'),
 		modal = document.querySelector('[data-game-modal]'),
-		truthButton = document.querySelector('[data-truth-button'),
-		actionsButton = document.querySelector('[data-action-button]');
+		truthButton = document.querySelector('[data-showmodal-button="truth"]'),
+		actionsButton = document.querySelector('[data-showmodal-button="actions"]');
 
 	modal.classList.remove('active');
 	overlay.classList.remove('active');

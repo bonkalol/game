@@ -13,6 +13,8 @@ PS Разделено на несколько функций для удобст
 // 1.
 ;function updateTruth() {
 
+	GAME.truth = [];
+
 	GAME.rubrics.forEach(function (element, index, array) {
 
 		for (var item in GAME.json) {
@@ -33,6 +35,8 @@ PS Разделено на несколько функций для удобст
 
 // 2.
 ;function updateAction() {
+
+	GAME.actions = [];
 
 
 	GAME.rubrics.forEach(function (element, index, array) {

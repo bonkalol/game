@@ -1,5 +1,5 @@
 section.game-start(data-gamestart)
-	.game-start_modal.game-start_modal--first.active(data-gamestart-modal)
+	.game-start_modal.game-start_modal--first.active(data-gamestart-modal data-newplayer-modal)
 		h2.game-start_header Добавить игроков
 		.game-start_modal-inner.game-start_modal-inner--players
 			p.game-start_subheader Минимум 2 игрока.
@@ -18,8 +18,8 @@ section.game-start(data-gamestart)
 						use(xlink:href=svg + "woman")
 					span.game-start_gender-label_text Девушка
 			.game-start_player-cloud(data-gamestart-playerContainer)
-		button.game-start_next.game-start_next--players(type="button" data-disabled data-gamestart-nextmodal data-gamestart-nextmodal-player) Далее
-	.game-start_modal.game-start_modal--second(data-gamestart-modal)
+		button.game-start_next.game-start_next--players(type="button" data-disabled data-gamestart-nextmodal data-gamestart-nextmodal-player data-newplayer-modal-button) Далее
+	.game-start_modal.game-start_modal--second(data-gamestart-modal data-rubricselect-modal)
 		h2.game-start_header Выберите рубрику
 		.game-start_modal-inner.game-start_modal-inner--rubric
 			input(type="checkbox" data-hidden-cb id="new-game-rubric-16" value="16" name="new-game-rubric" data-gamestart-rubric)
@@ -32,8 +32,8 @@ section.game-start(data-gamestart)
 			label.game-start_rubric-label(for="new-game-rubric-21")
 				span.game-start_rubric-desc 21+ (Например: Французский поцелуй)
 			button.game-start_back(type="button" data-gamestart-prevmodal) Назад
-			button.game-start_next.next-back.game-start_next--rubrics(type="button" data-disabled data-gamestart-nextmodal) Далее
-	.game-start_modal.game-start_modal--third(data-gamestart-modal)
+			button.game-start_next.next-back.game-start_next--rubrics(type="button" data-disabled data-gamestart-nextmodal data-rubricselect-modal-button) Далее
+	.game-start_modal.game-start_modal--third(data-gamestart-modal data-rules-modal)
 		h2.game-start_header Правила игры
 		.game-start_modal-inner
 			p.game-start_rules 

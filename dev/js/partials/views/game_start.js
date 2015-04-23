@@ -19,7 +19,7 @@
 
 
 // 1.
-;(function gameStartView() {
+;function gameStartView() {
 
 
 	var gameStartModals = document.querySelectorAll('[data-gamestart-modal]'),
@@ -67,6 +67,13 @@
 	});
 
 
+};
+
+// call game start view
+;(function callGameStart() {
+
+	gameStartView();
+
 })();
 
 
@@ -88,11 +95,11 @@
 
 	if ( document.querySelectorAll('[data-gamestart-player]').length >= 2 ) {
 
-		gameStartPlayersContainer.closest('[data-gamestart-modal]').querySelector('[data-gamestart-nextmodal]').removeAttribute('data-disabled');
+		gameStartPlayersContainer.closest('[data-gamestart-modal]').querySelector('[data-newplayer-modal-button]').removeAttribute('data-disabled');
 
 	} else {
 
-		gameStartPlayersContainer.closest('[data-gamestart-modal]').querySelector('[data-gamestart-nextmodal]').setAttribute('data-disabled', '');
+		gameStartPlayersContainer.closest('[data-gamestart-modal]').querySelector('[data-newplayer-modal-button]').setAttribute('data-disabled', '');
 
 	}
 
@@ -103,7 +110,33 @@
 // 3.
 ;function gameStartPlayerDelete(sender) {
 
+	var gameStartPlayersContainer = document.querySelector('[data-gamestart-playerContainer]'),
+		playerName = sender.innerText || sender.textContent,
+		playerGender = sender.getAttribute('data-gamestart-player-gender');
+
+	GAME.players = GAME.players.filter(function (element, index, array) {
+
+		return element.name !== playerName;
+
+	});
+
+	GAME['players' + playerGender.toUpperCase()] = GAME['players' + playerGender.toUpperCase()].filter(function (element, index, array) {
+
+		return element.name !== playerName;
+
+	});
+
 	sender.remove();
+
+	if ( document.querySelectorAll('[data-gamestart-player]').length >= 2 ) {
+
+		gameStartPlayersContainer.closest('[data-gamestart-modal]').querySelector('[data-newplayer-modal-button]').removeAttribute('data-disabled');
+
+	} else {
+
+		gameStartPlayersContainer.closest('[data-gamestart-modal]').querySelector('[data-newplayer-modal-button]').setAttribute('data-disabled', '');
+
+	}
 
 };
 
@@ -122,7 +155,7 @@
 
 
 // 4.
-;(function gameStartRubricSelect() {
+;function gameStartRubricSelect() {
 
 	var checkboxes = document.querySelectorAll('[data-gamestart-rubric]');
 
@@ -131,9 +164,9 @@
 		GAME.rubrics = [];
 
 		if (isChecked(checkboxes))
-			element.closest('[data-gamestart-modal]').querySelector('[data-gamestart-nextmodal]').removeAttribute('data-disabled');
+			element.closest('[data-gamestart-modal]').querySelector('[data-rubricselect-modal-button]').removeAttribute('data-disabled');
 		else
-			element.closest('[data-gamestart-modal]').querySelector('[data-gamestart-nextmodal]').setAttribute('data-disabled', '');
+			element.closest('[data-gamestart-modal]').querySelector('[data-rubricselect-modal-button]').setAttribute('data-disabled', '');
 
 		// update picked rubrics
 		[].forEach.call(checkboxes, function (element, index, array) {
@@ -164,5 +197,12 @@
 			return false;
 
 	};
+
+};
+
+
+;(function gameStartRubricSelectCall() {
+
+	gameStartRubricSelect();
 
 })();

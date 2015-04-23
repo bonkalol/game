@@ -8,7 +8,18 @@
 function updateMainPlayersCloud() {
 
 	var container = document.querySelector('[data-game-players-container]'),
-		htmlString = '';
+		htmlString = '',
+		players = document.querySelectorAll('[data-game-player]');
+
+		if ( players ) {
+
+			[].forEach.call(players, function (element, index, array) {
+
+				element.remove();
+
+			});
+
+		}
 
 		GAME.players.forEach( function (element, index, array) {
 

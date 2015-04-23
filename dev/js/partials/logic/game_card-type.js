@@ -2,6 +2,23 @@
 
 Парсит тип карточки
 
+# Символы
+
+'+' - добавление игрока противоположного пола в конец предложения,
+например: Миша поцелуй игрока+, вырожение после парсинга будет выглядеть так:
+Миша поцелуй игрока Лена;
+
+'#' - серая карточка, её нельзя читать вслух и надо выполнять
+так чтобы игроки не знали что за задание внутри;
+
+';' - коллективное действие, все игроки участвуют;
+
+# Идеи
+Символ для выбора игрока из обоих полов = '>';
+Символ для вставки имени игрока в текст = '<Player>';
+
+
+
 ================================================== */
 
 
@@ -10,11 +27,22 @@
 
 	var symbol = text.slice(text.length - 1, text.length),
 		cardText = text,
-		content = { text: '', class: '' };
+		content = { text: '', class: '' },
+		possibleSymbols = ['+', '#', ';'],
+		isSymbol = false;
 
-	if (symbol === '+' ||
-		symbol === '#' ||
-		symbol === ';') {
+	possibleSymbols.every(function (element, index, array) {
+
+		if ( element === symbol ) {
+			isSymbol = true;
+			return false;
+		}
+
+		return true;
+
+	});
+
+	if ( isSymbol ) {
 		cardText = cardText.slice(0, text.length - 1);
 	}
 
@@ -71,7 +99,6 @@
 		break;
 	}
 
-	console.log(content);
 	// return parsed values
 	return content;
 

@@ -6,10 +6,6 @@
 2. Выбираем правду или действие, выбранный вопрос удаляем из массива, если
 вопросы или действие кончились, обновляем
 3. Определяем тип карточки
-3.1. Знак +, надо выбрать игрока противоположного пола и подставить как цель
-3.2. Знак #, серая карточка, не читать задание в слух и выполнять действие чтобы игроки не догадывались
-3.3. Знак ;, серая карточка, коллективное задание - выполняют все
-4. Показываем модальное окно с выбранным вопросом, действием
 5. Добавление вопроса, действия в стрик
 6. Проверка доступности вопросов/действий
 
@@ -18,20 +14,15 @@
 // 1.
 ;(function buttonEvents() {
 
-	var truthButton = document.querySelector('[data-truth-button]'),
-		actionButton = document.querySelector('[data-action-button]'),
+	var showModalButton = document.querySelectorAll('[data-showmodal-button]');
 		closePopupButton = document.querySelector('[data-game-modalclose-button]');
 
 
-		truthButton.addEventListener('mousedown', function(event) {
+		bindListeners(showModalButton, 'mousedown' , function (event, element) {
 
-			getTruthOrAction('truth');
+			var type = element.getAttribute('data-showmodal-button');
 
-		});
-
-		actionButton.addEventListener('mousedown', function(event) {
-
-			getTruthOrAction('actions');
+			getTruthOrAction(type);
 
 		});
 
@@ -60,7 +51,6 @@
 		if ( type === 'truth' ) {
 
 			addStreak(type);
-			console.log(GAME.currentPlayer, 'picked ' + type);
 
 			if ( GAME.truth.length === 0 )
 				updateTruth();
@@ -69,15 +59,15 @@
 		if ( type === 'actions' ) {
 
 			addStreak(type);
-			console.log(GAME.currentPlayer, 'picked ' + type);
 
 			if ( GAME.actions.length === 0 )
 				updateAction();
 		}
 
+		// get card type
 		var content = cardType(text); 
-		console.log(content);
 
+		// render modal
 		showModal(content);
 
 };
@@ -133,16 +123,23 @@
 
 	});
 
-	if (truthCount === max)
-		status = {truth: false, actions: true};
+	switch(max) {
+		case truthCount: {
+			status = {truth: false, actions: true};
+		}
+		break;
 
-	if (actionsCount === max)
-		status = {truth: true, actions: false};
+		case actionsCount: {
+			status = {truth: true, actions: false};
+		}
+		break;
 
-	else if (truthCount !== max && actionsCount !== max)
-		status = {truth: true, actions: true};
+		default: {
+			status = {truth: true, actions: true};
+		};
+		break;
+	}
 
-	// console.log(status);
 	return status;
 
 };

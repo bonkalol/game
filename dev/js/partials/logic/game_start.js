@@ -16,7 +16,7 @@
 =============================================== */
 
 // 1. 
-;(function gameStartLogic() {
+;function gameStartLogic() {
 
 	var gameStartPlayerInput = document.querySelector('[data-gamestart-playerInput]'),
 		gameStartPlayerButtonAdd = document.querySelector('[data-gamestart-playerAdd]'),
@@ -41,44 +41,54 @@
 
 			}
 
-			gameStartSavePlayers();
+			SavePlayers(document.querySelectorAll('[data-gamestart-player]'), 'data-gameStart-player-gender');
 
 		});
 
 
+};
+
+;(function gameStartLogicCall() {
+
+	gameStartLogic();
+
 })();
 
 // 2.
-;function gameStartSavePlayers() {
+;function SavePlayers(players, playersGenderAttr) {
 
-	var gameStartPlayers = document.querySelectorAll('[data-gamestart-player]'),
+	var gameStartPlayers = players,
 		playerName = '',
 		playerGender = '';
 
+	// player Proto
+	var Player = {
+		constructor: function (name, gender) {
+			this.name = name;
+			this.gender = gender;
+			this.actionsStreak = 0;
+			this.truthStreak = 0;
+			this.isCurrentPlayer = false;
+			return this;
+		}
+	}
+
 	// reset GAME.player for rewrite
 	GAME.players = [];
+	GAME.playersF = [];
+	GAME.playersM = [];
 
 	// update GAME.players
 	[].forEach.call(gameStartPlayers, function (element, index, array) {
 
 		playerName = element.innerText || element.textContent;
-		playerGender = element.getAttribute('data-gameStart-player-gender');
+		playerGender = element.getAttribute(playersGenderAttr);
 
-		var player = {
-			name: playerName,
-			gender: playerGender,
-			actionsStreak: 0,
-			truthStreak: 0,
-			isCurrentPlayer: false
-		}
-
+		// create new player
+		player = Object.create(Player).constructor(playerName, playerGender);
+		// sort player
 		GAME.players.push(player);
-
-		if (player.gender === 'f')
-			GAME.playersF.push(player);
-
-		if (player.gender === 'm')
-			GAME.playersM.push(player);
+		GAME['players' + player.gender.toUpperCase()].push(player)
 
 	});
 
@@ -89,20 +99,15 @@
 
 	var isExist = false;
 
-	GAME.players.some( function (element, index, array) {
+	isExist = GAME.players.some( function (element, index, array) {
 
 		if (element.name === input.value) {
-			isExist = true;
-			return false;
+			return true;
 		}
 
 	});
 
-	if (isExist === true) {
-		return true;
-	} else {
-		return false;
-	}
+	return isExist;
 
 };
 
@@ -111,9 +116,12 @@
 ;function gameStartClose() {
 
 	var gameStartWrap = document.querySelector('[data-gamestart]'),
-		timeout = null;
+		timeout = null,
+		lastModal = document.querySelectorAll('[data-gamestart-modal]');
+
 
 	gameStartWrap.classList.add('hidden');
+	lastModal[lastModal.length - 1].classList.add('hidden');
 
 	timeout = setTimeout(function() {
 

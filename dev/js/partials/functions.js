@@ -25,7 +25,7 @@ functions.js - включает в себя различные вспомога�
 
 
 // 2
-function saveGameState() {
+;function saveGameState() {
 
 	if (localStorageTest()) {
 		localStorage.setItem('info', JSON.stringify(GAME));

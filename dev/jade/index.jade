@@ -21,9 +21,11 @@ block content
 	.sidebar
 		ul.sidebar_list
 			li.sidebar_item
-				span.sidebar_link(title="Изменить рубрику" data-toggle-rubric) Поменять рубрику
+				span.sidebar_link(title="Изменить рубрику" data-show-default-modal="data-rubricselect-modal") Поменять рубрику
 			li.sidebar_item
-				span.sidebar_link(title="Начать новую игру" data-game-restart) Начать новую игру
+				span.sidebar_link(title="Начать новую игру" data-game-restart="resetModals") Начать новую игру
+			li.sidebar_item
+				span.sidebar_link(title="Правила игры" data-show-default-modal="data-rules-modal") Правила игры
 			li.sidebar_item
 				a.sidebar_link(href="http://vk.com/topic-90928991_31602234" target="_blank" title="Нашли ошибку? Напишите нам об этом в вк") Сообщить о ошибке
 			li.sidebar_item
@@ -36,9 +38,9 @@ block content
 			h2.pick_player
 				var.pick_player_name(data-picked-player) Bogdan 
 				span.pick_player_text теперь ваш ход
-			a.pick_link.pick_link--true(href=jv0 title="" data-modalType="game" data-show-popup data-truth-button) Правда
+			a.pick_link.pick_link--true(href=jv0 title="" data-modalType="game" data-show-popup data-showmodal-button="truth") Правда
 			span.pick_or или
-			a.pick_link.pick_link--action(href=jv0 title="" data-modalType="game" data-show-popup data-action-button) Действие
+			a.pick_link.pick_link--action(href=jv0 title="" data-modalType="game" data-show-popup data-showmodal-button="actions") Действие
 		form(id="main-form")
 			input(type="hidden" value="" id="players-m" name="players-m")
 			input(type="hidden" value="" id="players-f" name="players-f")
@@ -50,24 +52,12 @@ block content
 		p.modal_desc(data-game-modal-content) Поцелуйте в шею первого игрока противоположного пола слева от вас
 		button.modal_submit(type="button" data-game-modalclose-button) Ок
 	include blocks/game_start
-	.game-restart
+	.game-restart(data-game-restart-wrap)
 		.game-restart_modal
 			.game-restart_inner
 				p.game-restart_text Похоже вы вернулись, хотите продолжить игру или начать новую?
 				button.game-restart_btn.game-restart-false(type="button" data-game-restart) Новая игра
-				button.game-restart_btn.game-restart-true(type="button") Продолжить
-	.game-rubric
-		.game-rubric_inner
-			input(type="checkbox" data-hidden-cb id="new-game-rubric-16-main" value="16" name="new-game-rubric")
-			label.game-start_rubric-label(for="new-game-rubric-16-main")
-				span.game-start_rubric-desc 16+ (Например: Спой песню)
-			input(type="checkbox" data-hidden-cb id="new-game-rubric-18-main" value="18" name="new-game-rubric")
-			label.game-start_rubric-label(for="new-game-rubric-18-main")
-				span.game-start_rubric-desc 18+ (Например: Поцелуй в шею)
-			input(type="checkbox" data-hidden-cb id="new-game-rubric-21-main" value="21" name="new-game-rubric")
-			label.game-start_rubric-label(for="new-game-rubric-21-main")
-				span.game-start_rubric-desc 21+ (Например: Французский поцелуй)
-			button.game-rubric_ok(type="button" data-toggle-rubric) Ок
+				button.game-restart_btn.game-restart-true(type="button" data-game-continue) Продолжить
 	.overlay.hidden(data-game-overlay)
 
 block additionalCSS
