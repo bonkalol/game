@@ -16,7 +16,8 @@ only screen and (                min-resolution: 192dpi),
 only screen and (                min-resolution: 2dppx)", 
     retina3x: "only screen and (-webkit-min-device-pixel-ratio: 3), 
   only screen and (min-resolution: 3dppx), 
-  only screen and (min-resolution: 350dpi)"
+  only screen and (min-resolution: 350dpi)",
+    mobileHeight: "only screen and (max-height: 480px)"
     ) !default;
 
 @mixin media($conditions...) {

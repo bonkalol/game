@@ -23,6 +23,12 @@
 		padding: 20px 10px;
 		line-height: 22px;
 
+		@include media('mobileHeight') {
+			padding: 10px;
+			line-height: 16px;
+			font-size: 14px;
+		}
+
 		&:hover,
 		&:focus,
 		&:active {
@@ -38,6 +44,10 @@
 		line-height: 20px;
 		font-size: 16px;
 		padding: 10px;
+
+		@include media ('mobileHeight') {
+			bottom: 0;
+		}
 	}
 
 	&_footer_link {

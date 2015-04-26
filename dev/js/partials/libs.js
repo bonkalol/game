@@ -8,6 +8,8 @@
 
 2. Element.closest полифил
 
+2.1. Element.remove полифил
+
 3. Random функция
 
 4. Поддерживает ли браузер localStorage
@@ -49,6 +51,20 @@ function bindListeners(elements, listener, callback) {
 	Element.prototype,
 	(this.getComputedStyle && [].join.call(getComputedStyle(document.documentElement, '')).match(/-(moz|ms|webkit)-/) || [])[1]
 );
+
+// 2.1.
+
+Element.prototype.remove = function() {
+	this.parentElement.removeChild(this);
+}
+
+NodeList.prototype.remove = HTMLCollection.prototype.remove = function() {
+	for(var i = 0, len = this.length; i < len; i++) {
+		if(this[i] && this[i].parentElement) {
+			this[i].parentElement.removeChild(this[i]);
+		}
+	}
+}
 
 
 // 3.
