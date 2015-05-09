@@ -1,6 +1,6 @@
 CACHE MANIFEST
-# version 1.5.10
-# version notes: update css transform 3d rubric bug
+# version 1.5.13
+# version notes: lazy load json
 
 
 CACHE:

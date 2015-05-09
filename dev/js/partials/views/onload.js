@@ -10,7 +10,9 @@ window.onload = function(event) {
 	localStorage.setItem('gamestartHTML', saveDefaultGameStart);
 
 	// preload json if game was not started
-	if ( !localStorage.getItem('info') )
+	if ( !localStorage.getItem('info') && navigator.onLine )
 		getJson();
+
+	loadYM();
 
 };

@@ -65,7 +65,7 @@
 		});
 
 		// upload json
-		if ( parseInt(sessionStorage.getItem('JSONINCURRENTSESSION')) === 0 )
+		if ( parseInt(sessionStorage.getItem('JSONINCURRENTSESSION')) === 0 && navigator.onLine )
 			getJson();
 
 	});
