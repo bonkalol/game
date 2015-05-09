@@ -31,7 +31,19 @@
 
 		}
 		break;
-	}
 
+		case 'getState': {
+
+			if ( preloaderConfigs.selector.classList.contains(preloaderConfigs.visiblityClass) ) {
+				return 'hidden';
+			}
+
+			else {
+				return 'visible';
+			}
+
+		}
+		break;
+	}
 
 };

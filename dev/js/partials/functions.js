@@ -16,7 +16,9 @@ functions.js - включает в себя различные вспомога�
 	var disabledItems = document.querySelectorAll('[data-disabled]');
 
 	bindListeners(disabledItems, 'mousedown', function(event) {
+
 		event.preventDefault();
+
 	});
 
 })();
@@ -28,9 +30,28 @@ functions.js - включает в себя различные вспомога�
 ;function saveGameState() {
 
 	if (localStorageTest()) {
+
 		localStorage.setItem('info', JSON.stringify(GAME));
+
 	} else {
+
 		return;
+
+	}
+
+};
+
+
+
+// 3
+;function checkSessionJsonState(jsonTrue, jsonFalse) {
+
+	if ( parseInt(sessionStorage.getItem('JSONINCURRENTSESSION')) === 2 ) {
+		return jsonTrue;
+	}
+
+	else {
+		return jsonFalse;
 	}
 
 };

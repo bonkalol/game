@@ -48,6 +48,9 @@
 		text = GAME[type][random];
 		GAME[type].splice(random, 1);
 
+		// save current progress in localStorage
+		saveGameState();
+
 		if ( type === 'truth' ) {
 
 			addStreak(type);

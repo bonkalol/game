@@ -6,6 +6,7 @@
 1. gameStartLogic(); - функция обрабатывающая начало игры.
 1.1. Выбор половой принаджлености и запись в переменную выбраного пола
 1.2. Нажатие на кнопку добавить, добавление игрока в облако игроков, вызов рендер функции playerAdd(...);
+1.3 Инициализация игры
 
 2. gameStartSavePlayers(); - сохранение игроков в переменную GAME.players
 
@@ -21,7 +22,8 @@
 	var gameStartPlayerInput = document.querySelector('[data-gamestart-playerInput]'),
 		gameStartPlayerButtonAdd = document.querySelector('[data-gamestart-playerAdd]'),
 		gameStartPlayerGenderSelect = document.querySelectorAll('[data-gamestart-genderRadio]'),
-		gameStartPlayerGender = null;
+		gameStartPlayerGender = null,
+		gameStartButton = document.querySelector('[data-gamestart-start]');
 
 		// 1.1.
 		bindListeners(gameStartPlayerGenderSelect, 'change', function(event, element) {
@@ -44,6 +46,26 @@
 			SavePlayers(document.querySelectorAll('[data-gamestart-player]'), 'data-gameStart-player-gender');
 
 		});
+
+		// 1.3
+		gameStartButton.addEventListener('mousedown', function(event) {
+
+			if ( GAME.jsonState === 1 ) {
+
+				preloader('show');
+
+			}
+
+			if ( GAME.jsonState === 2 ) {
+
+				GAME.gameState = 1;
+				gameInit();
+
+			}
+
+
+		});
+
 
 
 };
@@ -129,6 +151,6 @@
 
 	}, 600);
 
-	getJson();
+	// getJson();
 
 };

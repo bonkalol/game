@@ -23,7 +23,7 @@
 		continueButton.addEventListener('mousedown', function (event) {
 
 			GAME = currentGame;
-			gameInit();
+			gameInit('restart');
 			gameStartedWrap.classList.remove('active');
 
 		});
@@ -64,7 +64,13 @@
 
 		});
 
+		// upload json
+		if ( parseInt(sessionStorage.getItem('JSONINCURRENTSESSION')) === 0 )
+			getJson();
+
 	});
+
+
 
 })();
 
@@ -93,7 +99,9 @@
 		rubrics: [],
 		actions: [],
 		truth: [],
-		json: {}
+		json: checkSessionJsonState(JSON.parse(localStorage.getItem('json')), {}),
+		jsonState: checkSessionJsonState(2, 0),
+		gameState: 0
 	}
 
 
