@@ -38,6 +38,7 @@ var Results = {
 
 	console.log('===================== STARTING TESTS =====================');
 
+	jsonTest();
 	testAddPlayersView();
 	testAddPlayersLogic();
 	testRubricSelect();

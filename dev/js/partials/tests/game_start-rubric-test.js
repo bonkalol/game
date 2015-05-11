@@ -2,7 +2,7 @@
 
 Тест начала игры, выбор рубрики
 
-1. 
+1. Рандомный выбор рубрики
 
 =================================== */
 
@@ -29,7 +29,7 @@
 
 	});
 
-	if ( GAME.rubrics.length === pick + 1 ) {
+	if ( GAME.rubrics.length === pick.toArrayLength() ) {
 
 		TEST.results.push(Object.create(Results).constructor('GAME.rubrics.length', 'success'));
 		triggerEvent('mousedown', document.querySelector('[data-rubricselect-modal-button]'));
@@ -37,7 +37,6 @@
 	} else {
 
 		TEST.results.push(Object.create(Results).constructor('GAME.rubrics.length', 'fail'));
-
 
 	}
 
