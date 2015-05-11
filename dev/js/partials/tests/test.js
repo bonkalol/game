@@ -30,10 +30,17 @@ var Results = {
 // Запуск теста
 ;function runTests() {
 
+	TEST = {
+		results: [],
+		succes: 0,
+		errored: 0
+	};
+
 	console.log('===================== STARTING TESTS =====================');
 
 	testAddPlayersView();
 	testAddPlayersLogic();
+	testRubricSelect();
 
 	TEST.results.forEach( function (element, index, array) {
 

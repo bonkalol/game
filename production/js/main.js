@@ -857,141 +857,6 @@ PS Разделено на несколько функций для удобст
 
 };
 
-/* ==================================================
-
-Тест интерфейса и логики начала игры
-
-================================================== */
-
-
-
-;function testAddPlayersView() {
-
-	console.log('======= Starting game start add players view test.');
-
-	var playersArray = [
-		{name: 'Миша', gender: 'm'},
-		{name: 'Света', gender: 'f'},
-		{name: 'Вика', gender: 'f'},
-		{name: 'Богдан', gender: 'm'},
-		{name: 'Лена', gender: 'f'},
-		{name: 'Тимур', gender: 'm'}
-	];
-
-	var input = document.querySelector('[data-gamestart-playerinput]'),
-		checkF = document.querySelector('#new-player-f'),
-		checkM = document.querySelector('#new-player-m');
-
-	playersArray.forEach( function (element, index, array) {
-
-		input.value = element.name;
-
-		if ( element.gender === 'f' ) {
-			checkF.checked = true;
-		}
-
-		if ( element.gender === 'm' ) {
-			checkM.checked = true;
-		}
-
-		triggerEvent('change', document.querySelector('#new-player-' + element.gender));
-		triggerEvent('mousedown', document.querySelector('[data-gamestart-playeradd]'));
-
-	});
-
-	if ( document.querySelectorAll('[data-gamestart-player-gender]').length === 6 &&
-		document.querySelectorAll('[data-gamestart-player-gender="f"]').length === 3 &&
-		document.querySelectorAll('[data-gamestart-player-gender="m"]').length === 3 ) {
-		TEST.results.push(Object.create(Results).constructor('Game start creating players test', 'succes'));
-	} else {
-		TEST.results.push(Object.create(Results).constructor('Game start creating players test', 'fail'));
-	}
-
-	console.log('======= Finishing game start add players view test.');
-
-};
-
-
-;function testAddPlayersLogic() {
-
-	if (GAME.players.length === 6 && GAME.playersF.length === 3 && GAME.playersM.length === 3) {
-		TEST.results.push(Object.create(Results).constructor('GAME.players.length Test', 'success'));
-	} else {
-		TEST.results.push(Object.create(Results).constructor('GAME.players.length Test', 'fail'));
-	}
-
-};
-/* ==========================================
-
-1. element.trigger
-
-============================================ */
-
-// 1
-;function triggerEvent(eventName, target) {
-
-	target.addEventListener('eventName', function (event) {
-
-		console.log('trigger');
-
-	});
-
-	// Create the event
-	var triggerEvent = new CustomEvent(eventName, { "detail": "Example of an event" });
-
-	// Dispatch/Trigger/Fire the event
-	target.dispatchEvent(triggerEvent);
-
-
-};
-/* ============================
-
-Запуск теста
-
-1. Переменная которая хранит результаты теста
-2. Создание результата теста
-3.
-
-============================== */
-
-// 1.
-var TEST = {
-	results: [],
-	succes: 0,
-	errored: 0
-};
-
-// 2.
-var Results = {
-
-	constructor: function(testName, testStatus) {
-		this.name = testName;
-		this.status = testStatus;
-		return this;
-	}
-
-}
-
-
-// Запуск теста
-;function runTests() {
-
-	console.log('===================== STARTING TESTS =====================');
-
-	testAddPlayersView();
-	testAddPlayersLogic();
-
-	TEST.results.forEach( function (element, index, array) {
-
-		console.log('TEST: " ' + element.name.toUpperCase() + ' " , TEST STATUS: <<<< ' + element.status.toUpperCase() + ' >>>>');
-
-	});
-
-	console.log('===================== ENDING TESTS =====================');
-
-
-};
-
 /* ==================================
 
 Этот файл содержит рендет шаблоны
@@ -1662,3 +1527,225 @@ window.onload = function(event) {
 
 
 })();
+/* ==================================
+
+Тест начала игры, выбор рубрики
+
+1. 
+
+=================================== */
+
+// 1.
+;function testRubricSelect() {
+
+	var pick = getRandomInt(0, 2),
+		checkboxes = document.querySelectorAll('[data-gamestart-rubric]');
+
+	[].forEach.call(checkboxes, function (element, index, array) {
+
+		element.checked = false;
+
+	});
+
+	[].forEach.call(checkboxes, function (element, index, array) {
+
+		if (pick >= index) {
+
+			element.checked = true;
+			triggerEvent('change', element);
+
+		}
+
+	});
+
+	if ( GAME.rubrics.length === pick + 1 ) {
+
+		TEST.results.push(Object.create(Results).constructor('GAME.rubrics.length', 'success'));
+		triggerEvent('mousedown', document.querySelector('[data-rubricselect-modal-button]'));
+
+	} else {
+
+		TEST.results.push(Object.create(Results).constructor('GAME.rubrics.length', 'fail'));
+
+
+	}
+
+
+};
+/* ==================================================
+
+Тест интерфейса и логики начала игры
+
+// 1. Переменная которая хранит в себе результаты тестов
+	null - не начат
+	false - провален
+	true - пройден
+
+// 2. Тест на добавления игроков в html код
+
+// 3. Тест на добавление игроков в переменную игры GAME
+
+================================================== */
+
+
+// 1.
+var GAMESTARTTEST = {
+
+	testAddPlayersView: null,
+	testAddPlayersLogic: null,
+	testRubricSelect: null
+
+};
+
+
+// 2.
+;function testAddPlayersView() {
+
+	var playersArray = [
+		{name: 'Миша', gender: 'm'},
+		{name: 'Света', gender: 'f'},
+		{name: 'Вика', gender: 'f'},
+		{name: 'Богдан', gender: 'm'},
+		{name: 'Лена', gender: 'f'},
+		{name: 'Тимур', gender: 'm'},
+		// debug add with same name
+		{name: 'Миша', gender: 'm'}
+	];
+
+	var input = document.querySelector('[data-gamestart-playerinput]'),
+		checkF = document.querySelector('#new-player-f'),
+		checkM = document.querySelector('#new-player-m');
+
+	playersArray.forEach( function (element, index, array) {
+
+		input.value = element.name;
+
+		if ( element.gender === 'f' )
+			checkF.checked = true;
+
+		if ( element.gender === 'm' )
+			checkM.checked = true;
+
+		triggerEvent('change', document.querySelector('#new-player-' + element.gender));
+		triggerEvent('mousedown', document.querySelector('[data-gamestart-playeradd]'));
+
+	});
+
+	if ( document.querySelectorAll('[data-gamestart-player-gender]').length === 6 &&
+		document.querySelectorAll('[data-gamestart-player-gender="f"]').length === 3 &&
+		document.querySelectorAll('[data-gamestart-player-gender="m"]').length === 3 ) {
+
+		TEST.results.push(Object.create(Results).constructor('Game start creating players test', 'succes'));
+		GAMESTARTTEST.testAddPlayersView = true;
+
+	} else {
+
+		TEST.results.push(Object.create(Results).constructor('Game start creating players test', 'fail'));
+		GAMESTARTTEST.testAddPlayersView = false;
+
+	}
+
+};
+
+// 3.
+;function testAddPlayersLogic() {
+
+	if (GAME.players.length === 6 && GAME.playersF.length === 3 && GAME.playersM.length === 3) {
+
+		TEST.results.push(Object.create(Results).constructor('GAME.players.length', 'success'));
+		GAMESTARTTEST.testAddPlayersLogic = true;
+
+	} else {
+
+		TEST.results.push(Object.create(Results).constructor('GAME.players.length', 'fail'));
+		GAMESTARTTEST.testAddPlayersLogic = false;
+
+	}
+
+	if ( GAMESTARTTEST.testAddPlayersLogic === true && GAMESTARTTEST.testAddPlayersView === true ) {
+
+		triggerEvent('mousedown', document.querySelector('[data-newplayer-modal-button]'));
+
+	}
+
+};
+
+
+
+/* ==========================================
+
+1. element.trigger
+
+============================================ */
+
+// 1
+;function triggerEvent(eventName, target) {
+
+	target.addEventListener('eventName', function (event) {
+
+		console.log('trigger');
+
+	});
+
+	// Create the event
+	var triggerEvent = new CustomEvent(eventName, { "detail": "Example of an event" });
+
+	// Dispatch/Trigger/Fire the event
+	target.dispatchEvent(triggerEvent);
+
+
+};
+/* ============================
+
+Запуск теста
+
+1. Переменная которая хранит результаты теста
+2. Создание результата теста
+3.
+
+============================== */
+
+// 1.
+var TEST = {
+	results: [],
+	succes: 0,
+	errored: 0
+};
+
+// 2.
+var Results = {
+
+	constructor: function(testName, testStatus) {
+		this.name = testName;
+		this.status = testStatus;
+		return this;
+	}
+
+}
+
+
+// Запуск теста
+;function runTests() {
+
+	TEST = {
+		results: [],
+		succes: 0,
+		errored: 0
+	};
+
+	console.log('===================== STARTING TESTS =====================');
+
+	testAddPlayersView();
+	testAddPlayersLogic();
+	testRubricSelect();
+
+	TEST.results.forEach( function (element, index, array) {
+
+		console.log('TEST: " ' + element.name.toUpperCase() + ' " , TEST STATUS: <<<< ' + element.status.toUpperCase() + ' >>>>');
+
+	});
+
+	console.log('===================== ENDING TESTS =====================');
+
+
+};
