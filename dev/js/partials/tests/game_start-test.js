@@ -61,7 +61,7 @@ var GAMESTARTTEST = {
 		document.querySelectorAll('[data-gamestart-player-gender="f"]').length === 3 &&
 		document.querySelectorAll('[data-gamestart-player-gender="m"]').length === 3 ) {
 
-		TEST.results.push(Object.create(Results).constructor('Game start creating players test', 'succes'));
+		TEST.results.push(Object.create(Results).constructor('Game start creating players test', 'success'));
 		GAMESTARTTEST.testAddPlayersView = true;
 
 	} else {

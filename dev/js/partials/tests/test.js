@@ -42,6 +42,8 @@ var Results = {
 	testAddPlayersView();
 	testAddPlayersLogic();
 	testRubricSelect();
+	gameLogicInitTest();
+	gameViewInitTest();
 
 	TEST.results.forEach( function (element, index, array) {
 
