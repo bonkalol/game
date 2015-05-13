@@ -90,3 +90,7 @@ function localStorageTest() {
 
 }
 
+
+Number.prototype.toArrayLength = function() {
+	return this.valueOf() + 1;
+};

@@ -13,6 +13,4 @@ window.onload = function(event) {
 	if ( !localStorage.getItem('info') && navigator.onLine )
 		getJson();
 
-	loadYM();
-
 };
