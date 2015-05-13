@@ -1,6 +1,6 @@
 module.exports = {
 
-	isProduction: false,
+	isProduction: true,
 	jshint: true,
 	// set this var to true if u wanna validate your html
 	// but be carefull, it takes a lot of compilation tome
@@ -27,7 +27,7 @@ module.exports = {
 		srcPaths: {
 			jade: './dev/jade/*.jade',
 			scss: 'dev/scss/main.scss',
-			js: this.isProduction ? ['./dev/js/partials/**/*', './dev/js/main.*+(js|coffee)', '!./dev/js/tests/*'] : ['./dev/js/partials/**/*', './dev/js/main.*+(js|coffee)'],
+			js: ['./dev/js/partials/**/*', './dev/js/main.*+(js|coffee)'],
 			jsLibs: 'dev/js/libs/**/*.js',
 			sprite: 'dev/img/sprite/*.png',
 			spriteSvg: 'dev/img/svg/*.svg',

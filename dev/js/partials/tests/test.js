@@ -4,7 +4,6 @@
 
 1. Переменная которая хранит результаты теста
 2. Создание результата теста
-3.
 
 ============================== */
 
@@ -44,6 +43,7 @@ var Results = {
 	testRubricSelect();
 	gameLogicInitTest();
 	gameViewInitTest();
+	gamePlayTest();
 
 	TEST.results.forEach( function (element, index, array) {
 

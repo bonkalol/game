@@ -21,7 +21,10 @@ var gulp = require('gulp'),
 // Concat all JS files into production/js/main.js
 // If coffee disabled
 gulp.task('concat', function() {
-	return gulp.src(paths.srcPaths.js)
+
+	var jsPath = configs.isProduction ? ['!./dev/js/partials/tests/*', './dev/js/partials/**/*', './dev/js/main.*+(js|coffee)'] : paths.srcPaths.js;
+
+	return gulp.src(jsPath)
 		.pipe(plumber({errorHandler: log}))
 		.pipe(newer(paths.destPaths.js))
 		.pipe(gulpif(/[.]coffee$/, coffee()))
@@ -35,8 +38,11 @@ gulp.task('concat', function() {
 
 
 gulp.task('concat:all', function() {
+	console.log(paths.srcPaths.js);
 
-	return gulp.src(paths.srcPaths.js)
+	var jsPath = configs.isProduction ? ['!./dev/js/partials/tests/*', './dev/js/partials/**/*', './dev/js/main.*+(js|coffee)'] : paths.srcPaths.js;
+
+	return gulp.src(jsPath)
 		.pipe(plumber({errorHandler: log}))
 		.pipe(concat('main.js'))
 		.pipe(duration('Finished Concat task in'))
