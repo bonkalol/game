@@ -153,6 +153,1006 @@ Number.prototype.toArrayLength = function() {
 	return this.valueOf() + 1;
 };
 
+/* ======================================
+
+GAME - переменная которая хранит в себе текущее состояние игры
+Например игроков, начата ли игра, вопросы и действия и т.д.
+
+1. Массив который хранит объекты игроков
+
+Пример объекта:
+{
+	name: 'bogdan',
+	gender: 'f',
+	truthStreak: 0,
+	actionsStreak: 0
+}
+
+truthStreak/actionsStreak - количество выбранной правды.действий подряд
+
+2. Объекты игроков женского, мужского пола
+
+3. Текущий игрок
+
+4. Игрок - цель
+
+5. Массив для перечисления всех рубрик, например:
+['16', '21']
+
+6. Массивы содержат вопросы/действия, например:
+['Когда завтра?', 'Спой песню', ...]
+
+7. Хранит в себе json с вопросами
+
+8. Отслеживает состояние загрузки json
+	0 - не загружен
+	1 - загружается
+	2 - загружен
+
+9. Отслеживает состояние игры
+	0 - не начата, нет сохранений
+	1 - начата
+
+10. Отслеживает, была ли загрузка json в данной сессии
+	0 - не было
+	1 - загружается
+	2 - загружен
+
+11. Все вопросы / действия
+
+====================================== */
+
+var GAME = {
+	// 1
+	players: [],
+	// 2
+	playersM: [],
+	playersF: [],
+	// 3
+	currentPlayer: {},
+	// 4
+	targetPlayer: {},
+	// 5
+	rubrics: [],
+	// 6
+	actions: [],
+	truth: [],
+	// 7
+	json: {},
+	// 8
+	jsonState: 0,
+	// 9
+	gameState: 0,
+	// 11
+	content: {
+		truth: {
+			'16': [],
+			'18': [],
+			'21': []
+		},
+		actions: {
+			'16': [],
+			'18': [],
+			'21': []
+		}
+	}
+}
+
+// 10.
+sessionStorage.setItem('JSONINCURRENTSESSION', 0);
+/* =================================================
+
+Парсит тип карточки
+
+# Символы
+
+'+' - добавление игрока противоположного пола в конец предложения,
+например: Миша поцелуй игрока+, вырожение после парсинга будет выглядеть так:
+Миша поцелуй игрока Лена;
+
+'#' - серая карточка, её нельзя читать вслух и надо выполнять
+так чтобы игроки не знали что за задание внутри;
+
+';' - коллективное действие, все игроки участвуют;
+
+# Идеи
+Символ для выбора игрока из обоих полов = '>';
+Символ для вставки имени игрока в текст = '<Player>';
+
+
+
+================================================== */
+
+
+// 3.
+;function cardType(text) {
+
+	var symbol = text.slice(text.length - 1, text.length),
+		cardText = text,
+		content = { text: '', class: '' },
+		possibleSymbols = ['+', '#', ';'],
+		isSymbol = false;
+
+	possibleSymbols.every(function (element, index, array) {
+
+		if ( element === symbol ) {
+			isSymbol = true;
+			return false;
+		}
+
+		return true;
+
+	});
+
+	if ( isSymbol ) {
+		cardText = cardText.slice(0, text.length - 1);
+	}
+
+	switch(symbol) {
+
+		// Добавить игрока
+		case '+': {
+
+			var currentPlayerGender = GAME.currentPlayer.gender,
+				random = 0;
+
+
+			if ( currentPlayerGender === 'f' )
+				currentPlayerGender = 'M';
+			else if ( currentPlayerGender === 'm' )
+				currentPlayerGender = 'F';
+
+			random = getRandomInt(0, GAME['players' + currentPlayerGender].length - 1);
+			GAME.targetPlayer = GAME['players' + currentPlayerGender][random];
+
+			cardText += ' ' + GAME.targetPlayer.name;
+
+			content.text = cardText;
+			content.class = '';
+
+		}
+		break;
+
+		// Серая карточка
+		case '#': {
+
+			content.text = cardText + ' (Не читайте вслух и помните что вы не должны выдавать содержимое карточки)';
+			content.class = 'gray';
+
+		}
+		break;
+
+		// Коллективное действие
+		case ';': {
+
+			content.text = cardText + ' (Коллективное действие)';
+			content.class = 'mass';
+
+		}
+		break;
+
+		// Простая карточка
+		default: {
+
+			content.text = cardText;
+			content.class = '';
+
+		}
+		break;
+	}
+
+	// return parsed values
+	return content;
+
+}
+
+/* ======================================
+
+Здесь происходит инициализация игры
+
+1. Инциализация игры, вызов рендера игрока, инициализация функции выдачи вопросов,
+запись вопросов/действий в GAME.truth/GAME.actions
+
+1. Сохранение данных в LocalStorage
+1.1. Рендер игроков в облако игроков
+1.2. Запись вопрос и действий в GAME.truth/GAME.actions по выбраным рубрикам
+Если это рестарт предъидущей игры, не обновлять вопросы
+1.3. Выбор игрока, который ходит
+1.4. Обновляем модальные окна
+1.5. Сообщаем о том что игра начата
+
+======================================= */
+
+
+// 1.
+;function gameInit(type) {
+
+	// 1.
+	saveGameState();
+
+	// 1.1. 
+	updateMainPlayersCloud();
+
+	// 1.2.
+	if ( type !== 'restart' ) {
+
+		updateAllTruthActions();
+
+	}
+
+	// 1.3.
+	nextPlayer();
+
+	// 1.4.
+	updateModals();
+
+	// 1.5.
+	GAME.game = true;
+
+
+};
+/* ==============================================
+
+Лист выбора вопросов/действий
+
+1. Check, deselect всех элементов
+2. Хранение состояния game-list
+	0 - не инициализировано
+	1 - грузится
+	2 - инициализировано
+	3 - надо обновить
+
+
+============================================== */
+
+// 2.
+;(function () {
+
+	gameListStateSet(0);
+
+})();
+
+;function gameListStateSet(value) {
+
+	sessionStorage.setItem('GAMELISTSTATE', value);
+
+};
+
+;function gameListStateGet() {
+
+	return parseInt(sessionStorage.getItem('GAMELISTSTATE'));
+
+};
+
+// 1.
+;function selectDeselect() {
+
+	var target = null,
+		targetAttr = null,
+		listItems = null,
+		selectDeselectButton = document.querySelectorAll('[data-select-action]'),
+		checkClass = 'js-checked';
+
+	bindListeners(selectDeselectButton, 'mousedown', function (event, element) {
+
+		target = element;
+		listItems = target.closest('[data-game-list-wrap]').querySelectorAll('[data-game-list-item]');
+		targetAttr = target.getAttribute('data-select-action');
+
+
+		if ( targetAttr === 'select' ) {
+
+			[].forEach.call(listItems, function (element, index, array) {
+
+				element.classList.add(checkClass);
+				target.setAttribute('data-select-action', 'deselect');
+
+
+			});
+
+			return;
+
+		}
+
+		if ( targetAttr === 'deselect' ) {
+
+			[].forEach.call(listItems, function (element, index, array) {
+
+				element.classList.remove(checkClass);
+				target.setAttribute('data-select-action', 'select');
+
+
+			});
+
+			return;
+
+		}
+
+	});
+
+};
+
+
+;function gameListSaveChecked() {
+
+	var truthContainers = document.querySelectorAll('[data-game-list-wrap$="0"]'),
+		actionContainers = document.querySelectorAll('[data-game-list-wrap$="1"');
+	GAME.truth = [];
+	GAME.actions = [];
+
+	[].forEach.call(truthContainers, function (element, index, array) {
+
+		var items = element.querySelectorAll('[data-game-list-item].js-checked');
+
+		[].forEach.call(items, function (element, index, array) {
+
+			var text = element.innerText || element.textContent;
+
+			GAME.truth.push(text);
+
+		});
+
+	});
+
+	[].forEach.call(actionContainers, function (element, index, array) {
+
+		var items = element.querySelectorAll('[data-game-list-item].js-checked');
+
+		[].forEach.call(items, function (element, index, array) {
+
+			var text = element.innerText || element.textContent;
+
+			GAME.actions.push(text);
+
+		});
+
+	});
+
+	if ( GAME.truth.length === 0 ) {
+		updateTruth();
+	}
+
+	if ( GAME.actions.length === 0 ) {
+		updateAction();
+	}
+
+};
+/* =============================
+
+Отвечает за показ модального окна и выдачей в него html вопроса/действия
+
+1. Вешаем эвент листенеры на кнопки выбора правды или действия
+2. Выбираем правду или действие, выбранный вопрос удаляем из массива, если
+вопросы или действие кончились, обновляем
+3. Определяем тип карточки
+5. Добавление вопроса, действия в стрик
+6. Проверка доступности вопросов/действий
+
+============================= */
+
+// 1.
+;(function buttonEvents() {
+
+	var showModalButton = document.querySelectorAll('[data-showmodal-button]');
+		closePopupButton = document.querySelector('[data-game-modalclose-button]');
+
+
+		bindListeners(showModalButton, 'mousedown' , function (event, element) {
+
+			var type = element.getAttribute('data-showmodal-button');
+
+			getTruthOrAction(type);
+
+		});
+
+		closePopupButton.addEventListener('mousedown', function(event) {
+
+			closeModal();
+
+		});
+
+
+
+
+})();
+
+// 2.
+;function getTruthOrAction(type) {
+
+	var text = '',
+		min = 0,
+		random = null;
+		// get random question
+		random = getRandomInt(min, GAME[type].length - 1);
+		text = GAME[type][random];
+		GAME[type].splice(random, 1);
+
+		// save current progress in localStorage
+		saveGameState();
+
+		if ( type === 'truth' ) {
+
+			addStreak(type);
+
+			if ( GAME.truth.length === 0 )
+				updateTruth();
+		}
+
+		if ( type === 'actions' ) {
+
+			addStreak(type);
+
+			if ( GAME.actions.length === 0 )
+				updateAction();
+		}
+
+		// get card type
+		var content = cardType(text); 
+
+		// render modal
+		showModal(content);
+
+};
+
+// 3.
+// Replaced into game_card-type.js
+
+// 5.
+;function addStreak(type) {
+
+	[].every.call(GAME.players, function (element, index, array) {
+
+		if (element.isCurrentPlayer) {
+
+			if ( type === 'truth' ) {
+				element.truthStreak += 1;
+				element.actionsStreak = 0;
+			}
+
+			else if ( type === 'actions' ) {
+				element.actionsStreak += 1;
+				element.truthStreak = 0;
+			}
+
+			return false;
+		}
+
+		return true;
+
+	});
+
+};
+
+// 6.
+;function getCheckedStreak() {
+
+	var status = {},
+		max = 2,
+		truthCount = 0,
+		actionsCount = 0;
+
+	GAME.players.every(function (element, index, array) {
+
+		if (element.isCurrentPlayer) {
+
+			truthCount = element.truthStreak;
+			actionsCount = element.actionsStreak;
+
+			return false;
+		}
+
+		return true;
+
+	});
+
+	switch(max) {
+		case truthCount: {
+			status = {truth: false, actions: true};
+		}
+		break;
+
+		case actionsCount: {
+			status = {truth: true, actions: false};
+		}
+		break;
+
+		default: {
+			status = {truth: true, actions: true};
+		};
+		break;
+	}
+
+	return status;
+
+};
+/* ===================================
+
+1. Выбор игрока, который выполняет ход
+
+===================================== */
+
+
+;function nextPlayer() {
+
+	var isNoOneActive = true,
+		playerName = '',
+		playerOutput = document.querySelector('[data-picked-player]');
+
+	GAME.players.every( function (element, index, array) {
+
+		if (element.isCurrentPlayer === true) {
+			// set isCurrentPlayer to false
+			// set to next element isCurrentPlayer true
+			GAME.players[index].isCurrentPlayer = false;
+			isNoOneActive = false;
+
+			if ( GAME.players[index + 1] ) {
+				// set to next isCurrentPlayer Active
+				GAME.players[index + 1].isCurrentPlayer = true;
+				GAME.currentPlayer = GAME.players[index + 1];
+				playerName = GAME.currentPlayer.name;
+			}
+
+			else {
+				// set to first isCurrentPlayer Active
+				GAME.players[0].isCurrentPlayer = true;
+				GAME.currentPlayer = GAME.players[0];
+				playerName = GAME.currentPlayer.name;
+			}
+
+			return false;
+
+		}
+
+		return true;
+
+	});
+
+	if (isNoOneActive) {
+		// set isCurrentPlayer to true first player
+		GAME.players[0].isCurrentPlayer = true;
+		GAME.currentPlayer = GAME.players[0];
+		playerName = GAME.players[0].name;
+	}
+
+	// write in html player name
+	playerOutput.innerHTML = playerName + ' ';
+
+
+};
+/* =============================================
+
+Этот файл отвечает за логику начала игры, например
+эвенты связанные с добавлением игроков, загрузка json...
+
+1. gameStartLogic(); - функция обрабатывающая начало игры.
+1.1. Выбор половой принаджлености и запись в переменную выбраного пола
+1.2. Нажатие на кнопку добавить, добавление игрока в облако игроков, вызов рендер функции playerAdd(...);
+1.3 Инициализация игры
+
+2. gameStartSavePlayers(); - сохранение игроков в переменную GAME.players
+
+3. Проверка, был ли добавлен такой игрок
+
+4. Закрываем game_start, качаем json, инициализируем игру
+
+=============================================== */
+
+// 1. 
+;function gameStartLogic() {
+
+	var gameStartPlayerInput = document.querySelector('[data-gamestart-playerInput]'),
+		gameStartPlayerButtonAdd = document.querySelector('[data-gamestart-playerAdd]'),
+		gameStartPlayerGenderSelect = document.querySelectorAll('[data-gamestart-genderRadio]'),
+		gameStartPlayerGender = null,
+		gameStartButton = document.querySelector('[data-gamestart-start]');
+
+		// 1.1.
+		bindListeners(gameStartPlayerGenderSelect, 'change', function(event, element) {
+
+			if (element.checked)
+				gameStartPlayerGender = element.value;
+
+		});
+
+		// 1.2.
+		gameStartPlayerButtonAdd.addEventListener('mousedown', function(event) {
+
+			if ( gameStartPlayerInput.value.length >= 2 && gameStartPlayerGender !== null ) {
+
+				gameStartPlayerAdd(gameStartPlayerInput.value, gameStartPlayerGender, gameStartPlayerInput);
+				gameStartPlayerInput.value = '';
+
+			}
+
+			SavePlayers(document.querySelectorAll('[data-gamestart-player]'), 'data-gameStart-player-gender');
+
+		});
+
+		// 1.3
+		gameStartButton.addEventListener('mousedown', function(event) {
+
+			if ( GAME.jsonState === 1 ) {
+
+				preloader('show');
+
+			}
+
+			if ( GAME.jsonState === 2 ) {
+
+				GAME.gameState = 1;
+				gameInit();
+
+			}
+
+
+		});
+
+
+
+};
+
+;(function gameStartLogicCall() {
+
+	gameStartLogic();
+
+})();
+
+// 2.
+;function SavePlayers(players, playersGenderAttr) {
+
+	var gameStartPlayers = players,
+		playerName = '',
+		playerGender = '';
+
+	// player Proto
+	var Player = {
+		constructor: function (name, gender) {
+			this.name = name;
+			this.gender = gender;
+			this.actionsStreak = 0;
+			this.truthStreak = 0;
+			this.isCurrentPlayer = false;
+			return this;
+		}
+	}
+
+	// reset GAME.player for rewrite
+	GAME.players = [];
+	GAME.playersF = [];
+	GAME.playersM = [];
+
+	// update GAME.players
+	[].forEach.call(gameStartPlayers, function (element, index, array) {
+
+		playerName = element.innerText || element.textContent;
+		playerGender = element.getAttribute(playersGenderAttr);
+
+		// create new player
+		player = Object.create(Player).constructor(playerName, playerGender);
+		// sort player
+		GAME.players.push(player);
+		GAME['players' + player.gender.toUpperCase()].push(player)
+
+	});
+
+};
+
+// 3.
+;function gameStartCheckPlayerExist(input) {
+
+	var isExist = false;
+
+	isExist = GAME.players.some( function (element, index, array) {
+
+		if (element.name === input.value) {
+			return true;
+		}
+
+	});
+
+	return isExist;
+
+};
+
+
+// 4.
+;function gameStartClose() {
+
+	var gameStartWrap = document.querySelector('[data-gamestart]'),
+		timeout = null,
+		lastModal = document.querySelectorAll('[data-gamestart-modal]');
+
+
+	gameStartWrap.classList.add('hidden');
+	lastModal[lastModal.length - 1].classList.add('hidden');
+
+	timeout = setTimeout(function() {
+
+		gameStartWrap.classList.add('visibility');
+
+	}, 600);
+
+	// getJson();
+
+};
+/* ======================================
+
+В этом файле происходит запись действий/вопросов в GAME.truth/GAME.actions
+
+1. Добавление правды
+2. Добавление действий
+3. Добавление и действий и вопросов
+4. Сохранение всех вопросов и действий в переменную GAME.content
+
+PS Разделено на несколько функций для удобства обновлений вопрос или действий
+
+======================================= */
+
+// 1.
+;function updateTruth() {
+
+	GAME.truth = [];
+
+	GAME.rubrics.forEach(function (element, index, array) {
+
+		for (var item in GAME.json) {
+
+			if (item === element) {
+
+				for (var truth in GAME.json[item].true) {
+					GAME.truth.push(GAME.json[item].true[truth]);
+
+				}
+
+			}
+
+		}
+
+	});
+
+};
+
+// 2.
+;function updateAction() {
+
+	GAME.actions = [];
+
+
+	GAME.rubrics.forEach(function (element, index, array) {
+
+		for (var item in GAME.json) {
+
+			if (item === element) {
+
+				for (var actions in GAME.json[item].action) {
+					GAME.actions.push(GAME.json[item].action[actions]);
+				}
+
+			}
+
+		}
+
+	});
+};
+
+// 4.
+;function updateGameContent() {
+
+		for (var item in GAME.json) {
+
+			for (var actions in GAME.json[item].action) {
+
+				var content = GAME.json[item].action[actions];
+
+				GAME.content.actions[item].push(content);
+			}
+
+		}
+
+		for (var item in GAME.json) {
+
+
+				for (var truth in GAME.json[item].true) {
+
+					var content = GAME.json[item].true[truth];
+
+					GAME.content.truth[item].push(content);
+				}
+
+		}
+
+};
+
+// 3.
+;function updateAllTruthActions() {
+
+	updateTruth();
+	updateAction();
+	updateGameContent();
+
+};
+/* ======================================
+
+Получение json'а с вопросами
+
+====================================== */
+
+
+;function getJson() {
+
+	var jsonPath = 'assets/response.json';
+
+	// если офлайн режим
+	if ( !navigator.onLine ) {
+		GAME.json = JSON.parse(localStorage.getItem('json'));
+		gameInit();
+		return;
+	}
+
+	var request = new XMLHttpRequest();
+	request.open('GET', jsonPath, true);
+
+	GAME.jsonState = 1;
+	sessionStorage.setItem('JSONINCURRENTSESSION', 1);
+
+	request.onload = function() {
+
+		if (request.status >= 200 && request.status < 400) {
+
+			var data = JSON.parse(request.responseText);
+			GAME.json = data;
+			GAME.jsonState = 2;
+
+			if (localStorageTest())
+				localStorage.setItem('json', JSON.stringify(data));
+
+			// set json state to 2, it'means json is loaded
+			sessionStorage.setItem('JSONINCURRENTSESSION', 2);
+
+			// if json was loaded after game-start, hide preloader,
+			// init game
+			if ( preloader('getState') === 'visible' && GAME.jsonState === 2 ) {
+
+				preloader('hide');
+				gameInit();
+
+			}
+
+			GAME.jsonState = 2;
+			GAME.gameState = 1;
+		}
+	};
+
+	request.onerror = function() {
+		// throw error
+	};
+
+	request.send();
+
+
+};
+
+/* ===============================================
+
+	Тестирование работы game-list
+
+=============================================== */
+
+
+;function testGameList() {
+
+	var listItemShowTrigger = document.querySelector('[data-show-game-list]'),
+		gameList = document.querySelector('[data-game-list]');
+
+/*
+
+	переменная которая хранит промежуточный результат теста
+
+*/
+
+	var test = {
+		opened: null,
+		checkAll: null,
+		updateTruth: null,
+		updateAction: null
+	};
+
+/*
+
+	Тригерим эвент, проверяем состояние gameList контейнера
+
+*/
+
+	triggerEvent('mousedown', listItemShowTrigger);
+
+	if ( gameListStateGet() === 0 ) {
+
+		var timeOut = setTimeout(function () {
+
+			if ( checkIsOpened )
+				test.opened = true;
+			else
+				test.opened = false;
+
+			selectDeselect();
+
+		}, 2400);
+
+		var timeOut2 = setTimeout(function() {
+
+			checkUpdateGame();
+
+		}, 3000);
+
+	}
+
+	;function checkIsOpened() {
+
+		if ( gameList.classList.contains('visible') )
+			return true;
+		else
+			return false;
+
+	};
+
+	;function selectDeselect() {
+
+		var actionButton = document.querySelector('[data-select-action]'),
+			wrap = actionButton.closest('[data-game-list-item-wrap]'),
+			items = wrap.querySelectorAll('[data-game-list-item]');
+
+		// double click
+		for (var i = 0; i < 2; i++) {
+
+			var action = actionButton.getAttribute('data-select-action');
+			triggerEvent('mousedown', actionButton);
+
+			var result = [].every.call(items, function (element, index, array) {
+
+				if ( action === 'select' )
+					return element.classList.contains('js-checked');
+				else if ( action === 'deselect' )
+					return !element.classList.contains('js-checked');
+
+			});
+
+			if ( result === true )
+				test.checkAll = true;
+			else
+				test.checkAll = false;
+
+		}
+
+	};
+
+	;function checkUpdateGame() {
+
+		var gameActionsCurrentLength = GAME.actions.length,
+			gameTruthCurrentLength = GAME.truth.length,
+			saveButton = document.querySelector('[data-game-list-action="save"]'),
+			actionContainer = document.querySelector('[data-game-list-wrap$="1"]'),
+			actionItem = actionContainer.querySelector('[data-game-list-item].js-checked');
+
+		triggerEvent('click', actionItem);
+		triggerEvent('mousedown', saveButton);
+
+		if ( gameActionsCurrentLength !== GAME.actions.length &&
+			 gameTruthCurrentLength !== GAME.truth.length ) {
+
+			test.updateTruth = true;
+			test.updateAction = true;
+
+		} else {
+
+			test.updateTruth = false;
+			test.updateAction = false;
+
+		}
+
+	};
+
+};
 /* =====================================
 
 Проверка игры, рандомый выбор правды или действие,
@@ -1511,882 +2511,3 @@ window.onload = function(event) {
 
 
 })();
-/* ======================================
-
-GAME - переменная которая хранит в себе текущее состояние игры
-Например игроков, начата ли игра, вопросы и действия и т.д.
-
-1. Массив который хранит объекты игроков
-
-Пример объекта:
-{
-	name: 'bogdan',
-	gender: 'f',
-	truthStreak: 0,
-	actionsStreak: 0
-}
-
-truthStreak/actionsStreak - количество выбранной правды.действий подряд
-
-2. Объекты игроков женского, мужского пола
-
-3. Текущий игрок
-
-4. Игрок - цель
-
-5. Массив для перечисления всех рубрик, например:
-['16', '21']
-
-6. Массивы содержат вопросы/действия, например:
-['Когда завтра?', 'Спой песню', ...]
-
-7. Хранит в себе json с вопросами
-
-8. Отслеживает состояние загрузки json
-	0 - не загружен
-	1 - загружается
-	2 - загружен
-
-9. Отслеживает состояние игры
-	0 - не начата, нет сохранений
-	1 - начата
-
-10. Отслеживает, была ли загрузка json в данной сессии
-	0 - не было
-	1 - загружается
-	2 - загружен
-
-11. Все вопросы / действия
-
-====================================== */
-
-var GAME = {
-	// 1
-	players: [],
-	// 2
-	playersM: [],
-	playersF: [],
-	// 3
-	currentPlayer: {},
-	// 4
-	targetPlayer: {},
-	// 5
-	rubrics: [],
-	// 6
-	actions: [],
-	truth: [],
-	// 7
-	json: {},
-	// 8
-	jsonState: 0,
-	// 9
-	gameState: 0,
-	// 11
-	content: {
-		truth: {
-			'16': [],
-			'18': [],
-			'21': []
-		},
-		actions: {
-			'16': [],
-			'18': [],
-			'21': []
-		}
-	}
-}
-
-// 10.
-sessionStorage.setItem('JSONINCURRENTSESSION', 0);
-/* =================================================
-
-Парсит тип карточки
-
-# Символы
-
-'+' - добавление игрока противоположного пола в конец предложения,
-например: Миша поцелуй игрока+, вырожение после парсинга будет выглядеть так:
-Миша поцелуй игрока Лена;
-
-'#' - серая карточка, её нельзя читать вслух и надо выполнять
-так чтобы игроки не знали что за задание внутри;
-
-';' - коллективное действие, все игроки участвуют;
-
-# Идеи
-Символ для выбора игрока из обоих полов = '>';
-Символ для вставки имени игрока в текст = '<Player>';
-
-
-
-================================================== */
-
-
-// 3.
-;function cardType(text) {
-
-	var symbol = text.slice(text.length - 1, text.length),
-		cardText = text,
-		content = { text: '', class: '' },
-		possibleSymbols = ['+', '#', ';'],
-		isSymbol = false;
-
-	possibleSymbols.every(function (element, index, array) {
-
-		if ( element === symbol ) {
-			isSymbol = true;
-			return false;
-		}
-
-		return true;
-
-	});
-
-	if ( isSymbol ) {
-		cardText = cardText.slice(0, text.length - 1);
-	}
-
-	switch(symbol) {
-
-		// Добавить игрока
-		case '+': {
-
-			var currentPlayerGender = GAME.currentPlayer.gender,
-				random = 0;
-
-
-			if ( currentPlayerGender === 'f' )
-				currentPlayerGender = 'M';
-			else if ( currentPlayerGender === 'm' )
-				currentPlayerGender = 'F';
-
-			random = getRandomInt(0, GAME['players' + currentPlayerGender].length - 1);
-			GAME.targetPlayer = GAME['players' + currentPlayerGender][random];
-
-			cardText += ' ' + GAME.targetPlayer.name;
-
-			content.text = cardText;
-			content.class = '';
-
-		}
-		break;
-
-		// Серая карточка
-		case '#': {
-
-			content.text = cardText + ' (Не читайте вслух и помните что вы не должны выдавать содержимое карточки)';
-			content.class = 'gray';
-
-		}
-		break;
-
-		// Коллективное действие
-		case ';': {
-
-			content.text = cardText + ' (Коллективное действие)';
-			content.class = 'mass';
-
-		}
-		break;
-
-		// Простая карточка
-		default: {
-
-			content.text = cardText;
-			content.class = '';
-
-		}
-		break;
-	}
-
-	// return parsed values
-	return content;
-
-}
-
-/* ======================================
-
-Здесь происходит инициализация игры
-
-1. Инциализация игры, вызов рендера игрока, инициализация функции выдачи вопросов,
-запись вопросов/действий в GAME.truth/GAME.actions
-
-1. Сохранение данных в LocalStorage
-1.1. Рендер игроков в облако игроков
-1.2. Запись вопрос и действий в GAME.truth/GAME.actions по выбраным рубрикам
-Если это рестарт предъидущей игры, не обновлять вопросы
-1.3. Выбор игрока, который ходит
-1.4. Обновляем модальные окна
-1.5. Сообщаем о том что игра начата
-
-======================================= */
-
-
-// 1.
-;function gameInit(type) {
-
-	// 1.
-	saveGameState();
-
-	// 1.1. 
-	updateMainPlayersCloud();
-
-	// 1.2.
-	if ( type !== 'restart' ) {
-
-		updateAllTruthActions();
-
-	}
-
-	// 1.3.
-	nextPlayer();
-
-	// 1.4.
-	updateModals();
-
-	// 1.5.
-	GAME.game = true;
-
-
-};
-/* ==============================================
-
-Лист выбора вопросов/действий
-
-1. Check, deselect всех элементов
-2. Хранение состояния game-list
-	0 - не инициализировано
-	1 - грузится
-	2 - инициализировано
-	3 - надо обновить
-
-
-============================================== */
-
-// 2.
-;(function () {
-
-	gameListStateSet(0);
-
-})();
-
-;function gameListStateSet(value) {
-
-	sessionStorage.setItem('GAMELISTSTATE', value);
-
-};
-
-;function gameListStateGet() {
-
-	return parseInt(sessionStorage.getItem('GAMELISTSTATE'));
-
-};
-
-// 1.
-;function selectDeselect() {
-
-	var target = null,
-		targetAttr = null,
-		listItems = null,
-		selectDeselectButton = document.querySelectorAll('[data-select-action]'),
-		checkClass = 'js-checked';
-
-	bindListeners(selectDeselectButton, 'mousedown', function (event, element) {
-
-		target = element;
-		listItems = target.closest('[data-game-list-wrap]').querySelectorAll('[data-game-list-item]');
-		targetAttr = target.getAttribute('data-select-action');
-
-
-		if ( targetAttr === 'select' ) {
-
-			[].forEach.call(listItems, function (element, index, array) {
-
-				element.classList.add(checkClass);
-				target.setAttribute('data-select-action', 'deselect');
-
-
-			});
-
-			return;
-
-		}
-
-		if ( targetAttr === 'deselect' ) {
-
-			[].forEach.call(listItems, function (element, index, array) {
-
-				element.classList.remove(checkClass);
-				target.setAttribute('data-select-action', 'select');
-
-
-			});
-
-			return;
-
-		}
-
-	});
-
-};
-
-
-;function gameListSaveChecked() {
-
-	var truthContainers = document.querySelectorAll('[data-game-list-wrap$="0"]'),
-		actionContainers = document.querySelectorAll('[data-game-list-wrap$="1"');
-	GAME.truth = [];
-	GAME.actions = [];
-
-	[].forEach.call(truthContainers, function (element, index, array) {
-
-		var items = element.querySelectorAll('[data-game-list-item].js-checked');
-
-		[].forEach.call(items, function (element, index, array) {
-
-			var text = element.innerText || element.textContent;
-
-			GAME.truth.push(text);
-
-		});
-
-	});
-
-	[].forEach.call(actionContainers, function (element, index, array) {
-
-		var items = element.querySelectorAll('[data-game-list-item].js-checked');
-
-		[].forEach.call(items, function (element, index, array) {
-
-			var text = element.innerText || element.textContent;
-
-			GAME.actions.push(text);
-
-		});
-
-	});
-
-	if ( GAME.truth.length === 0 ) {
-		updateTruth();
-	}
-
-	if ( GAME.actions.length === 0 ) {
-		updateAction();
-	}
-
-};
-/* =============================
-
-Отвечает за показ модального окна и выдачей в него html вопроса/действия
-
-1. Вешаем эвент листенеры на кнопки выбора правды или действия
-2. Выбираем правду или действие, выбранный вопрос удаляем из массива, если
-вопросы или действие кончились, обновляем
-3. Определяем тип карточки
-5. Добавление вопроса, действия в стрик
-6. Проверка доступности вопросов/действий
-
-============================= */
-
-// 1.
-;(function buttonEvents() {
-
-	var showModalButton = document.querySelectorAll('[data-showmodal-button]');
-		closePopupButton = document.querySelector('[data-game-modalclose-button]');
-
-
-		bindListeners(showModalButton, 'mousedown' , function (event, element) {
-
-			var type = element.getAttribute('data-showmodal-button');
-
-			getTruthOrAction(type);
-
-		});
-
-		closePopupButton.addEventListener('mousedown', function(event) {
-
-			closeModal();
-
-		});
-
-
-
-
-})();
-
-// 2.
-;function getTruthOrAction(type) {
-
-	var text = '',
-		min = 0,
-		random = null;
-		// get random question
-		random = getRandomInt(min, GAME[type].length - 1);
-		text = GAME[type][random];
-		GAME[type].splice(random, 1);
-
-		// save current progress in localStorage
-		saveGameState();
-
-		if ( type === 'truth' ) {
-
-			addStreak(type);
-
-			if ( GAME.truth.length === 0 )
-				updateTruth();
-		}
-
-		if ( type === 'actions' ) {
-
-			addStreak(type);
-
-			if ( GAME.actions.length === 0 )
-				updateAction();
-		}
-
-		// get card type
-		var content = cardType(text); 
-
-		// render modal
-		showModal(content);
-
-};
-
-// 3.
-// Replaced into game_card-type.js
-
-// 5.
-;function addStreak(type) {
-
-	[].every.call(GAME.players, function (element, index, array) {
-
-		if (element.isCurrentPlayer) {
-
-			if ( type === 'truth' ) {
-				element.truthStreak += 1;
-				element.actionsStreak = 0;
-			}
-
-			else if ( type === 'actions' ) {
-				element.actionsStreak += 1;
-				element.truthStreak = 0;
-			}
-
-			return false;
-		}
-
-		return true;
-
-	});
-
-};
-
-// 6.
-;function getCheckedStreak() {
-
-	var status = {},
-		max = 2,
-		truthCount = 0,
-		actionsCount = 0;
-
-	GAME.players.every(function (element, index, array) {
-
-		if (element.isCurrentPlayer) {
-
-			truthCount = element.truthStreak;
-			actionsCount = element.actionsStreak;
-
-			return false;
-		}
-
-		return true;
-
-	});
-
-	switch(max) {
-		case truthCount: {
-			status = {truth: false, actions: true};
-		}
-		break;
-
-		case actionsCount: {
-			status = {truth: true, actions: false};
-		}
-		break;
-
-		default: {
-			status = {truth: true, actions: true};
-		};
-		break;
-	}
-
-	return status;
-
-};
-/* ===================================
-
-1. Выбор игрока, который выполняет ход
-
-===================================== */
-
-
-;function nextPlayer() {
-
-	var isNoOneActive = true,
-		playerName = '',
-		playerOutput = document.querySelector('[data-picked-player]');
-
-	GAME.players.every( function (element, index, array) {
-
-		if (element.isCurrentPlayer === true) {
-			// set isCurrentPlayer to false
-			// set to next element isCurrentPlayer true
-			GAME.players[index].isCurrentPlayer = false;
-			isNoOneActive = false;
-
-			if ( GAME.players[index + 1] ) {
-				// set to next isCurrentPlayer Active
-				GAME.players[index + 1].isCurrentPlayer = true;
-				GAME.currentPlayer = GAME.players[index + 1];
-				playerName = GAME.currentPlayer.name;
-			}
-
-			else {
-				// set to first isCurrentPlayer Active
-				GAME.players[0].isCurrentPlayer = true;
-				GAME.currentPlayer = GAME.players[0];
-				playerName = GAME.currentPlayer.name;
-			}
-
-			return false;
-
-		}
-
-		return true;
-
-	});
-
-	if (isNoOneActive) {
-		// set isCurrentPlayer to true first player
-		GAME.players[0].isCurrentPlayer = true;
-		GAME.currentPlayer = GAME.players[0];
-		playerName = GAME.players[0].name;
-	}
-
-	// write in html player name
-	playerOutput.innerHTML = playerName + ' ';
-
-
-};
-/* =============================================
-
-Этот файл отвечает за логику начала игры, например
-эвенты связанные с добавлением игроков, загрузка json...
-
-1. gameStartLogic(); - функция обрабатывающая начало игры.
-1.1. Выбор половой принаджлености и запись в переменную выбраного пола
-1.2. Нажатие на кнопку добавить, добавление игрока в облако игроков, вызов рендер функции playerAdd(...);
-1.3 Инициализация игры
-
-2. gameStartSavePlayers(); - сохранение игроков в переменную GAME.players
-
-3. Проверка, был ли добавлен такой игрок
-
-4. Закрываем game_start, качаем json, инициализируем игру
-
-=============================================== */
-
-// 1. 
-;function gameStartLogic() {
-
-	var gameStartPlayerInput = document.querySelector('[data-gamestart-playerInput]'),
-		gameStartPlayerButtonAdd = document.querySelector('[data-gamestart-playerAdd]'),
-		gameStartPlayerGenderSelect = document.querySelectorAll('[data-gamestart-genderRadio]'),
-		gameStartPlayerGender = null,
-		gameStartButton = document.querySelector('[data-gamestart-start]');
-
-		// 1.1.
-		bindListeners(gameStartPlayerGenderSelect, 'change', function(event, element) {
-
-			if (element.checked)
-				gameStartPlayerGender = element.value;
-
-		});
-
-		// 1.2.
-		gameStartPlayerButtonAdd.addEventListener('mousedown', function(event) {
-
-			if ( gameStartPlayerInput.value.length >= 2 && gameStartPlayerGender !== null ) {
-
-				gameStartPlayerAdd(gameStartPlayerInput.value, gameStartPlayerGender, gameStartPlayerInput);
-				gameStartPlayerInput.value = '';
-
-			}
-
-			SavePlayers(document.querySelectorAll('[data-gamestart-player]'), 'data-gameStart-player-gender');
-
-		});
-
-		// 1.3
-		gameStartButton.addEventListener('mousedown', function(event) {
-
-			if ( GAME.jsonState === 1 ) {
-
-				preloader('show');
-
-			}
-
-			if ( GAME.jsonState === 2 ) {
-
-				GAME.gameState = 1;
-				gameInit();
-
-			}
-
-
-		});
-
-
-
-};
-
-;(function gameStartLogicCall() {
-
-	gameStartLogic();
-
-})();
-
-// 2.
-;function SavePlayers(players, playersGenderAttr) {
-
-	var gameStartPlayers = players,
-		playerName = '',
-		playerGender = '';
-
-	// player Proto
-	var Player = {
-		constructor: function (name, gender) {
-			this.name = name;
-			this.gender = gender;
-			this.actionsStreak = 0;
-			this.truthStreak = 0;
-			this.isCurrentPlayer = false;
-			return this;
-		}
-	}
-
-	// reset GAME.player for rewrite
-	GAME.players = [];
-	GAME.playersF = [];
-	GAME.playersM = [];
-
-	// update GAME.players
-	[].forEach.call(gameStartPlayers, function (element, index, array) {
-
-		playerName = element.innerText || element.textContent;
-		playerGender = element.getAttribute(playersGenderAttr);
-
-		// create new player
-		player = Object.create(Player).constructor(playerName, playerGender);
-		// sort player
-		GAME.players.push(player);
-		GAME['players' + player.gender.toUpperCase()].push(player)
-
-	});
-
-};
-
-// 3.
-;function gameStartCheckPlayerExist(input) {
-
-	var isExist = false;
-
-	isExist = GAME.players.some( function (element, index, array) {
-
-		if (element.name === input.value) {
-			return true;
-		}
-
-	});
-
-	return isExist;
-
-};
-
-
-// 4.
-;function gameStartClose() {
-
-	var gameStartWrap = document.querySelector('[data-gamestart]'),
-		timeout = null,
-		lastModal = document.querySelectorAll('[data-gamestart-modal]');
-
-
-	gameStartWrap.classList.add('hidden');
-	lastModal[lastModal.length - 1].classList.add('hidden');
-
-	timeout = setTimeout(function() {
-
-		gameStartWrap.classList.add('visibility');
-
-	}, 600);
-
-	// getJson();
-
-};
-/* ======================================
-
-В этом файле происходит запись действий/вопросов в GAME.truth/GAME.actions
-
-1. Добавление правды
-2. Добавление действий
-3. Добавление и действий и вопросов
-4. Сохранение всех вопросов и действий в переменную GAME.content
-
-PS Разделено на несколько функций для удобства обновлений вопрос или действий
-
-======================================= */
-
-// 1.
-;function updateTruth() {
-
-	GAME.truth = [];
-
-	GAME.rubrics.forEach(function (element, index, array) {
-
-		for (var item in GAME.json) {
-
-			if (item === element) {
-
-				for (var truth in GAME.json[item].true) {
-					GAME.truth.push(GAME.json[item].true[truth]);
-
-				}
-
-			}
-
-		}
-
-	});
-
-};
-
-// 2.
-;function updateAction() {
-
-	GAME.actions = [];
-
-
-	GAME.rubrics.forEach(function (element, index, array) {
-
-		for (var item in GAME.json) {
-
-			if (item === element) {
-
-				for (var actions in GAME.json[item].action) {
-					GAME.actions.push(GAME.json[item].action[actions]);
-				}
-
-			}
-
-		}
-
-	});
-};
-
-// 4.
-;function updateGameContent() {
-
-		for (var item in GAME.json) {
-
-			for (var actions in GAME.json[item].action) {
-
-				var content = GAME.json[item].action[actions];
-
-				GAME.content.actions[item].push(content);
-			}
-
-		}
-
-		for (var item in GAME.json) {
-
-
-				for (var truth in GAME.json[item].true) {
-
-					var content = GAME.json[item].true[truth];
-
-					GAME.content.truth[item].push(content);
-				}
-
-		}
-
-};
-
-// 3.
-;function updateAllTruthActions() {
-
-	updateTruth();
-	updateAction();
-	updateGameContent();
-
-};
-/* ======================================
-
-Получение json'а с вопросами
-
-====================================== */
-
-
-;function getJson() {
-
-	var jsonPath = 'assets/response.json';
-
-	// если офлайн режим
-	if ( !navigator.onLine ) {
-		GAME.json = JSON.parse(localStorage.getItem('json'));
-		gameInit();
-		return;
-	}
-
-	var request = new XMLHttpRequest();
-	request.open('GET', jsonPath, true);
-
-	GAME.jsonState = 1;
-	sessionStorage.setItem('JSONINCURRENTSESSION', 1);
-
-	request.onload = function() {
-
-		if (request.status >= 200 && request.status < 400) {
-
-			var data = JSON.parse(request.responseText);
-			GAME.json = data;
-			GAME.jsonState = 2;
-
-			if (localStorageTest())
-				localStorage.setItem('json', JSON.stringify(data));
-
-			// set json state to 2, it'means json is loaded
-			sessionStorage.setItem('JSONINCURRENTSESSION', 2);
-
-			// if json was loaded after game-start, hide preloader,
-			// init game
-			if ( preloader('getState') === 'visible' && GAME.jsonState === 2 ) {
-
-				preloader('hide');
-				gameInit();
-
-			}
-
-			GAME.jsonState = 2;
-			GAME.gameState = 1;
-		}
-	};
-
-	request.onerror = function() {
-		// throw error
-	};
-
-	request.send();
-
-
-};
