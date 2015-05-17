@@ -55,3 +55,17 @@ var Results = {
 
 
 };
+
+
+;function gameStartCreate() {
+
+	jsonTest();
+	testAddPlayersView();
+	testAddPlayersLogic();
+	testRubricSelect();
+	gameLogicInitTest();
+	gameViewInitTest();
+
+	console.log('===================== INITED =====================');
+
+};

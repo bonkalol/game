@@ -51,6 +51,7 @@
 			 element.getAttribute('data-rubricselect-modal-button') !== undefined) {
 			updateAllTruthActions();
 			saveGameState();
+			gameListStateSet(3);
 		}
 
 		// close modals

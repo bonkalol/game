@@ -4,7 +4,8 @@
 
 1. Шаблон для создания игрока в начале игры
 2. Шаблон для создания игрока в игре
-3. Шаблон модального окна с созданием/удалением игроков
+3. Шаблон действия / вопроса для game-list
+4. Шаблон названия рубрики и кнопки для game-list
 
 ==================================== */
 
@@ -24,7 +25,30 @@ var TEMPLATES = {
 			avatar = gender === 'm' ? 'business' : 'woman',
 			template = '<div class="player_item player_item--' + genderClass + 'male" data-game-player><div class="player_item_avatar player_item_avatar--' + genderClass + 'male"><svg width="22px" height="22px"><use xlink:href="#' + avatar + '"><\/use><\/svg><\/div><div class="player_item_name">' + name + '<\/div><\/div>';
 			return template;
-	}
+	},
 
+	// 3.
+	gameListItem: function (content, state) {
+
+		if ( content.slice(-1) === '+' ||
+			 content.slice(-1) === ';' ||
+			 content.slice(-1) === '#') {
+
+			content = content.slice(0, -1);
+
+		}
+
+		var template = '<div data-game-list-item="" class="game-list_item {{checked}}">' + content +'<\/div>';
+			template = state === true ? template.replace('{{checked}}', 'js-checked') : template.replace('{{checked}}', '');
+			return template;
+	},
+
+	// 4.
+	gameListHeader: function (rubric, type) {
+		var template = '<h3 class="game-list_rubric_name">{{rubric}} +, {{type}}<span data-select-action="select" class="game-list_select"><span class="game-list_select_inner-text">Выбрать все<\/span><span class="game-list_select_inner-text">Отключить все<\/span><\/span><\/h3>';
+			template = template.replace('{{rubric}}', rubric)
+								.replace('{{type}}', type);
+			return template;
+	}
 
 }

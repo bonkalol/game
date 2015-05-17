@@ -5,6 +5,7 @@
 1. Добавление правды
 2. Добавление действий
 3. Добавление и действий и вопросов
+4. Сохранение всех вопросов и действий в переменную GAME.content
 
 PS Разделено на несколько функций для удобства обновлений вопрос или действий
 
@@ -23,6 +24,7 @@ PS Разделено на несколько функций для удобст
 
 				for (var truth in GAME.json[item].true) {
 					GAME.truth.push(GAME.json[item].true[truth]);
+
 				}
 
 			}
@@ -56,10 +58,39 @@ PS Разделено на несколько функций для удобст
 	});
 };
 
+// 4.
+;function updateGameContent() {
 
+		for (var item in GAME.json) {
+
+			for (var actions in GAME.json[item].action) {
+
+				var content = GAME.json[item].action[actions];
+
+				GAME.content.actions[item].push(content);
+			}
+
+		}
+
+		for (var item in GAME.json) {
+
+
+				for (var truth in GAME.json[item].true) {
+
+					var content = GAME.json[item].true[truth];
+
+					GAME.content.truth[item].push(content);
+				}
+
+		}
+
+};
+
+// 3.
 ;function updateAllTruthActions() {
 
 	updateTruth();
 	updateAction();
+	updateGameContent();
 
 };

@@ -101,7 +101,19 @@
 		truth: [],
 		json: checkSessionJsonState(JSON.parse(localStorage.getItem('json')), {}),
 		jsonState: checkSessionJsonState(2, 0),
-		gameState: 0
+		gameState: 0,
+		content: {
+			truth: {
+				'16': [],
+				'18': [],
+				'21': []
+			},
+			actions: {
+				'16': [],
+				'18': [],
+				'21': []
+			}
+		}
 	}
 
 

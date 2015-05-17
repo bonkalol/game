@@ -1,0 +1,171 @@
+.game-list {
+
+	position: fixed;
+	top: 0;
+	left: 0;
+	height: 100%;
+	width: 100%;
+	z-index: map-get($z-indexes, list);
+	background-color: #c62828;
+	padding: 2rem;
+	padding-bottom: 80px;
+	overflow-y: scroll;
+	visibility: hidden;
+	display: none;
+
+
+	@include media ('<phone') {
+		padding: .5rem;
+		padding-bottom: 80px;
+	}
+
+	&.visible {
+		visibility: visible;
+		display: block;
+	}
+
+	&_list {
+		margin-top: 2rem;
+
+		&:first-of-type {
+			margin-top: 0;
+		}
+	}
+
+	&_desc {
+		color: #fafafa;
+		font-size: 18px;
+		padding: 12px;
+		margin-bottom: 12px;
+		line-height: 1.4em;
+		background-color: rgba(0,0,0,.3);
+		border-radius: 3px;
+
+		@include media ('<phone') {
+			font-size: 14px;
+		}
+	}
+
+	&_rubric_name {
+		font-size: 24px;
+		color: #fafafa;
+		font-weight: 700;
+		padding: 15px 0;
+		// for select
+		position: relative;
+
+		@include media ('<phone') {
+			font-size: 16px;
+			line-height: 45px;
+			padding: 0;
+			height: 45px;
+		}
+	}
+
+	&_select {
+		@extend .game-start_submit-player;
+		font-size: 16px;
+		font-weight: 400;
+		padding: 10px;
+		background-color: transparent;
+		border: 5px solid #fff;
+		color: #fff;
+		will-change: background-color;
+		transition: background-color .4s;
+		box-shadow: 2px 2px 3px rgba(0,0,0,.3);
+
+		&:hover,
+		&:focus,
+		&:active {
+			cursor: pointer;
+			background-color: rgba(0, 0, 0, .4);
+		}
+
+		@include media ('<phone') {
+			line-height: normal;
+			font-size: 14px;
+			padding: 8px;
+			border-width: 3px;
+		}
+	}
+
+	&_footer {
+		position: fixed;
+		bottom: 0;
+		left: 0;
+		@include size(100%, 60px);
+		background-color: #c62828;
+	}
+
+	&_footer_buttons {
+		@include reset-btn();
+		@include size(50%, 100%);
+		font-size: 24px;
+		font-weight: 700;
+		text-align: center;
+		line-height: 60px;
+		background-color: rgba(0, 0, 0, .4);
+		color: #fff;
+		will-change: background-color;
+		transition: background-color .4s;
+		box-shadow: 2px 2px 3px rgba(0,0,0,.3);
+
+		&:hover,
+		&:focus,
+		&:active {
+			cursor: pointer;
+			background-color: rgba(0, 0, 0, .7);
+		}
+
+		@include media ('<tablet') {
+			font-size: 18px;
+		}
+	}
+
+	&_item {
+		color: #fff;
+		padding: 8px;
+		border: 1px solid;
+		border-radius: 3px;
+		white-space: nowrap;
+		margin: 10px 0;
+		width: 100%;
+		overflow-x: auto;
+		will-change: background-color, color;
+		transition: background-color .4s, color .4s;
+
+		@include media ('<phone') {
+			font-size: 12px;
+		}
+
+		&:hover,
+		&:focus,
+		&:active {
+			cursor: pointer;
+			background-color: rgba(0, 0, 0, .3);
+		}
+
+		&.js-checked {
+			background-color: #eee;
+			color: #222;
+		}
+	}
+
+}
+
+[data-select-action="select"] {
+
+	.game-list_select_inner-text:last-of-type {
+		display: none;
+	}
+
+}
+
+[data-select-action="deselect"] {
+
+	.game-list_select_inner-text:first-of-type {
+		display: none;
+	}
+
+}
+

@@ -30,6 +30,8 @@ block content
 				a.sidebar_link(href="http://vk.com/topic-90928991_31602234" target="_blank" title="Нашли ошибку? Напишите нам об этом в вк") Сообщить о ошибке
 			li.sidebar_item
 				a.sidebar_link(href="http://vk.com/topic-90928991_31607962" target="_blank" title="Поддержи нас, это дает стимул :)") Поддержкать разработчиков
+			li.sidebar_item
+				span.sidebar_link(target="_blank" title="Редактируй вопросы или действия, которые будут выпадать" data-show-game-list) Список вопросов/действий
 		footer.sidebar_footer
 			p.sidebar_footer_share Расскажите о нас своим друзьям
 				a.sidebar_footer_link(href="http://vk.com/share.php?url=http://truthoraction.com" target="_blank" title="Расскажите про игру в вконтакте") Поделиться ВКонтакте
@@ -52,6 +54,7 @@ block content
 		p.modal_desc(data-game-modal-content) Поцелуйте в шею первого игрока противоположного пола слева от вас
 		button.modal_submit(type="button" data-game-modalclose-button) Ок
 	include blocks/game_start
+	include blocks/game_list
 	.game-restart(data-game-restart-wrap)
 		.game-restart_modal
 			.game-restart_inner
