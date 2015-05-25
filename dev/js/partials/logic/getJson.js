@@ -38,7 +38,7 @@
 
 			// if json was loaded after game-start, hide preloader,
 			// init game
-			if ( preloader('getState') === 'visible' && GAME.jsonState === 2 ) {
+			if ( preloader('getState') === 'visible' && GAME.jsonState === 2 && GAME.rubrics.length >= 1 ) {
 
 				preloader('hide');
 				gameInit();

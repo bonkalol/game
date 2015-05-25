@@ -9,7 +9,6 @@ var gulp = require('gulp'),
 	configs = require('./configs'),
 	isProduction = configs.isProduction,
 	paths = configs.paths,
-	prettify = require('gulp-html-prettify'),
 	notify = require('gulp-notify'),
 	htmlvalidator = require('gulp-w3cjs'),
 	plumber = require('gulp-plumber');

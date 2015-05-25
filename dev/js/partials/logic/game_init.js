@@ -30,10 +30,10 @@
 
 		updateAllTruthActions();
 
-	}
+		// 1.3.
+		nextPlayer();
 
-	// 1.3.
-	nextPlayer();
+	}
 
 	// 1.4.
 	updateModals();

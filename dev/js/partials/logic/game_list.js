@@ -83,7 +83,7 @@
 ;function gameListSaveChecked() {
 
 	var truthContainers = document.querySelectorAll('[data-game-list-wrap$="0"]'),
-		actionContainers = document.querySelectorAll('[data-game-list-wrap$="1"');
+		actionContainers = document.querySelectorAll('[data-game-list-wrap$="1"]');
 	GAME.truth = [];
 	GAME.actions = [];
 

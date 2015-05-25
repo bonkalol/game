@@ -217,7 +217,7 @@
 ;(function () {
 
 	var gameListCancel = document.querySelector('[data-game-list-action="cancel"]'),
-		gameListSave = document.querySelector('[data-game-list-action="save"'),
+		gameListSave = document.querySelector('[data-game-list-action="save"]'),
 		gameList = document.querySelector('[data-game-list]');
 
 		gameListCancel.addEventListener('mousedown', function (event) {
