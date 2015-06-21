@@ -23,6 +23,7 @@ html, body {
 	@include size(100%);
 	font-size: $rootFontSize;
 	font-family: $fontFamily;
+	overflow: hidden;
 }
 
 body {
