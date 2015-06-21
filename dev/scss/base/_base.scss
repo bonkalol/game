@@ -58,9 +58,6 @@ input, textarea {
 	}
 }
 
-@media screen and (-webkit-min-device-pixel-ratio:0) {
-	/* Safari only override */
-	::i-block-chrome, .main {
-		background-color: green;
-	}
+.main:not(:root:root){ 
+	background-color: green;
 }
