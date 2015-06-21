@@ -66,10 +66,12 @@ functions.js - включает в себя различные вспомога�
 
 	if( iOS ) {
 
-		var body = document.querySelector('body');
+		var body = document.querySelector('body'),
+			html = document.querySelector('html');
 		// WORKAROUND: converting 90vh to px
 		function fixMobileSafariViewport() {
 			body.style.height = window.innerHeight + 'px';
+			html.style.height = window.innerHeight + 'px';
 		}
 
 		// listen to portrait/landscape changes
