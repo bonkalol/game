@@ -11,17 +11,21 @@
 
 ============================= */
 
+var TYPE = '';
+
 // 1.
 ;(function buttonEvents() {
 
 	var showModalButton = document.querySelectorAll('[data-showmodal-button]');
-		closePopupButton = document.querySelector('[data-game-modalclose-button]');
+		closePopupButton = document.querySelector('[data-game-modalclose-button]'),
+		nextQA = document.querySelector('[data-game-modal-next]');
 
 
 		bindListeners(showModalButton, 'mousedown' , function (event, element) {
 
 			var type = element.getAttribute('data-showmodal-button');
 
+			TYPE = type;
 			getTruthOrAction(type);
 
 		});
@@ -32,13 +36,27 @@
 
 		});
 
+		// reupdate content
+		nextQA.addEventListener('mousedown', function (event) {
+
+			var content = getTruthOrAction(TYPE, true),
+				modal = document.querySelector('[data-game-modal]');
+
+			var modalText = modal.querySelector('[data-game-modal-content]');
+			modalText.innerHTML = content.text;
+
+			if (content.class.length >= 1) {
+				modal.classList.add(content.class);
+			}
+
+		});
 
 
 
 })();
 
 // 2.
-;function getTruthOrAction(type) {
+;function getTruthOrAction(type, isReinit) {
 
 	var text = '',
 		min = 0,
@@ -71,7 +89,15 @@
 		var content = cardType(text); 
 
 		// render modal
-		showModal(content);
+		if ( !isReinit || isReinit === 'undefined' || isReinit === null ) {
+
+			showModal(content);
+
+		} else {
+
+			return content;
+
+		}
 
 };
 

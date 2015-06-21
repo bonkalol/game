@@ -58,16 +58,21 @@
 	&_submit {
 		@include reset-btn();
 		position: absolute;
-		bottom: 10px;
-		left: 50%;
-		transform: translateX(-50%);
-		@include size(30%, 50px);
+		bottom: 5%;
+		right: 2.5%;
+		// transform: translateY(50%);
+		@include size(45%, 50px);
 		border-radius: 4px;
 		text-align: center;
 		line-height: 50px;
-		font-size: 24px;
+		font-size: 20px;
 		color: #fff;
 		background-color: rgba(0,0,0,0.1);
+	}
+
+	&_next {
+		@extend .modal_submit;
+		left: 2.5%;
 	}
 
 	&_desc {
