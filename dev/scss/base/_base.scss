@@ -50,6 +50,7 @@ input, textarea {
 	transition: transform linear .3s;
 	will-change: transform;
 	transform: translate3d(0, 0, 0);
+	position: relative;
 
 	&.active {
 		transform: translate3d(-240px, 0, 0);
