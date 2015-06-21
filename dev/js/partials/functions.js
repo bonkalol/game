@@ -66,20 +66,15 @@ functions.js - включает в себя различные вспомога�
 
 	if( iOS ) {
 
-		function iosVhHeightBug() {
-			var height = Math.max(document.documentElement.clientHeight, window.innerHeight || 0) >
-				Math.max(document.documentElement.clientWidth, window.innerWidth || 0) ? '100vh' : '100vw';
-			var content = document.querySelector('body');
-			content.style.height = height;
+		var body = document.querySelector('body');
+		// WORKAROUND: converting 90vh to px
+		function fixMobileSafariViewport() {
+			body.style.height = window.innerHeight + 'px';
 		}
 
-		window.addEventListener('resize', function () {
-
-			iosVhHeightBug();
-
-		}, false);
-
-		iosVhHeightBug();
+		// listen to portrait/landscape changes
+		window.addEventListener('orientationchange', fixMobileSafariViewport, true);
+		fixMobileSafariViewport();
 
 
 	}
