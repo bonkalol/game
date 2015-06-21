@@ -45,6 +45,8 @@ var TYPE = '';
 			var modalText = modal.querySelector('[data-game-modal-content]');
 			modalText.innerHTML = content.text;
 
+			modal.classList.remove('gray', 'mass');
+
 			if (content.class.length >= 1) {
 				modal.classList.add(content.class);
 			}
