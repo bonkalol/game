@@ -71,9 +71,7 @@ functions.js - включает в себя различные вспомога�
 // 			main = document.querySelector('.main');
 // 		// WORKAROUND: converting 90vh to px
 // 		function fixMobileSafariViewport() {
-// 			body.style.height = window.innerHeight + 'px';
 // 			html.style.height = window.innerHeight + 'px';
-// 			main.style.height = window.innerHeight + 'px';
 // 		}
 
 // 		// listen to portrait/landscape changes
