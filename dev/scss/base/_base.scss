@@ -26,10 +26,6 @@ html, body {
 	overflow: hidden;
 }
 
-html {
-	background-color: green;
-}
-
 body {
 	-webkit-tap-highlight-color: rgba(255, 255, 255, 0);
 	-webkit-focus-ring-color: rgba(255, 255, 255, 0);
@@ -38,7 +34,6 @@ body {
 	user-select: none;
 	resize: none;
 	overflow: hidden;
-	border: 3px solid #fff;
 }
 
 input, textarea {
@@ -50,7 +45,7 @@ input, textarea {
 	@include size(100%);
 	max-width: 100%;
 	max-height: 100%;
-	// background-color: #c62828;
+	background-color: #c62828;
 	transition: transform linear .3s;
 	will-change: transform;
 	transform: translate3d(0, 0, 0);
@@ -60,5 +55,12 @@ input, textarea {
 
 	&.active {
 		transform: translate3d(-240px, 0, 0);
+	}
+}
+
+@media screen and (-webkit-min-device-pixel-ratio:0) {
+	/* Safari only override */
+	::i-block-chrome, .main {
+		background-color: green;
 	}
 }
