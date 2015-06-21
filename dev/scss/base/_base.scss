@@ -43,6 +43,8 @@ input, textarea {
 
 .main {
 	@include size(100%);
+	max-width: 100%;
+	max-height: 100%;
 	background-color: #c62828;
 	transition: transform linear .3s;
 	will-change: transform;
