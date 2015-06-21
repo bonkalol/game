@@ -67,9 +67,10 @@ functions.js - включает в себя различные вспомога�
 	if( iOS ) {
 
 		function iosVhHeightBug() {
-			var height = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
-			var content = document.querySelector('.main');
-			content.style.height = height + 'px';
+			var height = Math.max(document.documentElement.clientHeight, window.innerHeight || 0) >
+				Math.max(document.documentElement.clientWidth, window.innerWidth || 0) ? '100vh' : '100vw';
+			var content = document.querySelector('body');
+			content.style.height = height;
 		}
 
 		window.addEventListener('resize', function () {
