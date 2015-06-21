@@ -6,6 +6,10 @@ meta(charset="utf-8")
 title= pageTitle || headConfigs.title
 include preloader_css
 link(rel="stylesheet" href=cssPath || configs.css)
+meta(name="HandheldFriendly" content="True")
+meta(http-equiv="cleartype" content="on")
+meta(name="apple-mobile-web-app-capable" content="yes")
+meta(http-equiv="X-UA-Compatible" content="IE=edge")
 
 if layoutSetters.headTags
 	meta(name='description' content=pageDescription || headConfigs.description)
@@ -19,3 +23,11 @@ if layoutSetters.OGTags
 	//- meta(property="og:locale:alternate" content=OGmetaLocalAlt || OGmeta.localeAlt)
 	meta(property="og:description" content=OGmetaDescription || OGmeta.description)
 	meta(property="og:site_name" content=OGmetaSiteName || OGmeta.siteName)
+
+//- icons for ios
+link(rel="apple-touch-startup-image" href="img/touch-icon-ipad-retina.png")
+link(rel="apple-touch-icon" href="img/touch-icon-iphone.png")
+link(rel="apple-touch-icon" sizes="72x72" href="img/touch-icon-ipad.png")
+link(rel="apple-touch-icon" sizes="114x114" href="img/touch-icon-iphone-retina.png")
+link(rel="apple-touch-icon" sizes="144x144" href="img/touch-icon-ipad-retina.png")
+// saved from url=(0014)about:internet
