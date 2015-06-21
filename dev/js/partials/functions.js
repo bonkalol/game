@@ -6,6 +6,7 @@ functions.js - включает в себя различные вспомога�
 1. disableElements(); - Выключает все неактивные елементы
 2. saveGameState(); - Сохранение текущего состояния игры
 3. Проверка был ли загружен json в данной сессии, если да, то вернет первый аргумент, если нет, то второй
+4. Fix ipad/iphone height bug
 
 =========================================== */
 
@@ -56,3 +57,31 @@ functions.js - включает в себя различные вспомога�
 	}
 
 };
+
+
+// 4.
+(function () {
+
+	var iOS = navigator.userAgent.match(/(iPod|iPhone|iPad)/);
+
+	if( iOS ) {
+
+		function iosVhHeightBug() {
+			var height = Math.max(document.documentElement.clientHeight, window.innerHeight || 0);
+			var content = document.querySelector('.main');
+			content.style.height = height + 'px';
+		}
+
+		window.addEventListener('resize', function () {
+
+			iosVhHeightBug();
+
+		}, false);
+
+		iosVhHeightBug();
+
+
+	}
+
+
+})();
