@@ -28,6 +28,10 @@ html, body {
 	overflow: hidden;
 }
 
+html {
+	background-color: green;
+}
+
 body {
 	-webkit-tap-highlight-color: rgba(255, 255, 255, 0);
 	-webkit-focus-ring-color: rgba(255, 255, 255, 0);
@@ -36,6 +40,7 @@ body {
 	user-select: none;
 	resize: none;
 	overflow: hidden;
+	border: 3px solid #fff;
 }
 
 input, textarea {
@@ -54,6 +59,7 @@ input, textarea {
 	position: absolute;
 	top: 0;
 	left: 0;
+	background-color: #000;
 
 	&.active {
 		transform: translate3d(-240px, 0, 0);
