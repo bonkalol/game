@@ -13,114 +13,114 @@
 ============================================== */
 
 // 2.
-;(function () {
+// ;(function () {
 
-	gameListStateSet(0);
+// 	gameListStateSet(0);
 
-})();
+// })();
 
-;function gameListStateSet(value) {
+// ;function gameListStateSet(value) {
 
-	sessionStorage.setItem('GAMELISTSTATE', value);
+// 	sessionStorage.setItem('GAMELISTSTATE', value);
 
-};
+// };
 
-;function gameListStateGet() {
+// ;function gameListStateGet() {
 
-	return parseInt(sessionStorage.getItem('GAMELISTSTATE'));
+// 	return parseInt(sessionStorage.getItem('GAMELISTSTATE'));
 
-};
+// };
 
-// 1.
-;function selectDeselect() {
+// // 1.
+// ;function selectDeselect() {
 
-	var target = null,
-		targetAttr = null,
-		listItems = null,
-		selectDeselectButton = document.querySelectorAll('[data-select-action]'),
-		checkClass = 'js-checked';
+// 	var target = null,
+// 		targetAttr = null,
+// 		listItems = null,
+// 		selectDeselectButton = document.querySelectorAll('[data-select-action]'),
+// 		checkClass = 'js-checked';
 
-	bindListeners(selectDeselectButton, 'mousedown', function (event, element) {
+// 	bindListeners(selectDeselectButton, 'mousedown', function (event, element) {
 
-		target = element;
-		listItems = target.closest('[data-game-list-wrap]').querySelectorAll('[data-game-list-item]');
-		targetAttr = target.getAttribute('data-select-action');
-
-
-		if ( targetAttr === 'select' ) {
-
-			[].forEach.call(listItems, function (element, index, array) {
-
-				element.classList.add(checkClass);
-				target.setAttribute('data-select-action', 'deselect');
+// 		target = element;
+// 		listItems = target.closest('[data-game-list-wrap]').querySelectorAll('[data-game-list-item]');
+// 		targetAttr = target.getAttribute('data-select-action');
 
 
-			});
+// 		if ( targetAttr === 'select' ) {
 
-			return;
+// 			[].forEach.call(listItems, function (element, index, array) {
 
-		}
-
-		if ( targetAttr === 'deselect' ) {
-
-			[].forEach.call(listItems, function (element, index, array) {
-
-				element.classList.remove(checkClass);
-				target.setAttribute('data-select-action', 'select');
+// 				element.classList.add(checkClass);
+// 				target.setAttribute('data-select-action', 'deselect');
 
 
-			});
+// 			});
 
-			return;
+// 			return;
 
-		}
+// 		}
 
-	});
+// 		if ( targetAttr === 'deselect' ) {
 
-};
+// 			[].forEach.call(listItems, function (element, index, array) {
+
+// 				element.classList.remove(checkClass);
+// 				target.setAttribute('data-select-action', 'select');
 
 
-;function gameListSaveChecked() {
+// 			});
 
-	var truthContainers = document.querySelectorAll('[data-game-list-wrap$="0"]'),
-		actionContainers = document.querySelectorAll('[data-game-list-wrap$="1"]');
-	GAME.truth = [];
-	GAME.actions = [];
+// 			return;
 
-	[].forEach.call(truthContainers, function (element, index, array) {
+// 		}
 
-		var items = element.querySelectorAll('[data-game-list-item].js-checked');
+// 	});
 
-		[].forEach.call(items, function (element, index, array) {
+// };
 
-			var text = element.innerText || element.textContent;
 
-			GAME.truth.push(text);
+// ;function gameListSaveChecked() {
 
-		});
+// 	var truthContainers = document.querySelectorAll('[data-game-list-wrap$="0"]'),
+// 		actionContainers = document.querySelectorAll('[data-game-list-wrap$="1"]');
+// 	GAME.truth = [];
+// 	GAME.actions = [];
 
-	});
+// 	[].forEach.call(truthContainers, function (element, index, array) {
 
-	[].forEach.call(actionContainers, function (element, index, array) {
+// 		var items = element.querySelectorAll('[data-game-list-item].js-checked');
 
-		var items = element.querySelectorAll('[data-game-list-item].js-checked');
+// 		[].forEach.call(items, function (element, index, array) {
 
-		[].forEach.call(items, function (element, index, array) {
+// 			var text = element.innerText || element.textContent;
 
-			var text = element.innerText || element.textContent;
+// 			GAME.truth.push(text);
 
-			GAME.actions.push(text);
+// 		});
 
-		});
+// 	});
 
-	});
+// 	[].forEach.call(actionContainers, function (element, index, array) {
 
-	if ( GAME.truth.length === 0 ) {
-		updateTruth();
-	}
+// 		var items = element.querySelectorAll('[data-game-list-item].js-checked');
 
-	if ( GAME.actions.length === 0 ) {
-		updateAction();
-	}
+// 		[].forEach.call(items, function (element, index, array) {
 
-};
+// 			var text = element.innerText || element.textContent;
+
+// 			GAME.actions.push(text);
+
+// 		});
+
+// 	});
+
+// 	if ( GAME.truth.length === 0 ) {
+// 		updateTruth();
+// 	}
+
+// 	if ( GAME.actions.length === 0 ) {
+// 		updateAction();
+// 	}
+
+// };
