@@ -21,8 +21,6 @@
 
 html, body {
 	@include size(100%);
-	max-width: 100%;
-	max-height: 100%;
 	font-size: $rootFontSize;
 	font-family: $fontFamily;
 	overflow: hidden;
@@ -45,7 +43,6 @@ input, textarea {
 
 .main {
 	@include size(100%);
-	padding-top: 70px;
 	background-color: #c62828;
 	transition: transform linear .3s;
 	will-change: transform;
