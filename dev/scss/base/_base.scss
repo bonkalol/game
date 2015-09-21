@@ -34,6 +34,10 @@ body {
 	user-select: none;
 	resize: none;
 	overflow: hidden;
+
+	&.sidebared .header {
+		z-index: 10;
+	}
 }
 
 input, textarea {

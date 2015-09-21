@@ -5,12 +5,10 @@
 2. Закрытие модального окна, проверка стриков
 
 ====================================== */
-
 // 1.
 ;function showModal(content) {
 
-	var overlay = document.querySelector('[data-game-overlay]'),
-		modal = document.querySelector('[data-game-modal]'),
+	var modal = document.querySelector('[data-game-modal]'),
 		nextQA = document.querySelector('[data-game-modal-next]');
 
 	nextQA.removeAttribute('data-disabled');
@@ -18,19 +16,20 @@
 	var modalText = modal.querySelector('[data-game-modal-content]');
 	modalText.innerHTML = content.text;
 
-	overlay.classList.remove('hidden');
-	overlay.classList.add('active');
 
-	if (content.class && content.class.length >= 1) {
-		modal.classList.add(content.class);
-	}
-
-	var timeout = setTimeout(function () {
+	var timeout = function () {
 
 		modal.classList.remove('hidden');
 		modal.classList.add('active');
 
-	}, 600);
+	};
+
+
+	Overlay.show(timeout);
+
+	if (content.class && content.class.length >= 1) {
+		modal.classList.add(content.class);
+	}
 
 
 };
@@ -38,13 +37,15 @@
 // 2.
 ;function closeModal() {
 
-	var overlay = document.querySelector('[data-game-overlay]'),
-		modal = document.querySelector('[data-game-modal]'),
+	var modal = document.querySelector('[data-game-modal]'),
 		truthButton = document.querySelector('[data-showmodal-button="truth"]'),
 		actionsButton = document.querySelector('[data-showmodal-button="actions"]');
 
 	modal.classList.remove('active');
-	overlay.classList.remove('active');
+	var hideModal = function () {
+		modal.classList.add('hidden');
+	}
+	Overlay.hide(hideModal);
 
 	// next player
 	nextPlayer();
@@ -68,15 +69,6 @@
 		actionsButton.classList.remove('disabled');
 		actionsButton.removeAttribute('data-disabled');
 	}
-
-	var timeOut = setTimeout(function () {
-
-		modal.classList.add('hidden');
-		modal.classList.remove('gray', 'mass');
-		overlay.classList.add('hidden');
-
-
-	}, 600);
 
 
 };

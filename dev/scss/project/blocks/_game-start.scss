@@ -126,7 +126,7 @@
 		line-height: 50px;
 		font-size: 24px;
 		color: #fff;
-		background-color: rgba(0,0,0,0.1);
+		background-color: rgba(0,0,0, .1) !important;
 
 		&.next-back {
 			width: 50%;
@@ -146,8 +146,8 @@
 		line-height: 50px;
 		font-size: 24px;
 		color: #fff;
-		background-color: rgba(0,0,0,0.1);
-		border-right: 2px solid rgba(0,0,0,.2);
+		background-color: rgba(0,0,0, .1);
+		border-right: 2px solid rgba(0,0,0,.2) !important;
 	}
 
 	&_wrap {
@@ -205,9 +205,8 @@
 		}
 
 		svg {
-			transition: fill .4s;
 			margin-top: 2px;
-			fill: #222;
+			fill: #fff;
 			float: left;
 		}
 	}

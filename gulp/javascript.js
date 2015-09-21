@@ -27,11 +27,9 @@ gulp.task('concat', function() {
 	return gulp.src(jsPath)
 		.pipe(plumber({errorHandler: log}))
 		.pipe(newer(paths.destPaths.js))
-		.pipe(gulpif(/[.]coffee$/, coffee()))
-		.pipe(gulpif(/[.]coffee$/, coffeelint()))
 		.pipe(concat('main.js'))
 		.pipe(duration('Finished Concat task in'))
-		.pipe(isProduction ? uglify() : gutil.noop())
+		// .pipe(isProduction ? uglify() : gutil.noop())
 		.pipe(isProduction ? duration('Finished Uglify task in') : gutil.noop())
 		.pipe(gulp.dest(paths.destPaths.js));
 });

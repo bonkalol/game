@@ -18,7 +18,6 @@ var gulp = require('gulp'),
 
 gulp.task('sass', function () {
 	return sass(paths.srcPaths.scss, { style: 'expanded', sourcemap: true })
-		.on('error', log)
 		.pipe(sourcemaps.write())
 		.pipe(duration('Finished SASS task in'))
 		.pipe(autoprefixer({

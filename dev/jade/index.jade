@@ -40,9 +40,9 @@ block content
 			h2.pick_player
 				var.pick_player_name(data-picked-player) Bogdan 
 				span.pick_player_text теперь ваш ход
-			a.pick_link.pick_link--true(href=jv0 title="" data-modalType="game" data-show-popup data-showmodal-button="truth") Правда
+			a.pick_link.pick_link--true(href=jv0 title="" data-show-popup data-showmodal-button="truth") Правда
 			span.pick_or или
-			a.pick_link.pick_link--action(href=jv0 title="" data-modalType="game" data-show-popup data-showmodal-button="actions") Действие
+			a.pick_link.pick_link--action(href=jv0 title="" data-show-popup data-showmodal-button="actions") Действие
 	section.modal_window.hidden(data-game-modal)
 		p.modal_desc(data-game-modal-content) Поцелуйте в шею первого игрока противоположного пола слева от вас
 		button.modal_next(type="button" data-game-modal-next) Пропустить
@@ -56,6 +56,20 @@ block content
 				button.game-restart_btn.game-restart-false(type="button" data-game-restart) Новая игра
 				button.game-restart_btn.game-restart-true(type="button" data-game-continue) Продолжить
 	.overlay.hidden(data-game-overlay)
+	.player-list
+		.player-list_container
+			.player-list_item.player-list_item--male(data-player-list-select)
+				.player-list_name Bogdan
+				b.player-list_icon
+					svg(width="26px" height="26px")
+						use(xlink:href=svg + "business")
+			.player-list_item.player-list_item--female(data-player-list-select)
+				.player-list_name Katya
+				b.player-list_icon
+					svg(width="26px" height="26px")
+						use(xlink:href=svg + "woman")
+		button.player-list_done(type="button" data-disabled data-player-list-done)
+			span.player-list_done_text Готово
 
 block additionalCSS
 	include partials/fonts
