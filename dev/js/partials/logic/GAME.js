@@ -10,7 +10,8 @@ GAME - переменная которая хранит в себе текуще
 	name: 'bogdan',
 	gender: 'f',
 	truthStreak: 0,
-	actionsStreak: 0
+	actionsStreak: 0,
+	score: 0
 }
 
 truthStreak/actionsStreak - количество выбранной правды.действий подряд

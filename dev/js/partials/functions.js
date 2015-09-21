@@ -56,3 +56,13 @@ functions.js - включает в себя различные вспомога�
 	}
 
 };
+
+
+;function debugTools(age, type, name) {
+
+	var json = GAME.json,
+		parse = cardType(json[age][type][name]);
+
+	showModal(parse);
+
+}

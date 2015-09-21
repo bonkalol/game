@@ -91,6 +91,7 @@
 			this.actionsStreak = 0;
 			this.truthStreak = 0;
 			this.isCurrentPlayer = false;
+			this.score = 0;
 			return this;
 		}
 	}
