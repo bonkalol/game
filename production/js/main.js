@@ -1000,12 +1000,13 @@ PS Разделено на несколько функций для удобст
 
 ;function getJson() {
 
-	var jsonPath = 'assets/response.json';
+	var jsonPath = 'assets/response.json',
+		jsonV = localStorage.getItem('gamev') || null;
 
 	// если офлайн режим
-	if ( !navigator.onLine ) {
+	if ( !navigator.onLine || (jsonV !== null && jsonV === v) ) {
 		GAME.json = JSON.parse(localStorage.getItem('json'));
-		gameInit();
+		GAME.jsonState = 2;
 		return;
 	}
 
@@ -1023,8 +1024,10 @@ PS Разделено на несколько функций для удобст
 			GAME.json = data;
 			GAME.jsonState = 2;
 
-			if (localStorageTest())
+			if (localStorageTest()) {
 				localStorage.setItem('json', JSON.stringify(data));
+				localStorage.setItem('gamev', v);
+			}
 
 			// set json state to 2, it'means json is loaded
 			sessionStorage.setItem('JSONINCURRENTSESSION', 2);
@@ -1870,6 +1873,22 @@ function updateMainPlayersCloud() {
 			targetModal = document.querySelector('[' + targetModalName + ']'),
 			gameStartWrap = document.querySelector('[data-gamestart]'),
 			timeout = null;
+
+			console.log(targetModal);
+
+		if ( event.target.getAttribute('data-show-default-modal') === 'data-newplayer-modal' ||
+			 event.target.parentNode.getAttribute('data-show-default-modal') === 'data-newplayer-modal' ) {
+			var container = document.querySelector('[data-gamestart-playercontainer]'),
+				template = '';
+
+			GAME.players.forEach(function (element, index, array) {
+				var playerTempalte = TEMPLATES.gameStartCreatePlayer(element.gender, element.name);
+				template += playerTempalte;
+			});
+
+			container.innerHTML = template;
+
+		}
 
 		gameStartWrap.classList.remove('visibility');
 		gameStartWrap.classList.remove('hidden');

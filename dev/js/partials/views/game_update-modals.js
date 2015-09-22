@@ -80,6 +80,22 @@
 			gameStartWrap = document.querySelector('[data-gamestart]'),
 			timeout = null;
 
+			console.log(targetModal);
+
+		if ( event.target.getAttribute('data-show-default-modal') === 'data-newplayer-modal' ||
+			 event.target.parentNode.getAttribute('data-show-default-modal') === 'data-newplayer-modal' ) {
+			var container = document.querySelector('[data-gamestart-playercontainer]'),
+				template = '';
+
+			GAME.players.forEach(function (element, index, array) {
+				var playerTempalte = TEMPLATES.gameStartCreatePlayer(element.gender, element.name);
+				template += playerTempalte;
+			});
+
+			container.innerHTML = template;
+
+		}
+
 		gameStartWrap.classList.remove('visibility');
 		gameStartWrap.classList.remove('hidden');
 
