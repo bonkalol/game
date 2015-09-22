@@ -36,7 +36,7 @@
 	}
 
 	// 1.4.
-	updateModals();
+	UpdateModals.updateHTML();
 
 	// 1.5.
 	GAME.game = true;

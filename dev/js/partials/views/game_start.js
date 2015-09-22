@@ -71,9 +71,7 @@
 
 // call game start view
 ;(function callGameStart() {
-
 	gameStartView();
-
 })();
 
 
@@ -90,20 +88,19 @@
 
 	gameStartPlayersContainer.insertAdjacentHTML('beforeend', TEMPLATES.gameStartCreatePlayer(gender, name));
 
-	// update delete binds
-	gameStartPlayerDeleteBind();
-
-	if ( document.querySelectorAll('[data-gamestart-player]').length >= 2 ) {
-
+	if (checkPlayers()) {
 		gameStartPlayersContainer.closest('[data-gamestart-modal]').querySelector('[data-newplayer-modal-button]').removeAttribute('data-disabled');
-
 	} else {
-
 		gameStartPlayersContainer.closest('[data-gamestart-modal]').querySelector('[data-newplayer-modal-button]').setAttribute('data-disabled', '');
-
 	}
 
 
+};
+
+;function checkPlayers() {
+	return (document.querySelectorAll('[data-gamestart-player]').length >= 2 &&
+	 document.querySelectorAll('[data-gamestart-player-gender="m"]').length >= 1 &&
+	 document.querySelectorAll('[data-gamestart-player-gender="f"]').length >= 1);
 };
 
 
@@ -115,43 +112,32 @@
 		playerGender = sender.getAttribute('data-gamestart-player-gender');
 
 	GAME.players = GAME.players.filter(function (element, index, array) {
-
 		return element.name !== playerName;
-
 	});
 
 	GAME['players' + playerGender.toUpperCase()] = GAME['players' + playerGender.toUpperCase()].filter(function (element, index, array) {
-
 		return element.name !== playerName;
-
 	});
 
 	sender.remove();
 
-	if ( document.querySelectorAll('[data-gamestart-player]').length >= 2 ) {
-
+	if (checkPlayers()) {
 		gameStartPlayersContainer.closest('[data-gamestart-modal]').querySelector('[data-newplayer-modal-button]').removeAttribute('data-disabled');
-
 	} else {
-
 		gameStartPlayersContainer.closest('[data-gamestart-modal]').querySelector('[data-newplayer-modal-button]').setAttribute('data-disabled', '');
-
 	}
 
 };
 
+;(function () {
 
+	document.addEventListener('mousedown', function (event) {
+		if (event.target.hasAttribute('data-gamestart-player-remove')) {
+			gameStartPlayerDelete(event.target.parentNode);
+		}
+	}, false);
 
-;function gameStartPlayerDeleteBind() {
-
-	var gameStartPlayerButtonDelete = document.querySelectorAll('[data-gamestart-player]');
-	// 3.
-	bindListeners(gameStartPlayerButtonDelete, 'click', function (event, element) {
-
-		gameStartPlayerDelete(element.closest('[data-gamestart-player]'));
-
-	});
-};
+})();
 
 
 // 4.
