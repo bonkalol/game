@@ -4,6 +4,8 @@
 	- Смена рубрики
 	- Добавление/удаление игроков
 
+
+	TODO обновление модалов после того как игра была продолжена
 */
 
 
@@ -12,6 +14,12 @@
 var UpdateModals = function () {
 	this.trigger = 'data-show-default-modal';
 	this.start = document.querySelector('[data-gamestart]');
+	this.attributes = [
+		'data-gamenewplayer-save',
+		'data-rubric-save',
+		'data-rules-save'
+	];
+	this.playerContainer = document.querySelector('[data-gamestart-playercontainer]');
 };
 
 UpdateModals.prototype.init = function(callback) {
@@ -39,18 +47,18 @@ UpdateModals.prototype.updateHTML = function(callback) {
 
 	newPlayerSave.innerHTML = 'Сохранить';
 	newPlayerSave.removeAttribute(removeAttr);
-	newPlayerSave.setAttribute('data-gamenewplayer-save', null);
+	newPlayerSave.setAttribute(this.attributes[0], null);
 	rubricSelectSave.innerHTML = 'Сохранить';
 	rubricSelectSave.removeAttribute(removeAttr);
-	rubricSelectSave.setAttribute('data-rubric-save', null);
+	rubricSelectSave.setAttribute(this.attributes[1], null);
 	rubricSelectHide.remove();
 	rulesBack.remove();
 	rulesNext.innerHTML = 'Ок';
 	rulesNext.removeAttribute(removeAttr);
-	rulesNext.setAttribute('data-rules-save', null);
+	rulesNext.setAttribute(this.attributes[2], null);
 
 
-	if (callback) callback();
+	if (callback) callback.call(this);
 };
 
 UpdateModals.prototype.checkTrigger = function(target) {
@@ -66,9 +74,49 @@ UpdateModals.prototype.showModal = function(modal) {
 	modal.classList.add('active');
 };
 
+UpdateModals.prototype.updatePlayer = function() {
+	var UpdateModals = this,
+	template = '';
+	GAME.players.forEach(function (player, index, array) {
+		template += TEMPLATES.gameStartCreatePlayer(player.gender, player.name);
+	});
+	this.playerContainer.innerHTML = template;
+	if (checkPlayers()) {
+		document
+			.querySelector('[data-newplayer-modal-button]')
+			.removeAttribute('data-disabled');
+	} else {
+		document
+			.querySelector('[data-newplayer-modal-button]')
+			.setAttribute('data-disabled', null);
+	}
+};
+
+UpdateModals.prototype.updateRubric = function() {
+	GAME.rubrics.forEach(function (value, index, array) {
+		document.querySelector('[value="' + value + '"]').checked = true;
+	});
+	GAME.wasPicked = GAME.rubrics;
+};
+
+UpdateModals.prototype.bind = function() {
+	var UpdateModals = this;
+	this.updateRubric();
+	this.updatePlayer();
+	document.addEventListener('mousedown', function (event) {
+		var target = event.target;
+		if (target.hasAttribute(UpdateModals.attributes[0])) {
+			SavePlayers(document.querySelectorAll('[data-gamestart-player]'), 'data-gameStart-player-gender');
+			saveGameState();
+		}
+		if (target.hasAttribute(UpdateModals.attributes[1])) {
+			updateAllTruthActions();
+			saveGameState();
+		}
+	}, false);
+};
 
 UpdateModals.prototype.closeModal = function(modal) {
-	// close modal
 	modal.classList.add('hidden');
 };
 

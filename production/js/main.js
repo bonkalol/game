@@ -210,6 +210,8 @@ truthStreak/actionsStreak - количество выбранной правды
 
 11. Все вопросы / действия
 
+12. Рубрики которые были выбраны
+
 ====================================== */
 
 var GAME = {
@@ -224,6 +226,8 @@ var GAME = {
 	targetPlayer: {},
 	// 5
 	rubrics: [],
+	// 12
+	wasPicked: [],
 	// 6
 	actions: [],
 	truth: [],
@@ -371,7 +375,7 @@ sessionStorage.setItem('JSONINCURRENTSESSION', 0);
 	}
 
 	// 1.4.
-	UpdateModals.updateHTML();
+	UpdateModals.updateHTML(UpdateModals.bind);
 
 	// 1.5.
 	GAME.game = true;
@@ -911,11 +915,17 @@ PS Разделено на несколько функций для удобст
 // 1.
 ;function updateTruth() {
 
-	GAME.truth = [];
-
 	GAME.rubrics.forEach(function (element, index, array) {
 
 		for (var item in GAME.json) {
+
+			var wasPicked = null;
+			if (GAME.wasPicked) {
+				wasPicked = GAME.wasPicked.some(function (rubric, index, array) {
+					return rubric === element;
+				});
+			}
+			if (wasPicked === true) return;
 
 			if (item === element) {
 
@@ -932,15 +942,22 @@ PS Разделено на несколько функций для удобст
 
 };
 
+
+
 // 2.
 ;function updateAction() {
-
-	GAME.actions = [];
-
 
 	GAME.rubrics.forEach(function (element, index, array) {
 
 		for (var item in GAME.json) {
+
+			var wasPicked = null;
+			if (GAME.wasPicked) {
+				wasPicked = GAME.wasPicked.some(function (rubric, index, array) {
+					return rubric === element;
+				});
+			}
+			if (wasPicked === true) return;
 
 			if (item === element) {
 
@@ -1493,37 +1510,27 @@ var updateMainPlayersCloud = function () {
 
 	// Next button
 	// 1.1.
-	bindListeners(gameStartNextButtons, 'mousedown', function (event, element) {
-
-		currentModal = element.closest('[data-gamestart-modal]');
+	document.addEventListener('mousedown', function (event) {
+		if (!event.target.hasAttribute('data-gamestart-nextmodal')) return;
+		currentModal = event.target.closest('[data-gamestart-modal]');
 		gameStartNextModal = currentModal.nextSibling;
-
-		// hide current modal
 		currentModal.classList.add('hidden');
-		// show next modal
 		gameStartNextModal.classList.add('active');
-
-	});
+	}, false);
 
 	// Prev button
 	// 1.2.
-	bindListeners(gameStartBackButtons, 'mousedown', function (event, element) {
-
-		currentModal = element.closest('[data-gamestart-modal]');
+	document.addEventListener('mousedown', function (event, element) {
+		if (!event.target.hasAttribute('data-gamestart-prevmodal')) return;
+		currentModal = event.target.closest('[data-gamestart-modal]');
 		gameStartPrevModal = currentModal.previousSibling;
-
-		// hide current modal
 		currentModal.classList.remove('active');
-		// show next modal
 		gameStartPrevModal.classList.remove('hidden');
-
-	});
+	}, false);
 
 	// 1.3.
 	gameStartStartGame.addEventListener('mousedown', function(event) {
-
 		gameStartClose();
-
 	});
 
 
@@ -1778,6 +1785,8 @@ var updateMainPlayersCloud = function () {
 	- Смена рубрики
 	- Добавление/удаление игроков
 
+
+	TODO обновление модалов после того как игра была продолжена
 */
 
 
@@ -1786,6 +1795,12 @@ var updateMainPlayersCloud = function () {
 var UpdateModals = function () {
 	this.trigger = 'data-show-default-modal';
 	this.start = document.querySelector('[data-gamestart]');
+	this.attributes = [
+		'data-gamenewplayer-save',
+		'data-rubric-save',
+		'data-rules-save'
+	];
+	this.playerContainer = document.querySelector('[data-gamestart-playercontainer]');
 };
 
 UpdateModals.prototype.init = function(callback) {
@@ -1813,18 +1828,18 @@ UpdateModals.prototype.updateHTML = function(callback) {
 
 	newPlayerSave.innerHTML = 'Сохранить';
 	newPlayerSave.removeAttribute(removeAttr);
-	newPlayerSave.setAttribute('data-gamenewplayer-save', null);
+	newPlayerSave.setAttribute(this.attributes[0], null);
 	rubricSelectSave.innerHTML = 'Сохранить';
 	rubricSelectSave.removeAttribute(removeAttr);
-	rubricSelectSave.setAttribute('data-rubric-save', null);
+	rubricSelectSave.setAttribute(this.attributes[1], null);
 	rubricSelectHide.remove();
 	rulesBack.remove();
 	rulesNext.innerHTML = 'Ок';
 	rulesNext.removeAttribute(removeAttr);
-	rulesNext.setAttribute('data-rules-save', null);
+	rulesNext.setAttribute(this.attributes[2], null);
 
 
-	if (callback) callback();
+	if (callback) callback.call(this);
 };
 
 UpdateModals.prototype.checkTrigger = function(target) {
@@ -1840,9 +1855,49 @@ UpdateModals.prototype.showModal = function(modal) {
 	modal.classList.add('active');
 };
 
+UpdateModals.prototype.updatePlayer = function() {
+	var UpdateModals = this,
+	template = '';
+	GAME.players.forEach(function (player, index, array) {
+		template += TEMPLATES.gameStartCreatePlayer(player.gender, player.name);
+	});
+	this.playerContainer.innerHTML = template;
+	if (checkPlayers()) {
+		document
+			.querySelector('[data-newplayer-modal-button]')
+			.removeAttribute('data-disabled');
+	} else {
+		document
+			.querySelector('[data-newplayer-modal-button]')
+			.setAttribute('data-disabled', null);
+	}
+};
+
+UpdateModals.prototype.updateRubric = function() {
+	GAME.rubrics.forEach(function (value, index, array) {
+		document.querySelector('[value="' + value + '"]').checked = true;
+	});
+	GAME.wasPicked = GAME.rubrics;
+};
+
+UpdateModals.prototype.bind = function() {
+	var UpdateModals = this;
+	this.updateRubric();
+	this.updatePlayer();
+	document.addEventListener('mousedown', function (event) {
+		var target = event.target;
+		if (target.hasAttribute(UpdateModals.attributes[0])) {
+			SavePlayers(document.querySelectorAll('[data-gamestart-player]'), 'data-gameStart-player-gender');
+			saveGameState();
+		}
+		if (target.hasAttribute(UpdateModals.attributes[1])) {
+			updateAllTruthActions();
+			saveGameState();
+		}
+	}, false);
+};
 
 UpdateModals.prototype.closeModal = function(modal) {
-	// close modal
 	modal.classList.add('hidden');
 };
 

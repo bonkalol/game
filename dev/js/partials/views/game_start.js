@@ -33,37 +33,27 @@
 
 	// Next button
 	// 1.1.
-	bindListeners(gameStartNextButtons, 'mousedown', function (event, element) {
-
-		currentModal = element.closest('[data-gamestart-modal]');
+	document.addEventListener('mousedown', function (event) {
+		if (!event.target.hasAttribute('data-gamestart-nextmodal')) return;
+		currentModal = event.target.closest('[data-gamestart-modal]');
 		gameStartNextModal = currentModal.nextSibling;
-
-		// hide current modal
 		currentModal.classList.add('hidden');
-		// show next modal
 		gameStartNextModal.classList.add('active');
-
-	});
+	}, false);
 
 	// Prev button
 	// 1.2.
-	bindListeners(gameStartBackButtons, 'mousedown', function (event, element) {
-
-		currentModal = element.closest('[data-gamestart-modal]');
+	document.addEventListener('mousedown', function (event, element) {
+		if (!event.target.hasAttribute('data-gamestart-prevmodal')) return;
+		currentModal = event.target.closest('[data-gamestart-modal]');
 		gameStartPrevModal = currentModal.previousSibling;
-
-		// hide current modal
 		currentModal.classList.remove('active');
-		// show next modal
 		gameStartPrevModal.classList.remove('hidden');
-
-	});
+	}, false);
 
 	// 1.3.
 	gameStartStartGame.addEventListener('mousedown', function(event) {
-
 		gameStartClose();
-
 	});
 
 
