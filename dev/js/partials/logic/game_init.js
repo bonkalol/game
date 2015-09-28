@@ -24,16 +24,12 @@
 
 	// 1.1. 
 	updateMainPlayersCloud();
-
 	// 1.2.
 	if ( type !== 'restart' ) {
-
 		updateAllTruthActions();
-
-		// 1.3.
-		nextPlayer();
-
 	}
+	// 1.3.
+	nextPlayer();
 
 	// 1.4.
 	UpdateModals.updateHTML(UpdateModals.bind);

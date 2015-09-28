@@ -363,16 +363,12 @@ sessionStorage.setItem('JSONINCURRENTSESSION', 0);
 
 	// 1.1. 
 	updateMainPlayersCloud();
-
 	// 1.2.
 	if ( type !== 'restart' ) {
-
 		updateAllTruthActions();
-
-		// 1.3.
-		nextPlayer();
-
 	}
+	// 1.3.
+	nextPlayer();
 
 	// 1.4.
 	UpdateModals.updateHTML(UpdateModals.bind);
@@ -1615,43 +1611,34 @@ var updateMainPlayersCloud = function () {
 	bindListeners(checkboxes, 'change', function (event, element) {
 		// reset Rubrics
 		GAME.rubrics = [];
+		checkRubric();
 
-		if (isChecked(checkboxes))
-			element.closest('[data-gamestart-modal]').querySelector('[data-rubricselect-modal-button]').removeAttribute('data-disabled');
-		else
-			element.closest('[data-gamestart-modal]').querySelector('[data-rubricselect-modal-button]').setAttribute('data-disabled', '');
 
 		// update picked rubrics
 		[].forEach.call(checkboxes, function (element, index, array) {
-
 			if (element.checked)
 				GAME.rubrics.push(element.value);
-
 		});
 
 	});
 
-	function isChecked(elements) {
-
-		var isCheckboxCheked = false;
-
-		[].some.call(elements, function (element, index, array) {
-
-			if (element.checked) {
-				isCheckboxCheked = true;
-				return false;
-			}
-
-		});
-
-		if (isCheckboxCheked)
-			return true;
-		else
-			return false;
-
-	};
-
 };
+
+
+var checkRubric = function () {
+	var checkboxes = document.querySelectorAll('[data-gamestart-rubric]'),
+	checked = [].some.call(checkboxes, function (checkbox, index, array) {
+		return checkbox.checked;
+	});
+	if (checked === true) {
+		document.querySelector('[data-rubricselect-modal-button]').removeAttribute('data-disabled');
+	}
+	else {
+		document.querySelector('[data-rubricselect-modal-button]').setAttribute('data-disabled', '');
+	}
+};
+
+
 
 
 ;(function gameStartRubricSelectCall() {
@@ -1784,9 +1771,6 @@ var updateMainPlayersCloud = function () {
 	Вызов модальных окон
 	- Смена рубрики
 	- Добавление/удаление игроков
-
-
-	TODO обновление модалов после того как игра была продолжена
 */
 
 
@@ -1801,6 +1785,7 @@ var UpdateModals = function () {
 		'data-rules-save'
 	];
 	this.playerContainer = document.querySelector('[data-gamestart-playercontainer]');
+	this.modals = document.querySelectorAll('[data-gamestart-modal]');
 };
 
 UpdateModals.prototype.init = function(callback) {
@@ -1832,12 +1817,16 @@ UpdateModals.prototype.updateHTML = function(callback) {
 	rubricSelectSave.innerHTML = 'Сохранить';
 	rubricSelectSave.removeAttribute(removeAttr);
 	rubricSelectSave.setAttribute(this.attributes[1], null);
+	rubricSelectSave.classList.remove('next-back');
 	rubricSelectHide.remove();
 	rulesBack.remove();
 	rulesNext.innerHTML = 'Ок';
 	rulesNext.removeAttribute(removeAttr);
 	rulesNext.setAttribute(this.attributes[2], null);
 
+	[].forEach.call(this.modals, function (modal, index, array) {
+		modal.classList.add('hidden');
+	});
 
 	if (callback) callback.call(this);
 };
@@ -1878,6 +1867,7 @@ UpdateModals.prototype.updateRubric = function() {
 		document.querySelector('[value="' + value + '"]').checked = true;
 	});
 	GAME.wasPicked = GAME.rubrics;
+	checkRubric();
 };
 
 UpdateModals.prototype.bind = function() {
@@ -1888,17 +1878,28 @@ UpdateModals.prototype.bind = function() {
 		var target = event.target;
 		if (target.hasAttribute(UpdateModals.attributes[0])) {
 			SavePlayers(document.querySelectorAll('[data-gamestart-player]'), 'data-gameStart-player-gender');
+			updateMainPlayersCloud();
 			saveGameState();
+			UpdateModals.closeModal(target.parentNode);
+			Overlay.hide(Sidebar.hide);
 		}
 		if (target.hasAttribute(UpdateModals.attributes[1])) {
 			updateAllTruthActions();
 			saveGameState();
+			UpdateModals.closeModal(target.parentNode.parentNode);
+			Overlay.hide(Sidebar.hide);
 		}
 	}, false);
 };
 
-UpdateModals.prototype.closeModal = function(modal) {
+UpdateModals.prototype.closeModal = function(modal, callback) {
+	var timeout = null
+	UpdateModals = this;
 	modal.classList.add('hidden');
+	timeout = setTimeout(function() {
+		document.querySelector('[data-gamestart]').classList.add('visibility');
+		if (callback) callback.call(UpdateModals);
+	}, 1000);
 };
 
 window.UpdateModals = new UpdateModals();
@@ -2079,6 +2080,18 @@ window.onload = function(event) {
 		}
 
 	});
+
+	var Sidebar = function () {};
+
+	Sidebar.prototype.hide = function() {
+		sidebarClose();
+	};
+
+	Sidebar.prototype.show = function() {
+		sidebarOpen();
+	};
+
+	window.Sidebar = new Sidebar();
 
 
 })();

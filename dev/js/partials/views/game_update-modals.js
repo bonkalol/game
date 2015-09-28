@@ -3,9 +3,6 @@
 	Вызов модальных окон
 	- Смена рубрики
 	- Добавление/удаление игроков
-
-
-	TODO обновление модалов после того как игра была продолжена
 */
 
 
@@ -20,6 +17,7 @@ var UpdateModals = function () {
 		'data-rules-save'
 	];
 	this.playerContainer = document.querySelector('[data-gamestart-playercontainer]');
+	this.modals = document.querySelectorAll('[data-gamestart-modal]');
 };
 
 UpdateModals.prototype.init = function(callback) {
@@ -51,12 +49,16 @@ UpdateModals.prototype.updateHTML = function(callback) {
 	rubricSelectSave.innerHTML = 'Сохранить';
 	rubricSelectSave.removeAttribute(removeAttr);
 	rubricSelectSave.setAttribute(this.attributes[1], null);
+	rubricSelectSave.classList.remove('next-back');
 	rubricSelectHide.remove();
 	rulesBack.remove();
 	rulesNext.innerHTML = 'Ок';
 	rulesNext.removeAttribute(removeAttr);
 	rulesNext.setAttribute(this.attributes[2], null);
 
+	[].forEach.call(this.modals, function (modal, index, array) {
+		modal.classList.add('hidden');
+	});
 
 	if (callback) callback.call(this);
 };
@@ -97,6 +99,7 @@ UpdateModals.prototype.updateRubric = function() {
 		document.querySelector('[value="' + value + '"]').checked = true;
 	});
 	GAME.wasPicked = GAME.rubrics;
+	checkRubric();
 };
 
 UpdateModals.prototype.bind = function() {
@@ -107,17 +110,28 @@ UpdateModals.prototype.bind = function() {
 		var target = event.target;
 		if (target.hasAttribute(UpdateModals.attributes[0])) {
 			SavePlayers(document.querySelectorAll('[data-gamestart-player]'), 'data-gameStart-player-gender');
+			updateMainPlayersCloud();
 			saveGameState();
+			UpdateModals.closeModal(target.parentNode);
+			Overlay.hide(Sidebar.hide);
 		}
 		if (target.hasAttribute(UpdateModals.attributes[1])) {
 			updateAllTruthActions();
 			saveGameState();
+			UpdateModals.closeModal(target.parentNode.parentNode);
+			Overlay.hide(Sidebar.hide);
 		}
 	}, false);
 };
 
-UpdateModals.prototype.closeModal = function(modal) {
+UpdateModals.prototype.closeModal = function(modal, callback) {
+	var timeout = null
+	UpdateModals = this;
 	modal.classList.add('hidden');
+	timeout = setTimeout(function() {
+		document.querySelector('[data-gamestart]').classList.add('visibility');
+		if (callback) callback.call(UpdateModals);
+	}, 1000);
 };
 
 window.UpdateModals = new UpdateModals();

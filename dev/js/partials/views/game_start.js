@@ -138,43 +138,34 @@
 	bindListeners(checkboxes, 'change', function (event, element) {
 		// reset Rubrics
 		GAME.rubrics = [];
+		checkRubric();
 
-		if (isChecked(checkboxes))
-			element.closest('[data-gamestart-modal]').querySelector('[data-rubricselect-modal-button]').removeAttribute('data-disabled');
-		else
-			element.closest('[data-gamestart-modal]').querySelector('[data-rubricselect-modal-button]').setAttribute('data-disabled', '');
 
 		// update picked rubrics
 		[].forEach.call(checkboxes, function (element, index, array) {
-
 			if (element.checked)
 				GAME.rubrics.push(element.value);
-
 		});
 
 	});
 
-	function isChecked(elements) {
-
-		var isCheckboxCheked = false;
-
-		[].some.call(elements, function (element, index, array) {
-
-			if (element.checked) {
-				isCheckboxCheked = true;
-				return false;
-			}
-
-		});
-
-		if (isCheckboxCheked)
-			return true;
-		else
-			return false;
-
-	};
-
 };
+
+
+var checkRubric = function () {
+	var checkboxes = document.querySelectorAll('[data-gamestart-rubric]'),
+	checked = [].some.call(checkboxes, function (checkbox, index, array) {
+		return checkbox.checked;
+	});
+	if (checked === true) {
+		document.querySelector('[data-rubricselect-modal-button]').removeAttribute('data-disabled');
+	}
+	else {
+		document.querySelector('[data-rubricselect-modal-button]').setAttribute('data-disabled', '');
+	}
+};
+
+
 
 
 ;(function gameStartRubricSelectCall() {

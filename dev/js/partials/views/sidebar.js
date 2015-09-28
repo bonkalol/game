@@ -61,5 +61,17 @@
 
 	});
 
+	var Sidebar = function () {};
+
+	Sidebar.prototype.hide = function() {
+		sidebarClose();
+	};
+
+	Sidebar.prototype.show = function() {
+		sidebarOpen();
+	};
+
+	window.Sidebar = new Sidebar();
+
 
 })();
