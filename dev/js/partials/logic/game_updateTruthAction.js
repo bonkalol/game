@@ -18,25 +18,20 @@ PS Разделено на несколько функций для удобст
 
 		for (var item in GAME.json) {
 
-			var wasPicked = null;
+/*			var wasPicked = null;
 			if (GAME.wasPicked) {
 				wasPicked = GAME.wasPicked.some(function (rubric, index, array) {
 					return rubric === element;
 				});
 			}
-			if (wasPicked === true) return;
+			if (wasPicked === true) return;*/
 
 			if (item === element) {
-
 				for (var truth in GAME.json[item].true) {
 					GAME.truth.push(GAME.json[item].true[truth]);
-
 				}
-
 			}
-
 		}
-
 	});
 
 };
@@ -50,13 +45,13 @@ PS Разделено на несколько функций для удобст
 
 		for (var item in GAME.json) {
 
-			var wasPicked = null;
-			if (GAME.wasPicked) {
-				wasPicked = GAME.wasPicked.some(function (rubric, index, array) {
-					return rubric === element;
-				});
-			}
-			if (wasPicked === true) return;
+			// var wasPicked = null;
+			// if (GAME.wasPicked) {
+			// 	wasPicked = GAME.wasPicked.some(function (rubric, index, array) {
+			// 		return rubric === element;
+			// 	});
+			// }
+			// if (wasPicked === true) return;
 
 			if (item === element) {
 
