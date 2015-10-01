@@ -37,5 +37,6 @@
 	// 1.5.
 	GAME.game = true;
 
+	Playerlist.render();
 
 };

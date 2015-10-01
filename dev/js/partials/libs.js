@@ -67,6 +67,14 @@ NodeList.prototype.remove = HTMLCollection.prototype.remove = function() {
 }
 
 
+Element.prototype.toggleClass = function(className) {
+	if (this.classList.contains(className)) {
+		this.classList.remove(className);
+	} else {
+		this.classList.add(className);
+	}
+};
+
 // 3.
 function getRandomInt(min, max) {
 

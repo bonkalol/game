@@ -56,18 +56,8 @@ block content
 				button.game-restart_btn.game-restart-false(type="button" data-game-restart) Новая игра
 				button.game-restart_btn.game-restart-true(type="button" data-game-continue) Продолжить
 	.overlay.hidden(data-game-overlay)
-	.player-list
-		.player-list_container
-			.player-list_item.player-list_item--male(data-player-list-select)
-				.player-list_name Bogdan
-				b.player-list_icon
-					svg(width="26px" height="26px")
-						use(xlink:href=svg + "business")
-			.player-list_item.player-list_item--female(data-player-list-select)
-				.player-list_name Katya
-				b.player-list_icon
-					svg(width="26px" height="26px")
-						use(xlink:href=svg + "woman")
+	.player-list(data-player-list)
+		.player-list_container(data-player-list-container)
 		button.player-list_done(type="button" data-disabled data-player-list-done)
 			span.player-list_done_text Готово
 

@@ -2,7 +2,7 @@
 
 .player-list {
 	position: fixed;
-	@include size(95%, 95%);
+	@include size(94%, 94%);
 	@include alignCenter();
 	z-index: 10;
 	background-color: #c62828;
@@ -39,6 +39,9 @@
 		line-height: 38px;
 		cursor: pointer;
 		margin-top: 15px;
+		transition: background-color .4s;
+		will-change: background-color;
+		transform: translate3d(0, 0, 0);
 
 		&:first-child {
 			margin-top: 0;

@@ -49,6 +49,23 @@ var TEMPLATES = {
 			template = template.replace('{{rubric}}', rubric)
 								.replace('{{type}}', type);
 			return template;
+	},
+
+	gamePickPlayer: function (gender, name) {
+		var obj = {
+			className: null,
+			name: name,
+			svg: null
+		}
+		if (gender === 'f') {
+			obj.className = 'female';
+			obj.svg = '#woman';
+		} else {
+			obj.className = 'male';
+			obj.svg = '#business';
+		}
+		var template = '<div data-player-list-select class="player-list_item player-list_item--' + obj.className + '"><div class="player-list_name">' + obj.name + '<\/div><b class="player-list_icon"><svg width="26px" height="26px"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="' + obj.svg + '"><\/use><\/svg><\/b><\/div>';
+		return template;
 	}
 
 }

@@ -35,7 +35,7 @@
 };
 
 // 2.
-;function closeModal() {
+;function closeModal(pickPlayer) {
 
 	var modal = document.querySelector('[data-game-modal]'),
 		truthButton = document.querySelector('[data-showmodal-button="truth"]'),
@@ -45,10 +45,15 @@
 	var hideModal = function () {
 		modal.classList.add('hidden');
 	}
-	Overlay.hide(hideModal);
 
 	// next player
-	nextPlayer();
+	if (GAME.pickPlayer && GAME.pickPlayer === true) {
+		Overlay.show();
+		Playerlist.show();
+		GAME.pickPlayer = false;
+	} else {
+		Overlay.hide(hideModal);
+	}
 	var status = getCheckedStreak();
 
 	// disable/enable buttons

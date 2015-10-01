@@ -21,7 +21,8 @@
 		content = { text: '', class: '' },
 		possibleSymbols = ['#', ';'],
 		isSymbol = false,
-		isReplaceable = cardText.indexOf('{n}');
+		isReplaceable = cardText.indexOf('{n}'),
+		isPickPlayer = cardText.indexOf('{g}');
 
 	isSymbol = possibleSymbols.some(function (element, index, array) {
 		return element === symbol;
@@ -29,6 +30,11 @@
 
 	if ( isSymbol ) {
 		cardText = cardText.slice(0, text.length - 1);
+	}
+
+	if ( isPickPlayer !== -1 ) {
+		GAME.pickPlayer = true;
+		cardText = cardText.split('{g}').join('');
 	}
 
 	if ( isReplaceable !== -1 ) {

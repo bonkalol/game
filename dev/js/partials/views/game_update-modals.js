@@ -83,6 +83,7 @@ UpdateModals.prototype.updatePlayer = function() {
 		template += TEMPLATES.gameStartCreatePlayer(player.gender, player.name);
 	});
 	this.playerContainer.innerHTML = template;
+	Playerlist.render();
 	if (checkPlayers()) {
 		document
 			.querySelector('[data-newplayer-modal-button]')
